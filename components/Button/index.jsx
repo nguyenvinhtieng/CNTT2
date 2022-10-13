@@ -8,16 +8,17 @@ export default function Button({
   size = "sm",
   primary = false,
   secondary = false,
+  gradient = false,
   rounded = false,
   className,
   ...props
 }) {
-  console.log(size)
   const classes = cx('wrapper', size, {
     [className]: className,
     primary,
     secondary,
     rounded,
+    gradient
   });
   return (
     <button className={classes} {...props}>

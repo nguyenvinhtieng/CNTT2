@@ -13,6 +13,7 @@ body {
   line-height: 1.5;
   font-family: 'Poppins', sans-serif;
   font-size: 62.5%;
+  background-color: #f9f9f9;
 }
 
 /* Declare */
@@ -20,9 +21,17 @@ body {
   --bg-color-primary: #fff;
   --color-primary: #335cc5;
   --border-gray-color: rgb(233,233,233);
+  --text-secondary-color: #c1c1c1;
 }
 button {
   border: none;
   outline: none;
   background-color: transparent;
+}
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 16px;
 }

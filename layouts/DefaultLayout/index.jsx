@@ -1,11 +1,15 @@
 import React from 'react'
 import Header from '../components/Header'
+import Footer from '../components/Footer'
 
 function DedaultLayout({children}) {
   return (
     <>
-      <Header></Header>
-      {children}
+      <Header />
+      <main className='container'>
+        {children}
+      </main>
+      {/* <Footer /> */}
     </>
   )
 }

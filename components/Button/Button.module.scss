@@ -2,6 +2,15 @@
   transition: all 0.2s linear;
   border: 1px solid transparent;
   cursor: pointer;
+  &.gradient {
+    background: linear-gradient(90deg,#2d8bf6 0,#2a49e6);
+    color: var(--bg-color-primary);
+    background-size: 200%;
+    border-radius: 4px;
+    &:hover {
+      background-position: right;
+    }
+  }
   &.primary {
     background-color: var(--color-primary);
     color: var(--bg-color-primary);
@@ -19,7 +28,8 @@
     }
   }
   &.sm {
-    font-size: 12px;
+    padding: 6px 12px;
+    font-size: 14px;
   }
   &.md {
     font-size: 16px;
