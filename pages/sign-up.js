@@ -8,23 +8,25 @@ import Link from "next/link"
 
 const cx = classNames.bind(styles)
 
-function SignIn() {
+function SignUp() {
   return (
     <>
       <div className={cx("wrapper")}>
-        <h2>Đăng nhập</h2>
+        <h2>Đăng ký</h2>
         <form className={cx("form")}>
           <Input label="Tên đăng nhập" name="username" isError errorMessage="Tên đăng nhập sai" placeholder="Tên đăng nhập . . ."/>
           <Input label="Mật khẩu" name="password" placeholder="Mật khẩu đăng nhập . . ."/>
-          <Button gradient size="md" style={{width: "100%"}}>Đăng nhập</Button>
+          <Input label="Nhập lại mật khẩu" name="password" placeholder="Nhập lại mật khẩu . . ."/>
+          <Input label="Email" name="email" placeholder="Email của bạn . . ."/>
+          <Input label="Tên" name="name" placeholder="Tên của bạn . . ."/>
+          <Button gradient size="md" style={{width: "100%"}}>Đăng ký tài khoản</Button>
         </form>
-        <p>Bạn chưa có tài khoản? Đăng ký <Link href="sign-up">tại đây</Link></p>
-
+        <p>Bạn đã có tài khoản? Đăng nhập <Link href="sign-in">tại đây</Link></p>
       </div>
     </>
   )
 }
 
-SignIn.Layout = DefaultLayout
+SignUp.Layout = DefaultLayout
 
-export default SignIn
+export default SignUp

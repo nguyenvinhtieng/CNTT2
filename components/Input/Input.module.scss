@@ -1,3 +1,54 @@
 .input__wrapper {
-  // background-color: blue;
+  label {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+  .input {
+    position: relative;
+    input {
+      width: 100%;
+      padding: 10px 20px;
+      border: none;
+      outline: none;
+      border: 1px solid var(--border-gray-color);
+      border-radius: 6px;
+      transition: all 0.2s linear;
+    }
+    .icon {
+      position: absolute;
+      top: 50%;
+      right: 12px;
+      transform: translateY(-50%);
+      fill: var(--error-color);
+      animation: bell 0.4s linear infinite alternate;
+      transform-origin: 50% 0;
+    }
+  }
+
+  .error-message {
+    text-align: left;
+    font-size: 12px;
+    margin-top: 3px;
+    display: none;
+    color: var(--error-color);
+  }
+
+  &.error {
+    input {
+      border-color: var(--error-color);
+    }
+    p {
+      display: block;
+    }
+  }
+}
+
+@keyframes bell {
+  0% {
+    transform: rotate(-45deg) translateY(-50%);
+  }
+  to {
+    transform: rotate(45deg) translateY(-50%);
+  }
 }

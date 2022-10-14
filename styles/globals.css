@@ -22,6 +22,7 @@ body {
   --color-primary: #335cc5;
   --border-gray-color: rgb(233,233,233);
   --text-secondary-color: #c1c1c1;
+  --error-color: rgb(255, 96, 96);
 }
 button {
   border: none;
