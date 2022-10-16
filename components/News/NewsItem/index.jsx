@@ -1,10 +1,10 @@
-import Link from "next/link"
-import classNames from "classnames/bind"
-import { AiFillEye } from "react-icons/ai"
-import styles from "../News.module.scss"
-import Button from "~/components/Button"
+import Link from "next/link";
+import classNames from "classnames/bind";
+import { AiFillEye } from "react-icons/ai";
+import styles from "../News.module.scss";
+import Button from "~/components/Button";
 
-const cx = classNames.bind(styles)
+const cx = classNames.bind(styles);
 
 function NewsItem() {
   return (
@@ -14,7 +14,10 @@ function NewsItem() {
       </div>
       <div className={cx("news__item--content")}>
         <h3 className={cx("news__item--title")}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum excepturi maiores obcaecati quidem nesciunt doloremque alias, magni culpa ratione nulla beatae nemo laudantium recusandae. Perspiciatis iste quod minima ipsam aspernatur.
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum
+          excepturi maiores obcaecati quidem nesciunt doloremque alias, magni
+          culpa ratione nulla beatae nemo laudantium recusandae. Perspiciatis
+          iste quod minima ipsam aspernatur.
         </h3>
         <p className={cx("news__item--tags")}>
           <span className={cx("news__item--tag")}>#tag</span>
@@ -23,15 +26,18 @@ function NewsItem() {
           <span className={cx("news__item--tag")}>#tag</span>
         </p>
         <p className={cx("news__item--minutes")}>
-          <AiFillEye /> 20 phút đọc</p>
+          <AiFillEye /> 20 phút đọc
+        </p>
         <span className={cx("news__item--btn")}>
           <Link href="/">
-            <Button size="sm" gradient >Xem bài viết...</Button>
+            <Button size="sm" gradient>
+              Xem bài viết...
+            </Button>
           </Link>
         </span>
       </div>
     </div>
-  )
+  );
 }
 
-export default NewsItem
+export default NewsItem;

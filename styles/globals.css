@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
 *,
 *::before,
 *::after {
@@ -11,7 +11,7 @@
 }
 body {
   line-height: 1.5;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 62.5%;
   background-color: #f9f9f9;
 }
@@ -20,9 +20,10 @@ body {
 :root {
   --bg-color-primary: #fff;
   --color-primary: #335cc5;
-  --border-gray-color: rgb(233,233,233);
+  --border-gray-color: #e9e9e9;
   --text-secondary-color: #c1c1c1;
-  --error-color: rgb(255, 96, 96);
+  --error-color: #ff6060;
+  --bg-gray-light: rgb(244, 244, 244);
 }
 button {
   border: none;
