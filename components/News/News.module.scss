@@ -136,11 +136,16 @@
 // Related item
 .news-related {
   width: calc(100% / 4 - 20px);
-  margin: 0 10px;
+  margin: 6px 10px;
   padding: 12px;
   border-radius: 6px;
   background-color: var(--bg-gray-light);
-
+  @include tablet {
+    width: calc(100% / 2 - 20px);
+  }
+  @include sp {
+    width: calc(100% - 20px);
+  }
   &__img {
     width: 100%;
     height: 150px;
@@ -194,6 +199,7 @@
     font-size: 26px;
     font-weight: bold;
     text-align: center;
+    padding: 0 30px;
   }
 
   &__time {
@@ -205,9 +211,24 @@
 
   &__content {
     margin-top: 20px;
-
+    margin-bottom: 25px;
     img {
       max-width: 100% !important;
+    }
+  }
+  &__info {
+    text-align: right;
+    position: relative;
+    margin-top: 16px;
+    padding-top: 12px;
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0 ;
+      left: 20px;
+      right: 20px;
+      height: 1px;
+      background-color: var(--border-gray-color);
     }
   }
 }

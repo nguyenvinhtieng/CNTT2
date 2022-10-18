@@ -1,3 +1,5 @@
+@import '~/styles/base';
+
 .wrapper {
     width: 100%;
     display: flex;
@@ -6,19 +8,30 @@
 }
 
 .comment__layout {
-    width: 100%;
-    max-width: 300px;
+    min-width: 300px;
     min-height: 100vh;
     border-right: 1px solid var(--border-gray-color);
-    padding: 16px;
 }
 
 .post {
-    margin-left: 20px;
+    padding-top: 20px;
+    position: relative;
 }
 
 .post-detail {
     width: 100%;
+    position: relative;
+    .bookmark {
+        cursor: pointer;
+        position: absolute;
+        top: 0;
+        right: 6px;
+        padding: 6px 6px 3px 6px;
+        font-size: 24px;
+        &.active {
+            color: #ffe729;
+        }
+    }
 }
 
 .related-post {

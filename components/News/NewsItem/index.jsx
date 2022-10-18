@@ -29,7 +29,7 @@ function NewsItem() {
           <AiFillEye /> 20 phút đọc
         </p>
         <span className={cx("news__item--btn")}>
-          <Link href="/">
+          <Link href="/post/123">
             <Button size="sm" gradient>
               Xem bài viết...
             </Button>

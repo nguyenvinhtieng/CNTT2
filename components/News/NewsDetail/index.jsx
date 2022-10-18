@@ -5,12 +5,7 @@ const cx = classNames.bind(styles);
 function NewsDetail() {
   return (
     <>
-      <div className={cx("news-detail__head")}>
-        <h2 className={cx("news-detail__title")}>
-          Lorem ipsum dolor sit amet.
-        </h2>
-        <time className={cx("news-detail__time")}>10/10/2022 09:40am </time>
-      </div>
+      <h2 className={cx("news-detail__title")}>Lorem ipsum dolor sit amet.</h2>
       <div className={cx("news-detail__content")}>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque
         similique esse reiciendis delectus, adipisci excepturi facere, aliquid
@@ -34,6 +29,14 @@ function NewsDetail() {
         earum natus porro cumque maxime voluptatibus vitae tenetur odit
         voluptatem, quibusdam esse minima architecto. Hic ratione modi id beatae
         nesciunt! Quo nihil aut aliquam neque. Corporis, aliquid.
+      </div>
+      <div className={cx("news__item--tags")}>
+        <span className={cx("news__item--tag")}>Tag1</span>
+        <span className={cx("news__item--tag")}>Tag1</span>
+      </div>
+      <div className={cx("news-detail__info")}>
+        <div className={cx("news-detail__author-name")}>Author: Nguyen Vinh Tieng</div>
+        <time className={cx("news-detail__time")}>10/10/2022 09:40am </time>
       </div>
     </>
   );

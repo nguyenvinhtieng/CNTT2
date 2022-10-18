@@ -8,7 +8,7 @@ const cx = classNames.bind(styles);
 function NewsRelatedContainer() {
   return (
     <>
-      <h3 className={cx("news-related-container__head")}>Related post</h3>
+      <h3 className={cx("news-related-container__head")}>Bài viết liên quan</h3>
       <ul className={cx("news-related-container__list")}>
         <NewsItemRelated />
         <NewsItemRelated />
