@@ -1,33 +1,35 @@
-import classNames from "classnames/bind"
+import classNames from "classnames/bind";
+import { useState } from "react";
 import { FaRegComment } from "react-icons/fa";
 import Button from "~/components/Button";
 import Input from "~/components/Input";
 import Overlay from "~/components/Overlay";
-import styles from "../Comment.module.scss"
-import CommentItem from "../CommentItem";
-const cx = classNames.bind(styles)
+import styles from "../Comment.module.scss";
+import CommentBlock from "../CommentBlock";
+import CommentInput from "../CommentInput";
+
+const cx = classNames.bind(styles);
 function CommentLayout() {
+  const [showComment, setShowComment] = useState(false);
+  const handleToggleComment = () => setShowComment(!showComment);
   return (
     <>
-    <div className={cx("comment_btn")}>
-      <span>12</span> <FaRegComment />
-    </div>
-    <Overlay isShow={true}/>
-    <div className={cx("comment-layout")}>
-      <div className={cx("comment-layout__header")}>
-        <h3>Bình luận bài viết</h3>
-        <div className={cx("comment-layout__input")}>
-          <input type="text" placeholder="Nhập bình luận của bạn..." />
-          <Button gradient size="md">Lưu </Button>
+      <div className={cx("comment_btn")} onClick={handleToggleComment}>
+        <span>12</span> <FaRegComment />
+      </div>
+      <Overlay isShow={showComment} onClick={handleToggleComment} />
+      <div className={cx("comment-layout", showComment ? "is-show" : "")}>
+        <div className={cx("comment-layout__header")}>
+          <h3>Bình luận bài viết</h3>
+          <CommentInput />
+        </div>
+        <div className={cx("comment-layout__content")}>
+          <CommentBlock />
+          <CommentBlock />
+          <CommentBlock />
         </div>
       </div>
-      <div className={cx("comment-layout__content")}>
-        <CommentItem />
-        <CommentItem />
-        <CommentItem />
-      </div>
-    </div>
     </>
-  )
+  );
 }
-export default CommentLayout
+export default CommentLayout;
