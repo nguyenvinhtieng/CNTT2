@@ -9,6 +9,9 @@
   color: var(--color-primary);
   border-bottom: 5px solid currentColor;
   display: inline;
+  @include sp {
+    font-size: 16px;
+  }
 }
 
 .news {
@@ -104,7 +107,6 @@
       position: absolute;
       bottom: 0;
       right: 0;
-
       @include sp {
         margin-top: 8px;
         display: flex;

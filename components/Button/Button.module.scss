@@ -9,6 +9,7 @@
     color: var(--bg-color-primary);
     background-size: 200%;
     border-radius: 4px;
+    background-origin:border-box;
     &:hover {
       background-position: right;
     }
