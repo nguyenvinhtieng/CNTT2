@@ -1,0 +1,51 @@
+@import '~/styles/base';
+
+.wrapper {
+  transition: all 0.2s linear;
+  border: 1px solid transparent;
+  cursor: pointer;
+  &.gradient {
+    background: var(--bg-gradient01);
+    color: var(--bg-color-primary);
+    background-size: 200%;
+    border-radius: 4px;
+    background-origin:border-box;
+    &:hover {
+      background-position: right;
+    }
+  }
+  &.primary {
+    background-color: var(--color-primary);
+    color: var(--bg-color-primary);
+    &:hover {
+      background-color: var(--bg-color-primary);
+      color: var(--color-primary);
+      border-color: var(--color-primary);
+    }
+  }
+  &.secondary {
+    background-color: var(--bg-color-primary);
+    color: var(--color-primary);
+    &:hover {
+      border-color: var(--color-primary);
+    }
+  }
+  &.sm {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+  &.md {
+    font-size: 16px;
+    padding: 8px 24px;
+    @include sp {
+      padding: 6px 12px;
+      font-size: 14px;
+    }
+  }
+  &.rounded {
+    border-radius: 100rem;
+  }
+  & + button {
+    margin-left: 16px;
+  }
+}

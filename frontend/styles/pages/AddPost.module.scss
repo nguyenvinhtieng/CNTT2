@@ -1,0 +1,94 @@
+.wrapper {
+  margin-top: 30px;
+  width: 100%;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 16px;
+  background-color: var(--bg-color-primary);
+  padding: 16px 32px;
+  border-radius: 12px;
+  .heading {
+    // font-weight: bold;
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+  .label {
+    display: block;
+    margin-top: 24px;
+    margin-bottom: 6px;
+  }
+  .thumbnail {
+    margin: 24px 0;
+  }
+  .tags {
+    margin: 24px 0;
+    label {
+      font-size: 16px;
+      display: block;
+      span {
+        font-size: 12px;
+        color: var(--error-color)
+      }
+    }
+    .input {
+      display: flex;
+      background-color: var(--bg-color-primary);
+      border: 1px solid var(--border-gray-color);
+      border-radius: 6px;
+      input {
+        flex: 1;
+        width: 100%;
+        padding: 8px 20px;
+        border: none;
+        outline: none;
+        border-radius: 6px;
+      }
+      button {
+        padding: 0 20px;
+        cursor: pointer;
+        background: var(--bg-gradient01);
+        color: var(--bg-color-primary);
+        transition: all 0.2s linear;
+        &.disable {
+          background: var(--border-gray-color);
+          color: #000;
+          opacity: 0.8;
+        }
+      }
+    }
+  }
+  .tags__show {
+    margin-top: 16px;
+    display: flex;
+    margin-left: -5px;
+    margin-right: -5px;
+    flex-wrap: wrap;
+  }
+  .tags__item {
+    background-color: var(--bg-gray-light);
+    border: 1px solid var(--border-gray-color);
+    margin: 3px 5px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    &--name {
+      padding: 6px 12px;
+    }
+    &--delete {
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--error-color);
+      cursor: pointer;
+      transition: all 0.2s linear;
+      &:hover {
+        color: #fff;
+        background-color: var(--error-color);
+      }
+    }
+  }
+}
