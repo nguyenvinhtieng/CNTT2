@@ -16,10 +16,13 @@ B5:
 Trong file .env đổi database thành cntt2_be (mặc định là laravel mình đổi lại thành cntt2_be)
 
 B6: 
-Chạy lệnh: php artisan migrate
+Chạy lệnh: composer update
 
 B7: 
-Chaỵ lệnh: php artisan serve
+Chạy lệnh: php artisan migrate
 
 B8: 
+Chaỵ lệnh: php artisan serve
+
+B9: 
 Server thường sẽ chạy tại http://localhost:8000
