@@ -16,7 +16,7 @@ B5:
 Trong file .env đổi database thành cntt2_be (mặc định là laravel mình đổi lại thành cntt2_be)
 
 B6: 
-Chạy lệnh: composer update
+Chạy lệnh: composer dump-autoload -o
 
 B7: 
 Chạy lệnh: php artisan migrate
