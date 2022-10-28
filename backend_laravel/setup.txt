@@ -1,0 +1,25 @@
+B1:
+Tải composer tại link (nếu máy chưa có)
+https://getcomposer.org/Composer-Setup.exe
+
+B2: 
+Tải Xampp tại link (nếu máy chưa có)
+https://sourceforge.net/projects/xampp/files/XAMPP%20Windows/8.1.10/xampp-windows-x64-8.1.10-0-VS16-installer.exe
+
+B3:
+Mở Xampp và start Apache và MySQl. Sau đó vào http://localhost/phpmyadmin/ tạo database tên cntt2_be
+
+B4: 
+Tạo file .env tại thư mục gốc -> Copy toàn bộ nội dung của file .env.example vào file vừa Tạo
+
+B5: 
+Trong file .env đổi database thành cntt2_be (mặc định là laravel mình đổi lại thành cntt2_be)
+
+B6: 
+Chạy lệnh: php artisan migrate
+
+B7: 
+Chaỵ lệnh: php artisan serve
+
+B8: 
+Server thường sẽ chạy tại http://localhost:8000
