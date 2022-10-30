@@ -1,6 +1,8 @@
 import classNames from "classnames/bind";
 import styles from "../question.module.scss";
 import Button from "~/components/Button";
+import { AiFillCheckCircle,AiFillCloseCircle } from "react-icons/ai"
+
 const cx = classNames.bind(styles);
 
 function QuestionItem() {
@@ -15,13 +17,13 @@ function QuestionItem() {
         </ul>
         <time className={cx("question__item--time")}>3 giờ trước</time>
       </div>
-      <div className={cx("action")}>
-        <Button className={cx("btn")}>
-          <i className="fas fa-check"></i>
-        </Button>
-        <Button className={cx("btn")}>
-          <i className="fas fa-times"></i>
-        </Button>
+      <div className={cx("question__item--action")}>
+        <button className={cx("question__item--btncheck")}>
+          <AiFillCheckCircle/>
+        </button>
+        <button className={cx("question__item--btnclose")}>
+          <AiFillCloseCircle/>
+        </button>
       </div>
     </div>
   );
