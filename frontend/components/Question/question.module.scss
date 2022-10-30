@@ -1,3 +1,12 @@
-.a {
-  transform: translateX(0);
+.question-layout {
+  margin-top: 30px;
 }
+
+.question-item {
+  margin-bottom: 15px;
+  border-radius: 4px;
+  background-color: var(--bg-gray-light);
+  padding: 12px;
+}
+
+.author {}

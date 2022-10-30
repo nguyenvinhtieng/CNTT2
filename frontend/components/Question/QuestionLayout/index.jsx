@@ -1,10 +1,15 @@
-import React from 'react'
+import classNames from "classnames/bind";
+import styles from "../question.module.scss";
+import QuestionItem from "../QuestionItem";
+const cx = classNames.bind(styles);
 
 function QuestionLayout() {
   return (
-    <div>
-      
+    <div className={cx("question-layout")}>
+      <QuestionItem></QuestionItem>
+      <QuestionItem></QuestionItem>
+      <QuestionItem></QuestionItem>
     </div>
-  )
+  );
 }
-export default  QuestionLayout
+export default QuestionLayout;

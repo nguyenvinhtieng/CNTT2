@@ -25,7 +25,7 @@ body {
   --text-secondary-color: #c1c1c1;
   --error-color: #ff6060;
   --bg-gray-light: rgb(244, 244, 244);
-  --bg-gradient01: linear-gradient(90deg,#2d8bf6 0,#2a49e6);
+  --bg-gradient01: linear-gradient(90deg, #2d8bf6 0, #2a49e6);
   --bg-gradient02: linear-gradient(90deg, #9600ff 0, #aebaf8);
 }
 button {
