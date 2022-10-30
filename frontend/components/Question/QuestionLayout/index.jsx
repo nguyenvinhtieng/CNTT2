@@ -5,7 +5,7 @@ const cx = classNames.bind(styles);
 
 function QuestionLayout() {
   return (
-    <div className={cx("question-layout")}>
+    <div className={cx("question__layout")}>
       <QuestionItem></QuestionItem>
       <QuestionItem></QuestionItem>
       <QuestionItem></QuestionItem>

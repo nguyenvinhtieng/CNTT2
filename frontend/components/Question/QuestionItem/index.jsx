@@ -1,26 +1,27 @@
 import classNames from "classnames/bind";
 import styles from "../question.module.scss";
+import Button from "~/components/Button";
 const cx = classNames.bind(styles);
 
 function QuestionItem() {
   return (
-    <div className={cx("question-item")}>
-      <div className={cx("content")}>
-        <h3 className={cx("author")}>Nguyen Vinh Tieng</h3>
-        <h4 className={cx("title")}>Lorem ipsum dolor sit.</h4>
-        <ul className={cx("tags")}>
-          <li className={cx("tag")}>HTML</li>
-          <li className={cx("tag")}>CSS</li>
+    <div className={cx("question__item")}>
+      <div className={cx("question__item--content")}>
+        <h3 className={cx("question__item--author")}>Nguyen Vinh Tieng</h3>
+        <h4 className={cx("question__item--title")}>Lorem ipsum dolor sit.</h4>
+        <ul className={cx("question__item--tags")}>
+          <li className={cx("question__item--tag")}>HTML</li>
+          <li className={cx("question__item--tag")}>CSS</li>
         </ul>
-        <time className="time">3 giờ trước</time>
+        <time className={cx("question__item--time")}>3 giờ trước</time>
       </div>
       <div className={cx("action")}>
-        <button className={cx("btn")}>
+        <Button className={cx("btn")}>
           <i className="fas fa-check"></i>
-        </button>
-        <button className={cx("btn")}>
+        </Button>
+        <Button className={cx("btn")}>
           <i className="fas fa-times"></i>
-        </button>
+        </Button>
       </div>
     </div>
   );
