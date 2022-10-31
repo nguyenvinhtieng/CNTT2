@@ -1,7 +1,8 @@
 import classNames from "classnames/bind";
 import styles from "../question.module.scss";
 import Button from "~/components/Button";
-import { AiFillCheckCircle,AiFillCloseCircle } from "react-icons/ai"
+import { BsCheckLg } from "react-icons/bs"
+import { TiArrowUnsorted } from "react-icons/ti";
 
 const cx = classNames.bind(styles);
 
@@ -19,10 +20,10 @@ function QuestionItem() {
       </div>
       <div className={cx("question__item--action")}>
         <button className={cx("question__item--btncheck")}>
-          <AiFillCheckCircle/>
+          <BsCheckLg/>
         </button>
         <button className={cx("question__item--btnclose")}>
-          <AiFillCloseCircle/>
+          <TiArrowUnsorted/>
         </button>
       </div>
     </div>
