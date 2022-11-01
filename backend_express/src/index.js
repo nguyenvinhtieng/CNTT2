@@ -3,7 +3,7 @@ const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 const route = require('./route/index.js');
 const db = require('./config/db.js');
@@ -19,6 +19,7 @@ app.use(expressSession({
 }))
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static(__dirname));
 route(app)
 app.listen(PORT, () => {
     console.log(`App listening at http://localhost:${PORT}`);
