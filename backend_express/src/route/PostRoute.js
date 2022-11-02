@@ -6,6 +6,8 @@ const checkLogin = require('../app/middleware/checkLogin.js')
 router.get('/:slug', PostController.get)
 router.get("/", PostController.getPagination)
 router.post('/', checkLogin, PostController.create)
+router.delete('/:slug',PostController.delete)
+router.put('/:slug',PostController.edit)
 
 
 module.exports = router;
