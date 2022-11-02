@@ -27,6 +27,7 @@ body {
   --bg-gray-light: rgb(244, 244, 244);
   --bg-gradient01: linear-gradient(90deg, #2d8bf6 0, #2a49e6);
   --bg-gradient02: linear-gradient(90deg, #9600ff 0, #aebaf8);
+  --bg-color-secondary: #757575;
 }
 button {
   border: none;
@@ -39,4 +40,12 @@ button {
   margin-left: auto;
   margin-right: auto;
   padding: 0 16px;
+}
+
+/* Tool tip */
+.tooltip-text {
+  padding: 4px 12px;
+  background: var(--bg-gradient01);
+  border-radius: 2px;
+  color: var(--bg-color-primary)
 }

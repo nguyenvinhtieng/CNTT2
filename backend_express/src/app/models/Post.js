@@ -12,6 +12,7 @@ const Post = new Schema({
     tags: { type: Array, default: [] },
     pin: { type: Boolean, default: false },
     slug: { type: String, slug: "title", unique: true },
+    status: { type: String, default: 'public' },
 }, {
     timestamps: true,
 });

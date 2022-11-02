@@ -23,7 +23,7 @@ class PostController {
                 if (tags.length > 5) {
                     return res.status(400).json({status: false, message: "Tối đa 5 tags"});
                 }
-                
+
                 let thumbnail_link = ''; // set to default image later
                 if (files.thumbnail[0].size > 0) {
                     thumbnail_link = await uploadImages(files.thumbnail[0])
@@ -43,7 +43,7 @@ class PostController {
         catch(error) {
             return res.status(500).json({status: false ,message: "Có lỗi xảy ra"});
         }
-    }
+    } 
     getPagination(req, res, next) {
         return res.json({ message: "Hello World getPagination" });
     }
