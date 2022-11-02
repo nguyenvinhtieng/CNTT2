@@ -31,7 +31,23 @@ class AuthController {
             return res.json({status: false, message: "Có lỗi xảy ra"});
         }
     }
-
+    async fakeLogin(req, res, next) {
+        try {
+            const {username, password} = req.body;
+            let userData = {
+                username,
+                password,
+                fullname: "Nguyễn Văn A",
+                email: "v@gmail.com",
+                phone: "0123456789",
+                role: 1
+            };
+            let token = jwt.sign({ user: userData }, secret_key);
+            return res.json({status: true, message: "Đăng nhập thành công", token});
+        } catch(e) {
+            return res.json({status: false, message: "Có lỗi xảy ra"});
+        }
+    }
     register(req, res, next) {
         return res.json({ message: "Hello World" });
     }
