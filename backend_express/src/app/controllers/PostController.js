@@ -19,6 +19,7 @@ class PostController {
             return res.status(500).json({ status: false, message: "Có lỗi xảy ra" });
         }
     }
+
     async create(req, res, next) {
         const user = req.user;
         try {
@@ -55,11 +56,20 @@ class PostController {
             return res.status(500).json({ status: false, message: "Có lỗi xảy ra" });
         }
     }
-    async getPagination(req, res, next) {
-        const posts = await PostModel.find({}).exec();
 
-        return res.status(200).json({ status: true, message: "Hello World getPagination", posts: posts });
+    // localhost:3001/api/post?skip=5
+    async getPagination(req, res, next) {
+        try {
+            const skip = req.query.skip ? parseInt(req.query.skip) : 0;
+            const LIMIT = 5; // load 5 posts 1 time
+            const postlimit = await PostModel.find({}).skip(skip).limit(LIMIT);
+
+            return res.status(200).json({ status: true, message: "Hello World getPagination", posts: postlimit });
+        } catch (error) {
+            return res.status(500).json({ status: false, message: error.message });
+        }
     }
+
     async delete(req, res, next) {
         let slug = req.params.slug;
         try {
@@ -74,15 +84,17 @@ class PostController {
             return res.status(500).json({ status: false, message: "Có lỗi xảy ra" });
         }
     }
+
     async edit(req, res, next) {
         let slug = req.params.slug;
         try {
             const oldPost = await PostModel.findOne({ slug: slug }).exec();
-
             const form = new multiparty.Form();
+
             form.parse(req, async (err, fields, files) => {
                 if (err) return res.status(500).json({ status: false, message: "Có lỗi xảy ra" });
 
+                //new info, take new if not take old
                 let title = fields.title ? fields.title[0] : oldPost.title;
                 let content = fields.content ? fields.content[0] : oldPost.content;
                 let thumbnail = files.thumbnail ? files.thumbnail[0] : oldPost.thumbnail;
