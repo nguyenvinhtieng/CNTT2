@@ -2,7 +2,6 @@ const multiparty = require("multiparty");
 
 const PostModel = require("../models/Post");
 const uploadImages = require("../../utils/uploadImage");
-const Post = require("../models/Post");
 
 class PostController {
     async get(req, res, next) {
@@ -73,7 +72,7 @@ class PostController {
     async delete(req, res, next) {
         let slug = req.params.slug;
         try {
-            Post.findOneAndDelete({ slug: slug }, (err, result) => {
+            PostModel.findOneAndDelete({ slug: slug }, (err, result) => {
                 if (err) return res.status(500).json({ status: false, message: "Có lỗi xảy ra" });
                 if (result) {
                     return res.status(200).json({ status: true, message: `Xóa thành công post ${slug}` });
@@ -121,7 +120,7 @@ class PostController {
                     thumbnail: thumbnail_link,
                     tags: tags,
                 };
-                Post.findOneAndUpdate({ slug: slug }, editPost, { new: true }, (err, result) => {
+                PostModel.findOneAndUpdate({ slug: slug }, editPost, { new: true }, (err, result) => {
                     if (err) return res.status(500).json({ status: false, message: "Có lỗi xảy ra" });
                     if (result) {
                         return res.status(200).json({ status: true, message: "Cập nhật Thông tin bài viết thành công", post: result });
