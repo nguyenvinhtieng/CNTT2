@@ -2,6 +2,7 @@
 
 .question__layout {
   margin-top: 30px;
+  background-color: var(--bg-color-primary);
   @include sp {
     margin-top: 24px;
   }
@@ -11,9 +12,9 @@
   margin-bottom: 8px;
   display: flex;
   cursor: pointer;
+  border-bottom: 2px solid var(--border-gray-color);
   &--content {
     border-radius: 4px;
-    background-color: var(--bg-color-primary);
     padding: 12px;
     flex: 1;
     @include sp {
@@ -113,4 +114,12 @@
 time.time {
   font-size: 12px;
   color: var(--text-secondary-color);
+}
+
+.question__detail {
+  &--content {
+    margin-top: 25px;
+    padding-bottom: 35px;
+    border-bottom: 2px solid var(--border-gray-color);
+  }
 }

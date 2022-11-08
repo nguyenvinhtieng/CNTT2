@@ -49,3 +49,11 @@ button {
   border-radius: 2px;
   color: var(--bg-color-primary)
 }
+.tooltip-manage {
+  padding: 4px 12px;
+  background: var(--bg-color-secondary);
+  border-radius: 2px;
+  color: var(--bg-color-primary);
+  margin-bottom: 6px;
+  
+}
