@@ -93,7 +93,7 @@ class PostController {
             form.parse(req, async (err, fields, files) => {
                 if (err) return res.status(500).json({ status: false, message: "Có lỗi xảy ra" });
 
-                //new info, take new if not take old
+                //new info
                 let title = fields.title ? fields.title[0] : oldPost.title;
                 let content = fields.content ? fields.content[0] : oldPost.content;
                 let thumbnail = files.thumbnail ? files.thumbnail[0] : oldPost.thumbnail;

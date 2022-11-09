@@ -44,6 +44,44 @@ class CommentController {
             return res.status(500).json({ status: false, message: error.message });
         }
     }
+    async delete(req, res) {
+        const id = req.params.id;
+        try {
+            Comment.findByIdAndDelete(id, (err, result) => {
+                if (err) return res.status(500).json({ status: false, message: err.message });
+                if (result) {
+                    return res.status(200).json({ status: true, message: `Xóa thành công bình luận ${id} ` });
+                }
+                return res.status(200).json({ status: false, message: `Không có bình luận này` });
+            });
+        } catch (error) {
+            return res.status(500).json({ status: false, message: error.message });
+        }
+    }
+    async update(req, res) {
+        const id = req.params.id;
+        try {
+            const oldComment = await Comment.findById(id).exec();
+            const form = new multiparty.Form();
+            form.parse(req, async (err, fields, files) => {
+                if (err) return res.status(500).json({ status: false, message: err.message });
+
+                let newcomment = fields.content ? fields.content[0] : oldComment.content;
+                if (newcomment == "" || newcomment == undefined) {
+                    return res.status(400).json({ status: false, message: "Bình luận không thể để trống" });
+                }
+                Comment.findByIdAndUpdate(id, { content: newcomment }, (err, result) => {
+                    if (err) return res.status(500).json({ status: false, message: err.message });
+                    if (result) {
+                        return res.status(200).json({ status: true, message: `Cập nhật thành công bình luận ${id} ` });
+                    }
+                    return res.status(200).json({ status: false, message: `Không có bình luận này` });
+                });
+            });
+        } catch (error) {
+            return res.status(500).json({ status: false, message: error.message });
+        }
+    }
 }
 
 module.exports = new CommentController();

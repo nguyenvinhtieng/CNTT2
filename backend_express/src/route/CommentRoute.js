@@ -6,7 +6,7 @@ const checkLogin = require("../app/middleware/checkLogin");
 
 router.get("/:post_id", CommentController.get);
 router.post("/:post_id", checkLogin, CommentController.post);
-router.delete("/");
-router.put("/");
+router.delete("/:id", CommentController.delete);
+router.put("/:id", CommentController.update);
 
 module.exports = router;
