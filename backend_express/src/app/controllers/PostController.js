@@ -6,6 +6,7 @@ const uploadImages = require("../../utils/uploadImage");
 class PostController {
     async get(req, res, next) {
         let slug = req.params.slug;
+
         try {
             PostModel.findOne({ slug: slug }, (err, result) => {
                 if (err) return res.status(500).json({ status: false, message: "Có lỗi xảy ra" });
@@ -125,6 +126,8 @@ class PostController {
                     if (result) {
                         return res.status(200).json({ status: true, message: "Cập nhật Thông tin bài viết thành công", post: result });
                     }
+                    return res.status(400).json({ status: false, message: `Không có bài viết ${slug}` });
+
                     return res.status(400).json({ status: false, message: "Không có bài post này" });
                 });
             });
