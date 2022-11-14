@@ -39,6 +39,15 @@
           opacity: 0.6;
         }
       }
+      &__tick {
+        color: var(--color-secondary);
+      }
+      &__number {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 3px;
+      }
     }
     &--content {
       flex: 1;

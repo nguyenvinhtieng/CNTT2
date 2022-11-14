@@ -3,6 +3,7 @@ import styles from "../answer.module.scss"
 import { Tooltip } from "react-tippy";
 const cx = classNames.bind(styles)
 import { AiFillCaretUp, AiOutlineCaretDown } from "react-icons/ai"
+import { TiTick } from "react-icons/ti";
 
 function AnswerItem() {
   return (
@@ -14,13 +15,21 @@ function AnswerItem() {
           </Tooltip>
         </div>
         <div className={cx("answer__item--vote__number")}>
-          0
+          <div className={cx("answer__item--vote__tick")}>
+            <Tooltip html={ <p className="tooltip-text">Câu trả lời đã được xác minh</p> } >
+              <TiTick />
+            </Tooltip>
+          </div>
+          0  
         </div>
         <div className={cx("answer__item--vote__down")}>
           <Tooltip html={ <p className="tooltip-text">Câu trả lời này không hữu ích</p> } >
             <AiOutlineCaretDown />
           </Tooltip>
         </div>
+      </div>
+      <div className={cx("answer__item--vote")}>
+       
       </div>
       <div className={cx("answer__item--content")}>
         <div className={cx("answer__item--author")}>
