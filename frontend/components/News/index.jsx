@@ -9,7 +9,6 @@ function News() {
     <div className={cx("wrapper")}>
       <h2 className={cx("heading")}>Bài viết mới nhất</h2>
       <NewsInfinityScroll />
-      <Skeleton />
     </div>
   )
 }

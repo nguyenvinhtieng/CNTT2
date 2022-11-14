@@ -1,6 +1,8 @@
 import classNames from "classnames/bind"
 import Link from "next/link"
 import { useRouter } from "next/router";
+import { useState } from "react";
+import { BsThreeDots } from "react-icons/bs";
 import { FaTimes } from "react-icons/fa"
 import { TiThMenu } from "react-icons/ti"
 
@@ -11,6 +13,11 @@ const cx = classNames.bind(styles)
 
 function Header() {
   const router = useRouter();
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isShowMenu, setIsShowMenu] = useState(false);
+  const toggleShowMenu = () => {
+    setIsShowMenu(!isShowMenu);
+  }
   return (
     <header className={cx("header")}>
       <div className={cx("header__wrapper")}>
@@ -30,16 +37,45 @@ function Header() {
           <Link href="/add-post">
             <span className={cx("header__item", router.pathname == "/add-post" ? "header__item--active" : "")}>Tạo bài viết</span>
           </Link>
+          <Link href="/add-question">
+            <span className={cx("header__item", router.pathname == "/add-question" ? "header__item--active" : "")}>Tạo câu hỏi</span>
+          </Link>
         </nav>
-
-        <div className={cx("header__auth")}>
-          <Link href="/sign-up">
-            <Button secondary rounded size="md">Đăng Ký</Button>
-          </Link>
-          <Link href="/sign-in">
-            <Button primary rounded size="md">Đăng nhập</Button>
-          </Link>
-        </div>
+        {!isAuthenticated && (
+          <div className={cx("header__auth")}>
+            <Link href="/sign-up">
+              <Button secondary rounded size="md">Đăng Ký</Button>
+            </Link>
+            <Link href="/sign-in">
+              <Button primary rounded size="md">Đăng nhập</Button>
+            </Link>
+          </div>
+        )}
+        {isAuthenticated && (
+          <div className={cx("header__menu")}>
+            <div className="avatar sm" onClick={toggleShowMenu}>
+              <img src="https://source.unsplash.com/random" alt="" />
+            </div>
+            <ul className={cx("header__menu--sub", isShowMenu ? "is-show" : "")}>
+              <li className={cx("header__menu--item")}>
+                <Link href="/">
+                  <span>Thông tin cá nhân</span>
+                </Link>
+              </li>
+              <li className={cx("header__menu--item")}>
+                <Link href="/">
+                  <span>Bài viết đã lưu</span>
+                </Link>
+              </li>
+              <li className={cx("header__menu--item")}>
+                <Link href="/">
+                  <span>Đăng xuất</span>
+                </Link>
+              </li>
+            </ul>
+          </div>
+        )}
+        
         
       </div>
     </header>

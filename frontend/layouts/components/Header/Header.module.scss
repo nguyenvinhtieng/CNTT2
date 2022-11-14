@@ -113,4 +113,47 @@
       }
     }
   }
+  &__menu {
+    display: flex;
+    gap: 12px;
+    cursor: pointer;
+    position: relative;
+    &--more {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    &--sub {
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      min-width: 200px;
+      background-color: var(--bg-color-primary);
+      border-radius: 4px;
+      border: 1px solid var(--border-gray-color);
+      z-index: 20;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-10px);
+      transition: all 0.2s linear;
+      &.is-show {
+        opacity: 1;
+        pointer-events: inherit;
+        transform: translateY(0);
+      }
+    }
+    &--item {
+      padding: 8px 20px;
+      font-size: 14px;
+      transition: all 0.2s linear;
+      &:hover {
+        background-color: var(--bg-gray-light);
+      }
+      &:last-child {
+        border-top: 1px solid var(--border-gray-color);
+        color: var(--error-color)
+      }
+    }
+  }
 }

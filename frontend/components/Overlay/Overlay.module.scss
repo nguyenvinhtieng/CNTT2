@@ -1,3 +1,4 @@
+@import '~/styles/base';
 .overlay {
   position: fixed;
   top: 0;
@@ -10,9 +11,17 @@
   pointer-events: none;
   opacity: 0;
   transition: all 0.2s linear;
+  
   &.is-show {
     display: block;
     pointer-events: visible;
     opacity: 1;
+    &.not-show-pc {
+      display: none !important;
+      @include tablet {
+        display: block !important;
+      }
+    }
   }
+  
 }

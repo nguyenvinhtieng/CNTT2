@@ -7,6 +7,7 @@ import { HiFilter } from "react-icons/hi"
 import FilterSection from "~/components/FilterSection"
 import News from "~/components/News"
 import Overlay from "~/components/Overlay"
+import { Tooltip } from "react-tippy"
 
 const cx = classNames.bind(styles)
 
@@ -16,7 +17,7 @@ function Home() {
   return (
     <>
       <div className={cx("main")}>
-        <Overlay isShow={showFilter} onClick={toggleFiler}/>
+        <Overlay isShow={showFilter} onClick={toggleFiler} isShowPc={false}/>
         <div className={cx("filter", showFilter ? "is-open": "")}>
           <FilterSection />
         </div>
