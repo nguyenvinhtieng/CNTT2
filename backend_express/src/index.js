@@ -1,10 +1,10 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
-
+const cors = require('cors')
 const app = express();
 const PORT = process.env.PORT || 3001;
-
+app.use(cors())
 const route = require('./route/index.js');
 const db = require('./config/db.js');
 const credentials = require('./credentials');
