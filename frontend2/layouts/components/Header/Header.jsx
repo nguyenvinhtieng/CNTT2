@@ -1,49 +1,59 @@
-import React, { useRef } from 'react'
-import { TiThMenu } from 'react-icons/ti'
-import TooltipMenu from '~/components/TooltipMenu/TooltipMenu'
-import { CiUser } from 'react-icons/ci'
-import { IoLogOutOutline } from 'react-icons/io5'
-import useOnClickOutside from '~/hooks/useClickOutside'
+import React, { useRef } from "react";
+import { TiThMenu } from "react-icons/ti";
+import TooltipMenu from "~/components/TooltipMenu/TooltipMenu";
+import { CiUser } from "react-icons/ci";
+import { IoLogOutOutline } from "react-icons/io5";
+import { AiOutlineMenu } from "react-icons/ai";
+import useOnClickOutside from "~/hooks/useClickOutside";
 
 const menuItem = [
   {
     Icon: CiUser,
-    title: 'Profile',
-    link: '/profile'
+    title: "Profile",
+    link: "/profile",
   },
   {
     Icon: IoLogOutOutline,
-    title: 'Logout',
-    link: '/profile'
+    title: "Logout",
+    link: "/profile",
   },
   {
     Icon: IoLogOutOutline,
-    title: 'Logout to',
-    link: '/profile'
-  }
-]
+    title: "Logout to",
+    link: "/profile",
+  },
+];
 
-export default function Header({toggleSidebar}) {
-  const [isShowMenu, setIsShowMenu] = React.useState(false)
+export default function Header({ toggleSidebar }) {
+  const [isShowMenu, setIsShowMenu] = React.useState(false);
   const menuRef = useRef();
   useOnClickOutside(menuRef, () => setIsShowMenu(false));
-  
+
   return (
-    <header className='header'>
+    <header className="header">
       <div className="header__wrapper">
         <div className="header__btn">
-          <span onClick={toggleSidebar}><TiThMenu></TiThMenu></span>
+          <span onClick={toggleSidebar}>
+            <AiOutlineMenu></AiOutlineMenu>
+          </span>
         </div>
         <div className="header__menu" ref={menuRef}>
-          <span className="header__menu--info" onClick={()=>setIsShowMenu(true)}>
+          <span
+            className="header__menu--info"
+            onClick={() => setIsShowMenu(true)}
+          >
             <span className="header__menu--name">Tieengs Vinh NGuyen</span>
             <div className="avatar avatar__sm">
               <img src="https://source.unsplash.com/random" alt="" />
             </div>
           </span>
-          <TooltipMenu isShow={isShowMenu} position="bottom-left" menu={menuItem}></TooltipMenu>
+          <TooltipMenu
+            isShow={isShowMenu}
+            position="bottom-left"
+            menu={menuItem}
+          ></TooltipMenu>
         </div>
       </div>
     </header>
-  )
+  );
 }

@@ -9,28 +9,36 @@
   opacity: 0;
   transition: all 0.1s linear;
   pointer-events: none;
+
   &.is-show {
     opacity: 1;
     pointer-events: inherit;
   }
+
   &__item {
     padding: 6px 16px;
+
     &:hover {
       background-color: $grayColor;
     }
+
+    .tooltip-menu__item--wrapper,
     a {
       display: flex;
       justify-content: center;
       align-items: center;
     }
+
     &--ico {
       width: 14px;
       height: 14px;
     }
+
     &--ttl {
       flex: 1;
       padding-left: 6px;
       font-size: 12px;
+      white-space: nowrap;
     }
   }
 }
