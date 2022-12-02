@@ -6,9 +6,11 @@ import { FiShare2 } from "react-icons/fi";
 import { CiBookmark } from "react-icons/ci";
 import { SlFlag } from "react-icons/sl";
 import { RxCopy } from "react-icons/rx";
+import { BiDownvote } from "react-icons/bi";
 import Link from "next/link";
 import TooltipMenu from "../TooltipMenu/TooltipMenu";
 import useOnClickOutside from "~/hooks/useClickOutside";
+import UserItem from "../UserItem/UserItem";
 const menu = [
   {
     Icon: CiBookmark,
@@ -38,8 +40,9 @@ export default function PostItem() {
           <div className="avatar avatar__sm">
             <img src="https://source.unsplash.com/random" alt="Avatar" />
           </div>
+          {/* <UserItem></UserItem> */}
           <div className="post-item__link">
-            <Link href="/">
+            <Link href="/post/123">
               <span className="post-item__link--ttl">Đọc bài viết</span>
               <span className="post-item__link--ico">
                 <FaExternalLinkAlt></FaExternalLinkAlt>
@@ -70,19 +73,25 @@ export default function PostItem() {
           </div>
         </div>
         <div className="post-item__actions">
-          <div className="post-item__actions--item">
+          <div className="post-item__actions--item" data-tip="Upvote">
             <span className="ico">
               <BiUpvote></BiUpvote>
             </span>
             <span className="num">7</span>
           </div>
-          <div className="post-item__actions--item">
+          <div className="post-item__actions--item" data-tip="Downvote">
+            <span className="ico">
+              <BiDownvote></BiDownvote>
+            </span>
+            <span className="num">7</span>
+          </div>
+          <div className="post-item__actions--item" data-tip="Bình luận">
             <span className="ico">
               <RiMessage3Line></RiMessage3Line>
             </span>
             <span className="num">0</span>
           </div>
-          <div className="post-item__actions--item">
+          <div className="post-item__actions--item" data-tip="Chia sẻ bài viết lên facebook">
             <span className="ico">
               <FiShare2></FiShare2>
             </span>

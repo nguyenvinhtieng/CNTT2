@@ -1,0 +1,9 @@
+.createPage {
+  width: min(100%, 800px);
+  margin-left: auto;
+  margin-right: auto;
+  &__heading {
+    font-size: 20px;
+    margin-bottom: 25px;
+  }
+}

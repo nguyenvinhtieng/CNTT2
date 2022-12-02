@@ -11,6 +11,12 @@
 @import "components/scrollbar";
 @import "components/overlay";
 @import "components/post";
+@import "components/tag";
+@import "components/useritem";
+@import "components/comment";
+@import "components/modal";
+@import "components/input";
+@import "components/button";
 
 
 // LAYOUT
@@ -20,3 +26,5 @@
 
 // PAGES
 @import "pages/home";
+@import "pages/auth";
+@import "pages/create";

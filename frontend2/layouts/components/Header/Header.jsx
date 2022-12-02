@@ -2,24 +2,30 @@ import React, { useRef } from "react";
 import { TiThMenu } from "react-icons/ti";
 import TooltipMenu from "~/components/TooltipMenu/TooltipMenu";
 import { CiUser } from "react-icons/ci";
-import { IoLogOutOutline } from "react-icons/io5";
+import { IoLogOutOutline, IoLogInOutline } from "react-icons/io5";
 import { AiOutlineMenu } from "react-icons/ai";
+import { MdOutlineAssignment } from "react-icons/md";
 import useOnClickOutside from "~/hooks/useClickOutside";
 
 const menuItem = [
   {
     Icon: CiUser,
-    title: "Profile",
+    title: "Trang cá nhân",
     link: "/profile",
+  },
+  {
+    Icon: IoLogInOutline,
+    title: "Đăng nhập",
+    link: "/login",
+  },
+  {
+    Icon: MdOutlineAssignment,
+    title: "Đăng ký",
+    link: "/login",
   },
   {
     Icon: IoLogOutOutline,
     title: "Logout",
-    link: "/profile",
-  },
-  {
-    Icon: IoLogOutOutline,
-    title: "Logout to",
     link: "/profile",
   },
 ];

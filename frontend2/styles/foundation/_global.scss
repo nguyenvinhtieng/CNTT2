@@ -44,7 +44,9 @@ a {
   @include tablet {
     border: none;
   }
-
+  > .container {
+    width: 100%;
+  }
   &.large {
     width: min(1200px, calc(100% - 32px));
   }

@@ -1,8 +1,9 @@
+import ReactTooltip from 'react-tooltip'
 import { useRouter } from 'next/router'
 import routes from "~/config/route"
 import DefaultLayout from "~/layouts/DefaultLayout/DefaultLayout"
 import '../styles/main.scss'
-
+import tooltipConfig from "~/config/tooltipConfig"
 function MyApp({ Component, pageProps }) {
   const router = useRouter()
   let Layout = DefaultLayout
@@ -14,6 +15,7 @@ function MyApp({ Component, pageProps }) {
 
   return <>
     <Layout>
+      <ReactTooltip { ...tooltipConfig }/>
       <Component {...pageProps} />
     </Layout>
   </>

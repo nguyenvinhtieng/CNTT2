@@ -9,7 +9,7 @@
   opacity: 0;
   transition: all 0.1s linear;
   pointer-events: none;
-
+  z-index: 3;
   &.is-show {
     opacity: 1;
     pointer-events: inherit;
@@ -17,7 +17,7 @@
 
   &__item {
     padding: 6px 16px;
-
+    cursor: pointer;
     &:hover {
       background-color: $grayColor;
     }

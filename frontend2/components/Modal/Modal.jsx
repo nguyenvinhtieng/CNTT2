@@ -1,0 +1,26 @@
+import React from 'react'
+import Overlay from '../Overlay/Overlay'
+import { MdClose } from 'react-icons/md'
+
+export default function Modal({ isShow = false, handleCloseModal, size, children}) {
+  return (
+    <>
+      <Overlay handleClick={handleCloseModal} isShow={isShow}></Overlay>
+      <div className={`modal ${size} ${isShow ? "is-show" : ""}`}>
+        <div className="modal__head">
+          <h3 className="modal__title">Modal title</h3>
+          <span className="modal__close" onClick={handleCloseModal}><MdClose></MdClose></span>
+        </div>
+        <div className="modal__body scroll-css">
+          {/* Modal content */}
+          { children }
+        </div>
+        <div className="modal__footer">
+          {/* Modal footer */}
+          <button className="modal__btn" onClick={handleCloseModal}>Hủy bỏ</button>
+          <button className="modal__btn modal__btn--primary">Lưu</button>
+        </div>
+      </div>
+    </>
+  )
+}

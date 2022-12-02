@@ -1,0 +1,13 @@
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -6px;
+}
+.tag-item {
+  font-size: 12px;
+  background-color: $grayColor;
+  padding: 6px 16px;
+  border-radius: 6px;
+  margin: 0px 6px 6px 0px;
+  cursor: default;
+}

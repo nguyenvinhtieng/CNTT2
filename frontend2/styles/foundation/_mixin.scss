@@ -1,5 +1,5 @@
 @mixin sp {
-  @media screen and (max-width: 767px) {
+  @media screen and (max-width: 500px) {
     @content;
   }
 }
