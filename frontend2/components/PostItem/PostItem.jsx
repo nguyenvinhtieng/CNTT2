@@ -37,10 +37,9 @@ export default function PostItem() {
     <li className="post-item">
       <div className="post-item__wrapper">
         <div className="post-item__head">
-          <div className="avatar avatar__sm">
-            <img src="https://source.unsplash.com/random" alt="Avatar" />
+          <div className="post-item__user">
+            <UserItem></UserItem>
           </div>
-          {/* <UserItem></UserItem> */}
           <div className="post-item__link">
             <Link href="/post/123">
               <span className="post-item__link--ttl">Đọc bài viết</span>
@@ -59,44 +58,48 @@ export default function PostItem() {
             <TooltipMenu isShow={isShowMenu} menu={menu}></TooltipMenu>
           </div>
         </div>
-        <div className="post-item__content">
-          <p className="post-item__ttl">
-            With Moralis and the Python SDK, you can seamlessly integrate Web3
-            functionality into any Python application. This tutorial
-          </p>
-          <div className="post-item__info">
-            <time>3 ngày trước</time> <span> • </span>
-            <span>7 phút đọc</span>
+        <Link href="/">
+          <span>
+          <div className="post-item__content">
+            <p className="post-item__ttl">
+              With Moralis and the Python SDK, you can seamlessly integrate Web3
+              functionality into any Python application. This tutorial
+            </p>
+            <div className="post-item__info">
+              <time>3 ngày trước</time> <span> • </span>
+              <span>7 phút đọc</span>
+            </div>
+            <div className="post-item__img">
+              <img src="https://source.unsplash.com/random" alt="" />
+            </div>
           </div>
-          <div className="post-item__img">
-            <img src="https://source.unsplash.com/random" alt="" />
+          <div className="post-item__actions">
+            <div className="post-item__actions--item" data-tip="Upvote">
+              <span className="ico">
+                <BiUpvote></BiUpvote>
+              </span>
+              <span className="num">7</span>
+            </div>
+            <div className="post-item__actions--item" data-tip="Downvote">
+              <span className="ico">
+                <BiDownvote></BiDownvote>
+              </span>
+              <span className="num">7</span>
+            </div>
+            <div className="post-item__actions--item" data-tip="Bình luận">
+              <span className="ico">
+                <RiMessage3Line></RiMessage3Line>
+              </span>
+              <span className="num">0</span>
+            </div>
+            <div className="post-item__actions--item" data-tip="Chia sẻ bài viết lên facebook">
+              <span className="ico">
+                <FiShare2></FiShare2>
+              </span>
+            </div>
           </div>
-        </div>
-        <div className="post-item__actions">
-          <div className="post-item__actions--item" data-tip="Upvote">
-            <span className="ico">
-              <BiUpvote></BiUpvote>
-            </span>
-            <span className="num">7</span>
-          </div>
-          <div className="post-item__actions--item" data-tip="Downvote">
-            <span className="ico">
-              <BiDownvote></BiDownvote>
-            </span>
-            <span className="num">7</span>
-          </div>
-          <div className="post-item__actions--item" data-tip="Bình luận">
-            <span className="ico">
-              <RiMessage3Line></RiMessage3Line>
-            </span>
-            <span className="num">0</span>
-          </div>
-          <div className="post-item__actions--item" data-tip="Chia sẻ bài viết lên facebook">
-            <span className="ico">
-              <FiShare2></FiShare2>
-            </span>
-          </div>
-        </div>
+          </span>
+        </Link>
       </div>
     </li>
   );

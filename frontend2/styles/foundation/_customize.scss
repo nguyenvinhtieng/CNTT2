@@ -1,0 +1,81 @@
+// react-tooltip
+.tooltipOverrideCss {
+    color: red;
+    font-size: 10px !important;
+    font-weight: bold;
+    &:after {
+        width: 8px !important;
+        height: 8px !important;
+        bottom: -4px !important;
+    }
+    &:before {
+        display: none !important;
+    }
+}
+
+// ck editer
+.ck.ck-toolbar.ck-toolbar_grouping {
+    background-color: $darkColor !important;
+}
+.ck.ck-toolbar__items {
+    > * {
+        color: #fff !important;
+        &:hover {
+            color: inherit !important;
+        }
+    }
+}
+.ck.ck-toolbar {
+    border: 1px solid $borderColor !important;
+    border-radius: 6px 6px 0 0 !important;
+}
+.ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
+    border: 1px solid $borderColor !important;
+    border-radius: 0 0 6px 6px !important;
+}
+.ck.ck-editor__main>.ck-editor__editable.ck-focused {
+    transition: all 0.2s linear;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    border-top: 1px solid $borderColor !important;
+    background-color: $borderColor !important;
+}
+.ck.ck-editor__main>.ck-editor__editable {
+    background-color: $darkColor !important;
+}
+
+// TOAST
+.Toastify__toast {
+    min-height: 0px !important;
+}
+.Toastify__toast-body {
+    padding: 0 6px 0 0 !important;
+    font-size: 12px;
+    margin: 6px 0 !important;
+}
+.Toastify__toast-icon {
+    width: 14px !important;
+}
+.Toastify__progress-bar {
+    height: 3px !important;
+}
+
+// react-select
+.reactSelect {
+    // background-color: red;
+    .css-13cymwt-control {
+        background-color: $borderColor;
+        border-color: transparent;
+        &:hover {
+            border-color: transparent;
+            cursor: pointer;
+        }
+    }
+    // background-color: red;
+    .css-t3ipsp-control {
+        background-color: $borderColor;
+    }
+    .css-1dimb5e-singleValue {
+        color: #fff;
+        font-size: 12px;
+    }
+}

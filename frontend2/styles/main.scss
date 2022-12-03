@@ -4,6 +4,8 @@
 @import "foundation/mixin";
 @import "foundation/variables";
 @import "foundation/global";
+@import "foundation/customize";
+
 
 // COMPONENTS
 @import "components/avatar";
@@ -16,7 +18,9 @@
 @import "components/comment";
 @import "components/modal";
 @import "components/input";
+@import "components/table";
 @import "components/button";
+@import "components/social";
 
 
 // LAYOUT
@@ -28,3 +32,5 @@
 @import "pages/home";
 @import "pages/auth";
 @import "pages/create";
+@import "pages/manage";
+@import "pages/profile";

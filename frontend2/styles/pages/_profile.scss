@@ -1,0 +1,85 @@
+.profilePage {
+    width: min(100%, 660px);
+    margin-left: auto;
+    margin-right: auto;
+    border-left: 1px solid $borderColor;
+    border-right: 1px solid $borderColor;
+    margin-top: -30px;
+    padding-top: 25px;
+    @include tablet {
+        border: none;
+        padding: 0;
+    }
+    &__head {
+        padding: 0 24px;
+        padding-bottom: 25px;
+        display: flex;
+        border-bottom: 1px solid $grayColor;
+        @include tablet {
+            padding: 16px 0 25px 0;
+        }
+        &--avatar {
+            background-color: $borderColor;
+            padding: 12px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            max-width: 160px;
+        }
+        &--changeAvatar {
+            font-size: 10px;
+            display: flex;
+            margin-top: 6px;
+            align-items: center;
+            transition: all 0.2s linear;
+            padding: 4px 6px;
+            border-radius: 6px;
+            cursor: pointer;
+            &:hover {
+                background-color: $darkColor;
+                color: #fff;
+            }
+            .ico {
+                margin-right: 4px;
+            }
+        }
+        &--info {
+            margin-left: 24px;
+            .name {
+                font-size: 20px;
+            }
+            .sub {
+                font-size: 15px;
+                color: rgb(176, 176, 176);
+            }
+            .join {
+                font-size: 13px;
+                color: $borderColor;
+            }
+            .social {
+
+            }
+        }
+    }
+
+    &__content {
+        padding: 24px;
+        @include tablet {
+            padding: 24px 0 24px 0;
+        }
+        &--interesting {
+            h2 {
+                font-size: 14px;
+                margin-bottom: 6px;
+            }
+        }
+        &--post {
+            margin-top: 30px;
+            h2 {
+                font-size: 14px;
+                margin-bottom: 6px;
+            }
+        }
+    }
+    
+}

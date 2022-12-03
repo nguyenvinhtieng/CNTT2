@@ -57,7 +57,7 @@ function CommentItem() {
       <Modal isShow={isShowModalComment} handleCloseModal={toggleModalComment} size="sm">
         <div className="input__wrapper">
           <label className='input__label' htmlFor="">Nhập nội dung bình luận</label>
-          <textarea name="" id="" rows="4" placeholder='' placeHolder="Nhập nội dung bình luận của bạn tại đây..."></textarea>
+          <textarea name="" id="" rows="4" placeholder="Nhập nội dung bình luận của bạn tại đây..."></textarea>
         </div>
       </Modal>
     </>
