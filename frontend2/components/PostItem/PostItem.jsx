@@ -12,28 +12,36 @@ import Link from "next/link";
 import TooltipMenu from "../TooltipMenu/TooltipMenu";
 import useOnClickOutside from "~/hooks/useClickOutside";
 import UserItem from "../UserItem/UserItem";
-const menu = [
-  {
-    Icon: CiBookmark,
-    title: "Lưu bài viết",
-    clickAction: () => {},
-  },
-  {
-    Icon: RxCopy,
-    title: "Copy liên kết chia sẻ",
-    clickAction: () => {},
-  },
-  {
-    Icon: SlFlag,
-    title: "Baó cáo bài viết",
-    clickAction: () => {},
-  },
-];
+import { useRouter } from "next/router";
+import displayToast from "~/utils/displayToast";
+
 export default function PostItem({post}) {
   const [isShowMenu, setIsShowMenu] = React.useState(false);
   const menuRef = React.useRef(null);
   useOnClickOutside(menuRef, () => setIsShowMenu(false));
   const toggleMenu = () => setIsShowMenu(!isShowMenu);
+  const menu = [
+    {
+      Icon: CiBookmark,
+      title: "Lưu bài viết",
+      clickAction: () => {},
+    },
+    {
+      Icon: RxCopy,
+      title: "Copy liên kết chia sẻ",
+      clickAction: () => copyLink(),
+    },
+    {
+      Icon: SlFlag,
+      title: "Baó cáo bài viết",
+      clickAction: () => {},
+    },
+  ];
+  const copyLink = () => {
+    navigator.clipboard.writeText(`${window.location.origin}/post/${post?.slug}`);
+    setIsShowMenu(false);
+    displayToast("success", "Đã sao chép liên kết");
+  }
   return (
     <li className="post-item">
       <div className="post-item__wrapper">

@@ -37,40 +37,30 @@ class CommentController {
             return res.status(500).json({ status: false, message: error.message });
         }
     }
-    async delete(req, res) {
-        const id = req.params.id;
+    async deleteComment(req, res) {
+        const user = req.user
         try {
-            Comment.findByIdAndDelete(id, (err, result) => {
-                if (err) return res.status(500).json({ status: false, message: err.message });
-                if (result) {
-                    return res.status(200).json({ status: true, message: `Xóa thành công bình luận ${id} ` });
-                }
-                return res.status(200).json({ status: false, message: `Không có bình luận này` });
-            });
+            const { comment_id } = req.body;
+            if(comment_id == "" || comment_id == undefined) {
+                return res.status(400).json({ status: false, message: "Không có comment_id" });
+            }
+            await Comment.findOneAndRemove({ _id: comment_id, author: user._id });
+            await Comment.updateMany({ reply_id: comment_id }, { $set: { reply_id: null } });
+            return res.json({ status: true, message: "Xóa bình luận thành công" });
         } catch (error) {
+            console.log(error);
             return res.status(500).json({ status: false, message: error.message });
         }
     }
-    async update(req, res) {
-        const id = req.params.id;
+    async updateComment(req, res) {
+        const user = req.user
         try {
-            const oldComment = await Comment.findById(id).exec();
-            const form = new multiparty.Form();
-            form.parse(req, async (err, fields, files) => {
-                if (err) return res.status(500).json({ status: false, message: err.message });
-
-                let newcomment = fields.content ? fields.content[0] : oldComment.content;
-                if (newcomment == "" || newcomment == undefined) {
-                    return res.status(400).json({ status: false, message: "Bình luận không thể để trống" });
-                }
-                Comment.findByIdAndUpdate(id, { content: newcomment }, (err, result) => {
-                    if (err) return res.status(500).json({ status: false, message: err.message });
-                    if (result) {
-                        return res.status(200).json({ status: true, message: `Cập nhật thành công bình luận ${id} ` });
-                    }
-                    return res.status(200).json({ status: false, message: `Không có bình luận này` });
-                });
-            });
+            const { comment_id, content } = req.body;
+            if(content == "" || content == undefined) {
+                return res.status(400).json({ status: false, message: "Nội dung bình luận không được để trống" });
+            }
+            await Comment.findOneAndUpdate({_id: comment_id, author: user._id}, {content: content});
+            return res.json({ status: true, message: "Cập nhật bình luận thành công" });
         } catch (error) {
             return res.status(500).json({ status: false, message: error.message });
         }

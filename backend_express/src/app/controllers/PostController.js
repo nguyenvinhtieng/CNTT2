@@ -99,7 +99,8 @@ class PostController {
             const voted = await PostVote.findOne({ post_id: post_id, user: user._id });
             if(voted) {
                 if(voted.type === type) {
-                    return res.json({ status: true, message: "Bạn đã vote bài viết này rồi" });
+                    await PostVote.findOneAndDelete({ post_id: post_id, user: user._id });
+                    // return res.json({ status: true, message: "Bạn đã vote bài viết này rồi" });
                 }else {
                     await PostVote.findOneAndUpdate({ post_id: post_id, user: user._id }, { type: type });
                 }

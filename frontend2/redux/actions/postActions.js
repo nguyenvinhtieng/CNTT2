@@ -138,3 +138,76 @@ export const commentPost = ({post_id, content, reply_id}) => {
     };
 }
 
+export const deleteComment = ({comment_id}) => {
+    return async (dispatch, getState) => {
+        const state = getState();
+        try {
+            // console.log("deleteComment", comment_id);
+            const res = await postMethod("comment/delete", {comment_id});
+            const { data } = res;
+            if(data.status) {
+                let newData = []
+                state.posts.data.forEach(item => {
+                    let newComments = item.comments.filter(i => i._id !== comment_id);
+                    let newComments2 = newComments.map(i => {
+                        if(i.reply_id === comment_id) {
+                            return {...i, reply_id: null}
+                        }
+                        return i;
+                    })
+                    newData.push({...item, comments: newComments2})
+                })
+                dispatch({
+                    type: GLOBAL_TYPES.POST,
+                    payload: {
+                        ...state.posts,
+                        data: newData
+                    }
+                })
+
+                displayToast("success", data.message);
+            }else {
+                displayToast("error", data.message);
+            }
+
+        } catch (error) {
+            console.log(error);
+            displayToast("error", error.message);
+        }
+    }
+}
+
+export const updateComment = ({comment_id, content}) => {
+    return async (dispatch, getState) => {
+        const state = getState();
+        try {
+            const res = await postMethod("comment/update", {comment_id, content});
+            const { data } = res;
+            if(data.status) {
+                let newData = state.posts.data.map(item => {
+                    let newComments = item.comments.map(i => {
+                        if(i._id === comment_id) {
+                            return {...i, content}
+                        }
+                        return i;
+                    })
+                    return {...item, comments: newComments}
+                })
+                dispatch({
+                    type: GLOBAL_TYPES.POST,
+                    payload: {
+                        ...state.posts,
+                        data: newData
+                    }
+                })
+                displayToast("success", data.message);
+            }else {
+                displayToast("error", data.message);
+            }
+
+        } catch (error) {
+            console.log(error);
+            displayToast("error", error.message);
+        }
+    }
+}

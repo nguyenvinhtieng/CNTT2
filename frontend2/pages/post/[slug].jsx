@@ -2,6 +2,7 @@
 import React, { useEffect } from "react";
 import moment from 'moment'
 import { useDispatch, useSelector } from "react-redux";
+import { FacebookShareButton } from 'next-share';
 import { useRouter } from "next/router";
 import { BiDownvote, BiShareAlt, BiUpvote } from "react-icons/bi";
 import { RiMessage3Line } from "react-icons/ri";
@@ -13,6 +14,7 @@ import { getMethod } from "~/utils/fetchData";
 import { commentPost, votePost } from "~/redux/actions/postActions";
 import displayToast from "~/utils/displayToast";
 import PostCommentBlock from "~/components/PostCommentBlock/PostCommentBlock";
+import RelatedPost from "~/components/RelatedPost/RelatedPost";
 
 export default function PostDetail() {
   const [isLoaded, setIsLoaded] = React.useState(false);
@@ -134,15 +136,14 @@ export default function PostDetail() {
               </div>
             </li>
             <li className="post-detail__action">
-              <div
-                className="post-detail__action--wrapper"
-                data-tip="Chia sẻ lên facebook"
-              >
-                <span className="post-detail__action--ico">
-                  <BiShareAlt></BiShareAlt>
-                </span>
-                <span className="post-detail__action--text">Chia sẻ</span>
-              </div>
+              <FacebookShareButton url={`${window.location.origin}/post/${post.slug}`} href="https://facebook.com">
+                <div className="post-detail__action--wrapper" data-tip="Chia sẻ lên facebook" >
+                  <span className="post-detail__action--ico">
+                    <BiShareAlt></BiShareAlt>
+                  </span>
+                  <span className="post-detail__action--text">Chia sẻ lên facebook</span>
+                </div>
+              </FacebookShareButton>
             </li>
           </ul>
 
@@ -150,11 +151,7 @@ export default function PostDetail() {
 
           <div className="post-detail__related">
             <h3>Bài viết liên quan</h3>
-            <ul className="post-detail__related--list">
-              {/* <PostItem></PostItem>
-              <PostItem></PostItem>
-              <PostItem></PostItem> */}
-            </ul>
+            <RelatedPost post={post}></RelatedPost>
           </div>
         </div>
       }

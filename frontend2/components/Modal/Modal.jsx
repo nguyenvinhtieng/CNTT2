@@ -2,7 +2,7 @@ import React from 'react'
 import Overlay from '../Overlay/Overlay'
 import { MdClose } from 'react-icons/md'
 
-export default function Modal({ isShow = false, handleCloseModal, size, title, handleSubmit, children}) {
+export default function Modal({ isShow = false, handleCloseModal, size, title, handleSubmit, danger, children}) {
   return (
     <>
       <Overlay handleClick={handleCloseModal} isShow={isShow}></Overlay>
@@ -18,7 +18,7 @@ export default function Modal({ isShow = false, handleCloseModal, size, title, h
         <div className="modal__footer">
           {/* Modal footer */}
           <button className="modal__btn" onClick={handleCloseModal}>Hủy bỏ</button>
-          <button className="modal__btn modal__btn--primary" onClick={handleSubmit}>Lưu</button>
+          <button className={`modal__btn modal__btn--${danger ? "secondary" : "primary"}`} onClick={handleSubmit}>{danger ? "Xóa" : "Lưu" }</button>
         </div>
       </div>
     </>
