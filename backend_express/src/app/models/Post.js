@@ -4,9 +4,9 @@ const Schema = mongoose.Schema;
 mongoose.plugin(slug);
 
 const Post = new Schema({
-    author_username: { type: String },
-    author_name: { type: String },
+    author: { type: Schema.Types.ObjectId, ref: 'User' },
     title: { type: String },
+    tldr: { type: String },
     content: { type: String },
     thumbnail: { type: String },
     tags: { type: Array, default: [] },

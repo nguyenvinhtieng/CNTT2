@@ -4,6 +4,12 @@
   justify-content: center;
   flex-wrap: wrap;
 }
+.post__end {
+  text-align: center;
+  display: block;
+  padding: 50px 0;
+  font-size: 14px;
+}
 
 // POST ITEM
 .post-item {
@@ -19,7 +25,19 @@
     margin: 0;
     margin-bottom: 24px;
   }
-
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    > a {
+      flex: 1;
+      > span {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+    }
+  }
   &:hover {
     border-color: rgba(168, 179, 207, 0.5);
 
@@ -107,6 +125,9 @@
 
   &__content {
     margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
   }
 
   &__ttl {
@@ -118,7 +139,8 @@
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     line-height: 1.4;
-    height: 100px;
+    flex: 1;
+    // height: 100px;
   }
 
   &__info {

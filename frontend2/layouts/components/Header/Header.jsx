@@ -6,35 +6,29 @@ import { IoLogOutOutline, IoLogInOutline } from "react-icons/io5";
 import { AiOutlineMenu } from "react-icons/ai";
 import { MdOutlineAssignment } from "react-icons/md";
 import useOnClickOutside from "~/hooks/useClickOutside";
-
-const menuItem = [
-  {
-    Icon: CiUser,
-    title: "Trang cá nhân",
-    link: "/profile",
-  },
-  {
-    Icon: IoLogInOutline,
-    title: "Đăng nhập",
-    link: "/login",
-  },
-  {
-    Icon: MdOutlineAssignment,
-    title: "Đăng ký",
-    link: "/login",
-  },
-  {
-    Icon: IoLogOutOutline,
-    title: "Logout",
-    link: "/profile",
-  },
-];
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 export default function Header({ toggleSidebar }) {
   const [isShowMenu, setIsShowMenu] = React.useState(false);
+  const [user, setUser] = React.useState(null);
   const menuRef = useRef();
+  const auth = useSelector((state) => state.auth);
   useOnClickOutside(menuRef, () => setIsShowMenu(false));
-
+  // console.log("auth: ", auth);
+  let menuItem = null
+  if(auth.isAuthenticated) {
+    menuItem = menuItemLogined
+    menuItem[0].link = `/@${auth?.user?.profileSlug}`
+  }else {
+    menuItem = menuItemNotLogined
+  }
+  useEffect(()=> {
+    if(auth.isAuthenticated) {
+      setUser(auth.user)
+    }
+    console.log("userrr", user)
+  }, [auth])
   return (
     <header className="header">
       <div className="header__wrapper">
@@ -48,9 +42,9 @@ export default function Header({ toggleSidebar }) {
             className="header__menu--info"
             onClick={() => setIsShowMenu(true)}
           >
-            <span className="header__menu--name">Tieengs Vinh NGuyen</span>
+            <span className="header__menu--name">{user?.fullname || "Anonymous"}</span>
             <div className="avatar avatar__sm">
-              <img src="https://source.unsplash.com/random" alt="" />
+              <img src={user?.avatar || "/default.png"} alt="User avatar" />
             </div>
           </span>
           <TooltipMenu
@@ -63,3 +57,29 @@ export default function Header({ toggleSidebar }) {
     </header>
   );
 }
+
+
+const menuItemLogined = [
+  {
+    Icon: CiUser,
+    title: "Trang cá nhân",
+    link: "/profile",
+  },
+  {
+    Icon: IoLogOutOutline,
+    title: "Đăng xuất",
+    link: "/profile",
+  },
+];
+const menuItemNotLogined = [
+  {
+    Icon: IoLogInOutline,
+    title: "Đăng nhập",
+    link: "/login",
+  },
+  {
+    Icon: MdOutlineAssignment,
+    title: "Đăng ký",
+    link: "/register",
+  }
+];

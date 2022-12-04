@@ -1,20 +1,14 @@
 import ImageUploading from 'react-images-uploading';
-import { useState } from 'react';
 import Image from 'next/image';
 
-function InputImage() {
-  const [images, setImages] = useState([]);
+function InputImage({ onChangeImage, images }) {
   const maxNumber = 69;
-  const onChange = (imageList, addUpdateIndex) => {
-    console.log(imageList, addUpdateIndex);
-    setImages(imageList);
-  };
   return (
     <>
       <ImageUploading
         multiple
         value={images}
-        onChange={onChange}
+        onChange={onChangeImage}
         maxNumber={maxNumber}
         dataURLKey="data_url"
       >

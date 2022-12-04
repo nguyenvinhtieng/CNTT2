@@ -15,6 +15,7 @@
         padding-bottom: 25px;
         display: flex;
         border-bottom: 1px solid $grayColor;
+        position: relative;
         @include tablet {
             padding: 16px 0 25px 0;
         }
@@ -58,6 +59,52 @@
             }
             .social {
 
+            }
+        }
+        &--update {
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            right: 16px;
+            top: 0;
+            width: 32px;
+            height: 32px;
+            transition: all 0.2s linear;
+            border-radius: 4px;
+            cursor: pointer;
+            &:hover {
+                background-color: $grayColor;
+
+            }
+        }
+        &--save {
+            font-size: 12px;
+            background-color: $grayColor;
+            position: absolute;
+            right: 24px;
+            // top: 0;
+            bottom: 25px;
+            padding: 8px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s linear;
+            &:hover {
+                background-color: rgb(38, 81, 208);
+            }
+        }
+        &--cancel {
+            font-size: 12px;
+            background-color: $grayColor;
+            position: absolute;
+            right: 160px;
+            bottom: 25px;
+            padding: 8px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s linear;
+            &:hover {
+                background-color: rgb(89, 92, 101);
             }
         }
     }

@@ -17,29 +17,22 @@ class CommentController {
             return res.status(500).json({ status: false, message: "Có lỗi xảy ra" });
         }
     }
-    async post(req, res) {
-        const post_id = req.params.post_id;
+    async addComment(req, res) {
         const user = req.user;
         try {
-            const form = new multiparty.Form();
-            form.parse(req, async (err, fields, files) => {
-                if (err) return res.status(500).json({ status: false, message: err.message });
-                if (fields.content == "" || fields.content == undefined) {
-                    return res.status(400).json({ status: false, message: "Comment không được để trống" });
-                }
-
-                let content = fields.content[0];
-                let reply_id = fields.reply_id ? fields.reply_id[0] : null;
-                const comment = new Comment({
-                    author_username: user.username,
-                    author_name: user.fullname,
-                    post_id: post_id,
-                    content: content,
-                    reply_id: reply_id,
-                });
-                await comment.save();
-                return res.status(200).json({ status: true, message: "Tạo comment thành công", comment: comment });
+            const {post_id, content, reply_id} = req.body;
+            if (content == "" || content == undefined) {
+                return res.status(400).json({ status: false, message: "Nội dung bình luận không được để trống" });
+            }
+            const comment = new Comment({
+                author: user._id,
+                post_id: post_id,
+                content: content,
+                reply_id: reply_id,
             });
+            await comment.save();
+            let cmt = await Comment.findOne({ _id: comment._id }).populate("author");
+            return res.status(200).json({ status: true, message: "Thêm bình luận thành công", comment: cmt });
         } catch (error) {
             return res.status(500).json({ status: false, message: error.message });
         }

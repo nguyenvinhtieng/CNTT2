@@ -1,4 +1,5 @@
 import React from "react";
+import moment from 'moment'
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { BiDotsVerticalRounded, BiUpvote } from "react-icons/bi";
 import { RiMessage3Line } from "react-icons/ri";
@@ -28,7 +29,7 @@ const menu = [
     clickAction: () => {},
   },
 ];
-export default function PostItem() {
+export default function PostItem({post}) {
   const [isShowMenu, setIsShowMenu] = React.useState(false);
   const menuRef = React.useRef(null);
   useOnClickOutside(menuRef, () => setIsShowMenu(false));
@@ -38,10 +39,10 @@ export default function PostItem() {
       <div className="post-item__wrapper">
         <div className="post-item__head">
           <div className="post-item__user">
-            <UserItem></UserItem>
+            <UserItem name={post?.author.fullname || "Anonymous"} username={post?.author.username} avatar={post?.author?.avatar || "/default.png"}></UserItem>
           </div>
           <div className="post-item__link">
-            <Link href="/post/123">
+            <Link href={`/post/${post.slug || ""}`}>
               <span className="post-item__link--ttl">Đọc bài viết</span>
               <span className="post-item__link--ico">
                 <FaExternalLinkAlt></FaExternalLinkAlt>
@@ -58,19 +59,16 @@ export default function PostItem() {
             <TooltipMenu isShow={isShowMenu} menu={menu}></TooltipMenu>
           </div>
         </div>
-        <Link href="/">
+        <Link href={`/post/${post?.slug || ""}`}>
           <span>
           <div className="post-item__content">
-            <p className="post-item__ttl">
-              With Moralis and the Python SDK, you can seamlessly integrate Web3
-              functionality into any Python application. This tutorial
-            </p>
+            <p className="post-item__ttl">{post?.title}</p>
             <div className="post-item__info">
-              <time>3 ngày trước</time> <span> • </span>
-              <span>7 phút đọc</span>
+              <time>{moment(post?.createdAt).startOf('hour').fromNow()}</time> <span> • </span>
+              <span>{Math.floor(Math.random() * 10) + 1} phút đọc</span>
             </div>
             <div className="post-item__img">
-              <img src="https://source.unsplash.com/random" alt="" />
+              <img src={post?.thumbnail || "/default.png"} alt="" />
             </div>
           </div>
           <div className="post-item__actions">
@@ -78,19 +76,29 @@ export default function PostItem() {
               <span className="ico">
                 <BiUpvote></BiUpvote>
               </span>
-              <span className="num">7</span>
+              <span className="num">
+                {post.votes.reduce((total, item)=>{
+                  if(item.type == "upvote") return total + 1
+                  return total
+                }, 0)}
+              </span>
             </div>
             <div className="post-item__actions--item" data-tip="Downvote">
               <span className="ico">
                 <BiDownvote></BiDownvote>
               </span>
-              <span className="num">7</span>
+              <span className="num">
+                {post.votes.reduce((total, item)=>{
+                  if(item.type == "downvote") return total + 1
+                  return total
+                }, 0)}
+              </span>
             </div>
             <div className="post-item__actions--item" data-tip="Bình luận">
               <span className="ico">
                 <RiMessage3Line></RiMessage3Line>
               </span>
-              <span className="num">0</span>
+              <span className="num">{post.comments.length}</span>
             </div>
             <div className="post-item__actions--item" data-tip="Chia sẻ bài viết lên facebook">
               <span className="ico">
