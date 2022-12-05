@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const Bookmark = new Schema({
-    post_id: { type: String },
-    username: { type: String },
+    post: { type: Schema.Types.ObjectId, ref: 'Post' },
+    user_id: { type: String },
 }, {
     timestamps: true,
 });

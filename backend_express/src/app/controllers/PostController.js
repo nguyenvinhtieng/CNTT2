@@ -10,13 +10,15 @@ class PostController {
         let slug = req.params.slug;
 
         try {
-            Post.findOne({ slug: slug }, (err, result) => {
-                if (err) return res.status(500).json({ status: false, message: "Có lỗi xảy ra" });
-                if (result) {
-                    return res.status(200).json({ status: true, message: "Thông tin bài viết", post: result });
-                }
-                return res.json({ status: false, message: "Không có bài post này" });
-            });
+            let post = await Post.findOne({ slug: slug}).populate('author').lean();
+            if (!post) {
+                return res.status(404).json({ status: false, message: "Không tìm thấy bài viết" });
+            }
+            let comments = await Comment.find({ post: post._id }).populate('author');
+            post.comments = comments;
+            let votes = await PostVote.find({ post: post._id });
+            post.votes = votes;
+            return res.status(200).json({ status: true, post: post });
         } catch (err) {
             return res.json({ status: false, message: "Có lỗi xảy ra" });
         }
@@ -60,13 +62,39 @@ class PostController {
                     status,
                 });
                 await post.save();
-                return res.status(200).json({ status: true, message: "Tạo bài viết thành công", post: post });
+                let postNew = await Post.findOne({ _id: post._id }).populate('author').lean();
+                postNew.votes = [];
+                postNew.comments = [];
+                return res.status(200).json({ status: true, message: "Tạo bài viết thành công", post: postNew });
             });
         } catch (error) {
             return res.status(500).json({ status: false, message: "Có lỗi xảy ra" });
         }
     }
-
+    async getMyPost(req, res, next) {
+        const user = req.user;
+        try {
+            const posts = await Post.find({ author: user._id })
+                .sort({ createdAt: -1 })
+                .populate('author')
+                .lean();
+            return res.status(200).json({ status: true, message: "Lấy bài viết thành công", posts: posts });
+        } catch (error) {
+            return res.status(500).json({ status: false, message: "Có lỗi xảy ra" });
+        }
+    }
+    async getPostUser(req, res, next) {
+        const user_id = req.body.user_id;
+        try {
+            const posts = await Post.find({ author: user_id })
+                .sort({ createdAt: -1 })
+                .populate('author')
+                .lean();
+            return res.status(200).json({ status: true, message: "Lấy bài viết thành công", posts: posts });
+        } catch (error) {
+            return res.status(500).json({ status: false, message: "Có lỗi xảy ra" });
+        }
+    }
     // localhost:3001/api/post?page=5
     async getPagination(req, res, next) {
         try {
@@ -119,36 +147,37 @@ class PostController {
             return res.json({ status: false, message: "Có lỗi xảy ra" });
         }
     }
-    async delete(req, res, next) {
-        let slug = req.params.slug;
+    async deletePost(req, res, next) {
+        const user = req.user;
         try {
-            Post.findOneAndDelete({ slug: slug }, (err, result) => {
-                if (err) return res.status(500).json({ status: false, message: "Có lỗi xảy ra" });
-                if (result) {
-                    return res.status(200).json({ status: true, message: `Xóa thành công post ${slug}` });
-                }
-                return res.status(400).json({ status: false, message: "Không có bài post này" });
-            });
+            const { post_id } = req.body;
+            let post = await Post.findOne({ _id: post_id});
+            if(post.author.toString() !== user._id.toString() && user.role !== "admin") {
+                return res.json({ status: false, message: "Bạn không có quyền xóa bài viết này" });
+            }
+            await Post.findOneAndDelete({ _id: post_id});
+            await PostVote.deleteMany({ post_id: post_id });
+            await Comment.deleteMany({ post_id: post_id })
+            return res.json({ status: true, message: "Xóa bài viết thành công" });
         } catch (error) {
             return res.status(500).json({ status: false, message: "Có lỗi xảy ra" });
         }
     }
 
-    async edit(req, res, next) {
-        let slug = req.params.slug;
+    async updatePost(req, res, next) {
+        const user = req.user;
         try {
-            const oldPost = await Post.findOne({ slug: slug }).exec();
             const form = new multiparty.Form();
-
             form.parse(req, async (err, fields, files) => {
-                if (err) return res.status(500).json({ status: false, message: "Có lỗi xảy ra" });
-
-                //new info
-                let title = fields.title ? fields.title[0] : oldPost.title;
-                let content = fields.content ? fields.content[0] : oldPost.content;
-                let thumbnail = files.thumbnail ? files.thumbnail[0] : oldPost.thumbnail;
-                let tags = fields.tags ? fields.tags : oldPost.tags;
-
+                if (err) {
+                    return res.status(500).json({ status: false, message: "Có lỗi xảy ra" });
+                }
+                let title = fields.title[0];
+                let tldr = fields.tldr[0];
+                let content = fields.content[0];
+                let tags = fields.tags;
+                let status = fields.saveOption[0];
+                let post_id = fields.post_id[0];
                 // validate
                 if (!title || !content) {
                     return res.status(400).json({ status: false, message: "Tiêu đề và nội dung không được để trống" });
@@ -156,29 +185,32 @@ class PostController {
                 if (tags.length > 5) {
                     return res.status(400).json({ status: false, message: "Tối đa 5 tags" });
                 }
-
-                let thumbnail_link = "";
-                if (thumbnail.size > 0) {
-                    thumbnail_link = await uploadImages(files.thumbnail[0]);
-                } else {
-                    thumbnail_link = oldPost.thumbnail;
+                let post = await Post.findOne({ _id: post_id});
+                if(!post) {
+                    return res.status(400).json({ status: false, message: "Bài viết không tồn tại" });
+                }
+                if(post.author.toString() !== user._id.toString() && user.role !== "admin") {
+                    return res.status(400).json({ status: false, message: "Bạn không có quyền sửa bài viết này" });
+                }
+                let thumbnail_link = post.thumbnail_link; 
+                if(files.thumbnail) {
+                    if (files?.thumbnail[0]?.size > 0) {
+                        thumbnail_link = await uploadImages(files.thumbnail[0]);
+                    }
                 }
 
-                let editPost = {
+                let postNew = await Post.findOneAndUpdate({ _id: post_id }, {
                     title: title,
+                    tldr: tldr,
                     content: content,
-                    thumbnail: thumbnail_link,
                     tags: tags,
-                };
-                Post.findOneAndUpdate({ slug: slug }, editPost, { new: true }, (err, result) => {
-                    if (err) return res.status(500).json({ status: false, message: "Có lỗi xảy ra" });
-                    if (result) {
-                        return res.status(200).json({ status: true, message: "Cập nhật Thông tin bài viết thành công", post: result });
-                    }
-                    return res.status(400).json({ status: false, message: `Không có bài viết ${slug}` });
-
-                    return res.status(400).json({ status: false, message: "Không có bài post này" });
-                });
+                    status: status,
+                    thumbnail_link: thumbnail_link,
+                }, { new: true
+                }).populate('author').lean();
+                postNew.votes = await PostVote.find({ post_id: post_id }).lean();
+                postNew.comments = await Comment.find({ post : post_id }).populate('author').lean();
+                return res.status(200).json({ status: true, message: "Tạo bài viết thành công", post: postNew });
             });
         } catch (error) {
             return res.status(500).json({ status: false, message: "Có lỗi xảy ra" });

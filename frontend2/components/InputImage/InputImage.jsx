@@ -25,7 +25,7 @@ function InputImage({ onChangeImage, images }) {
             {imageList.map((image, index) => (
               <div key={index} className="input-image__item">
                 <Image
-                  src={image['data_url']}
+                  src={image['data_url'] || "/default.png"}
                   alt="cover image"
                   width={200}
                   height={150} />

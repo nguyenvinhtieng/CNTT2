@@ -18,6 +18,7 @@ import { IoAddSharp } from 'react-icons/io5'
 import TooltipMenu from '~/components/TooltipMenu/TooltipMenu'
 import useOnClickOutside from '~/hooks/useClickOutside'
 import { FaTimes } from 'react-icons/fa'
+import { postMethod } from '~/utils/fetchData'
 
 export default function ProfilePage() {
     const router = useRouter()
@@ -37,7 +38,7 @@ export default function ProfilePage() {
     const [showModalAddSocial, setShowModalAddSocial] = React.useState(false)
     const [showMenuSocial, setShowMenuSocial] = React.useState(false)
     const [showModalAddTag, setShowModalAddTag] = React.useState(false)
-
+    const [posts, setPosts] = React.useState([])
     const menuSocialRef = React.useRef(null)
     const inputLinkSocialRef = React.useRef(null)
     const inputTagRef = React.useRef(null)
@@ -61,6 +62,21 @@ export default function ProfilePage() {
             }
         }
     }, [auth, profileSlug])
+
+    // fetch post user
+    React.useEffect(() => {
+        if(user) {
+            postMethod("post/get-post-user", {user_id: user._id})
+                .then(res => {
+                    const {data} = res
+                    if(data.status) {
+                        setPosts(data.posts)
+                    }
+                })
+                .catch(err => console.log(err))
+        }
+    }, [user])
+
     const toggleModalChangeAvatar = () => setIsShowModalChangeAvatar(!isShowModalChangeAvatar)
     const onChangeImage = (imageList, _) =>  setAvatar(imageList);
     const handleChangeAvatar = () => {
@@ -304,9 +320,10 @@ export default function ProfilePage() {
                 </div>
                 <div className="profilePage__content--post">
                     <h2>Bài viết</h2>
-                        <PostItemShort></PostItemShort>
-                        <PostItemShort></PostItemShort>
-                        <PostItemShort></PostItemShort>
+                    {posts.length === 0 && <p>Không có bài viết nào</p>}
+                    {posts.length > 0 && posts.map((post, index) => {
+                        return <PostItemShort key={index} post={post} />
+                    })}
                 </div>
             </div>
         </>

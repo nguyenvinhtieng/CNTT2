@@ -3,7 +3,8 @@ import moment from 'moment'
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { BiDotsVerticalRounded, BiUpvote } from "react-icons/bi";
 import { RiMessage3Line } from "react-icons/ri";
-import { FiShare2 } from "react-icons/fi";
+import { FiFacebook, FiShare2 } from "react-icons/fi";
+import { FacebookShareButton } from 'next-share';
 import { CiBookmark } from "react-icons/ci";
 import { SlFlag } from "react-icons/sl";
 import { RxCopy } from "react-icons/rx";
@@ -22,9 +23,11 @@ export default function PostItem({post}) {
   const toggleMenu = () => setIsShowMenu(!isShowMenu);
   const menu = [
     {
-      Icon: CiBookmark,
-      title: "Lưu bài viết",
+      Icon: FiFacebook,
+      title: "Chia sẻ bài viết lên facebook",
       clickAction: () => {},
+      Wrapper: FacebookShareButton,
+      wrapperProps: {url: `${window.location.origin}/post/${post?.slug}`},
     },
     {
       Icon: RxCopy,
@@ -73,7 +76,7 @@ export default function PostItem({post}) {
             <p className="post-item__ttl">{post?.title}</p>
             <div className="post-item__info">
               <time>{moment(post?.createdAt).startOf('hour').fromNow()}</time> <span> • </span>
-              <span>{Math.floor(Math.random() * 10) + 1} phút đọc</span>
+              <span>{Math.floor(post?.content.length / 200) + 1} phút đọc</span>
             </div>
             <div className="post-item__img">
               <img src={post?.thumbnail || "/default.png"} alt="" />

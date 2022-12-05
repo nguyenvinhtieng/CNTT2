@@ -1,0 +1,11 @@
+.status {
+  font-size: 10px;
+  padding: 4px 8px;
+  border-radius: 3px;
+  &--public {
+    background-color: rgb(64, 182, 109);
+  }
+  &--draf {
+    background-color: $grayColor;
+  }
+}

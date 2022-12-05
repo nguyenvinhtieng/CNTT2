@@ -2,9 +2,10 @@ import Link from 'next/link'
 import React from 'react'
 import { FiHome } from 'react-icons/fi'
 import { HiOutlineChatAlt2, HiOutlineUsers } from 'react-icons/hi'
-import { MdOutlinePostAdd } from 'react-icons/md'
+import { MdOutlinePostAdd, MdOutlineArticle } from 'react-icons/md'
 import { AiOutlineQuestionCircle } from 'react-icons/ai'
-
+import { GrArticle } from 'react-icons/gr'
+import { BsBookmark } from 'react-icons/bs'
 export default function Sidebar({ isOpen }) {
   return (
     <aside className={`sidebar scroll-css ${isOpen ? "is-open" : ""}`}>
@@ -38,6 +39,18 @@ export default function Sidebar({ isOpen }) {
         </ul>
         <p className="sidebar__ttl">Quản lý</p>
         <ul className="sidebar__menu">
+          <li className='sidebar__menu--item'>
+            <Link href="/posts">
+              <span className="sidebar__menu--icon"><MdOutlineArticle></MdOutlineArticle></span>
+              <span className="sidebar__menu--ttl">Bài viết của tôi</span>
+            </Link>
+          </li>
+          <li className='sidebar__menu--item'>
+            <Link href="/saved">
+              <span className="sidebar__menu--icon"><BsBookmark></BsBookmark></span>
+              <span className="sidebar__menu--ttl">Bài viết đã lưu</span>
+            </Link>
+          </li>
           <li className='sidebar__menu--item'>
             <Link href="/manage/users">
               <span className="sidebar__menu--icon"><HiOutlineUsers></HiOutlineUsers></span>

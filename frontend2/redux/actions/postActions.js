@@ -60,7 +60,55 @@ export const createPost = (formData) => {
             const { data } = res;
             if (data.status) {
                 displayToast("success", data.message);
-                dispatch(push("/"));
+                dispatch({
+                    type: GLOBAL_TYPES.POST,
+                    payload: {
+                        ...state.posts,
+                        data: [data.post, ...state.posts.data]
+                    }
+                })
+
+            }else {
+                displayToast("error", data.message);
+            }
+            dispatch({ 
+                type: GLOBAL_TYPES.APP_STATE,
+                payload: { ...state.appState, loading: false }
+            });
+        } catch (error) {
+            console.log(error);
+            displayToast("error", error.message);
+        }
+    };
+}
+export const updatePost = (formData) => {
+    return async (dispatch, getState) => {
+        const state = getState();
+        try {
+            dispatch({ 
+                type: GLOBAL_TYPES.APP_STATE,
+                payload: { ...state.appState, loading: true }
+            });
+            let res = await postMethod("post/update", formData);
+            const { data } = res;
+            if (data.status) {
+                console.log(data)
+                let postNew = state.posts.data.map(item => {
+                    if(item._id === data.post._id) {
+                        return data.post;
+                    }
+                    return item;
+                })
+
+                dispatch({
+                    type: GLOBAL_TYPES.POST,
+                    payload: {
+                        ...state.posts,
+                        data: postNew
+                    }
+                })
+                
+                displayToast("success", data.message);
             }else {
                 displayToast("error", data.message);
             }
@@ -201,6 +249,76 @@ export const updateComment = ({comment_id, content}) => {
                     }
                 })
                 displayToast("success", data.message);
+            }else {
+                displayToast("error", data.message);
+            }
+
+        } catch (error) {
+            console.log(error);
+            displayToast("error", error.message);
+        }
+    }
+}
+
+
+export const deletePost = ({post_id}) => {
+    return async (dispatch, getState) => {
+        const state = getState();
+        try {
+            const res = await postMethod("post/delete", {post_id});
+            const { data } = res;
+            if(data.status) {
+                let newData = state.posts.data.filter(item => item._id !== post_id);
+                dispatch({
+                    type: GLOBAL_TYPES.POST,
+                    payload: {
+                        ...state.posts,
+                        data: newData
+                    }
+                })
+                displayToast("success", data.message);
+            }else {
+                displayToast("error", data.message);
+            }
+
+        } catch (error) {
+            console.log(error);
+            displayToast("error", error.message);
+        }
+    }
+}
+
+export const bookmarkPost = ({post_id}) => {
+    return async (dispatch, getState) => {
+        const state = getState();
+        try {
+            const res = await postMethod("bookmark", {post_id});
+            const { data } = res;
+            if(data.status) {
+                if(data.bookmark) {
+                    dispatch({
+                        type: GLOBAL_TYPES.AUTH,
+                        payload: {
+                            ...state.auth,
+                            user: {
+                                ...state.auth.user,
+                                bookmarks: [...state.auth.user.bookmarks, data.bookmark]
+                            }
+                        }
+                    })
+                }else {
+                    let newBookmarkUser = state.auth.user.bookmarks.filter(item => item.post._id !== post_id);
+                    dispatch({
+                        type: GLOBAL_TYPES.AUTH,
+                        payload: {
+                            ...state.auth,
+                            user: {
+                                ...state.auth.user,
+                                bookmarks: newBookmarkUser
+                            }
+                        }
+                    })
+                }
             }else {
                 displayToast("error", data.message);
             }

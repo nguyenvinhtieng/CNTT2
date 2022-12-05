@@ -5,10 +5,12 @@ const PostController = require('../app/controllers/PostController.js');
 const checkLogin = require('../app/middleware/checkLogin.js')
 
 router.get("/", PostController.getPagination);
+router.get("/my-post", checkLogin, PostController.getMyPost);
+router.post("/get-post-user", PostController.getPostUser)
 router.post('/', checkLogin, PostController.create)
 router.post('/vote', checkLogin, PostController.votePost)
 router.get('/:slug', PostController.get);
-router.delete('/:slug',checkLogin,PostController.delete)
-router.put('/:slug',checkLogin,PostController.edit)
+router.post('/delete',checkLogin, PostController.deletePost)
+router.post('/update',checkLogin, PostController.updatePost)
 
 module.exports = router;

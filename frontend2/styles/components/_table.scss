@@ -51,6 +51,9 @@
 
     &__actions {
         display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
     }
     &__actionsItem {
         display: flex;
@@ -61,7 +64,15 @@
         margin: 0 4px;
         border-radius: 4px;
         cursor: pointer;
-        background-color: $borderColor;
+        transition: all 0.2s linear;
+        background-color: $grayColor;
+        a {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
         &.delete {
             &:hover {
                 background-color: rgb(205, 40, 40);
@@ -70,6 +81,11 @@
         &.view {
             &:hover {
                 background-color: rgb(40, 76, 205);
+            }
+        }
+        &.edit {
+            &:hover {
+                background-color: rgb(67, 206, 111);
             }
         }
     }

@@ -15,7 +15,6 @@ export default function Header({ toggleSidebar }) {
   const menuRef = useRef();
   const auth = useSelector((state) => state.auth);
   useOnClickOutside(menuRef, () => setIsShowMenu(false));
-  // console.log("auth: ", auth);
   let menuItem = null
   if(auth.isAuthenticated) {
     menuItem = menuItemLogined
@@ -27,7 +26,6 @@ export default function Header({ toggleSidebar }) {
     if(auth.isAuthenticated) {
       setUser(auth.user)
     }
-    console.log("userrr", user)
   }, [auth])
   return (
     <header className="header">
@@ -40,7 +38,7 @@ export default function Header({ toggleSidebar }) {
         <div className="header__menu" ref={menuRef}>
           <span
             className="header__menu--info"
-            onClick={() => setIsShowMenu(true)}
+            onClick={() => setIsShowMenu(!isShowMenu)}
           >
             <span className="header__menu--name">{user?.fullname || "Anonymous"}</span>
             <div className="avatar avatar__sm">

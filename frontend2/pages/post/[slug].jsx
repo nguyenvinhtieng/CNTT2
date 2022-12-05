@@ -11,10 +11,11 @@ import Modal from "~/components/Modal/Modal";
 import PostItem from "~/components/PostItem/PostItem";
 import UserItem from "~/components/UserItem/UserItem";
 import { getMethod } from "~/utils/fetchData";
-import { commentPost, votePost } from "~/redux/actions/postActions";
+import { bookmarkPost, commentPost, votePost } from "~/redux/actions/postActions";
 import displayToast from "~/utils/displayToast";
 import PostCommentBlock from "~/components/PostCommentBlock/PostCommentBlock";
 import RelatedPost from "~/components/RelatedPost/RelatedPost";
+import { BsBookmark, BsBookmarkCheck, BsBookmarkFill } from "react-icons/bs";
 
 export default function PostDetail() {
   const [isLoaded, setIsLoaded] = React.useState(false);
@@ -23,6 +24,7 @@ export default function PostDetail() {
   const inputAddCommentRef = React.useRef(null);
   const posts = useSelector((state) => state.posts);
   const auth = useSelector((state) => state.auth);
+  const [isBookmark, setIsBookmark] = React.useState(false);
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -50,8 +52,17 @@ export default function PostDetail() {
       }
     }
   },[post, posts, slug])
+  
+  useEffect(()=>{
+    let isBookmarkPost = false;
+    if(auth.user && auth.isAuthenticated && post && auth.user.bookmarks){
+      isBookmarkPost = auth.user.bookmarks.find((b) => b.post._id === post._id);
+    }
+    setIsBookmark(isBookmarkPost);
+  }, [post, auth])
 
   const toggleModalAddComment = () => setIsShowModalAddComment(!isShowModalAddComment);
+  
   const addComment = () => {
     let val = inputAddCommentRef.current.value.trim();
     if(!val){
@@ -62,7 +73,16 @@ export default function PostDetail() {
     toggleModalAddComment();
     inputAddCommentRef.current.value = "";
   }
-  // console.log("POST: ", post);
+  
+  const handleSavePost = () => {
+    if(!auth.user || !auth.isAuthenticated){
+      displayToast("warning", "Vui lòng đăng nhập để lưu bài viết");
+      return;
+    }
+    dispatch(bookmarkPost({ post_id: post._id }));
+    // setIsBookmark(!isBookmark);
+  }
+  
   return (
     <div className="container">
       <Modal isShow={isShowModalAddComment} size="sm" title="Bình luận bài viết" handleCloseModal={toggleModalAddComment} handleSubmit={addComment}>
@@ -95,7 +115,7 @@ export default function PostDetail() {
           <p className="post-detail__tldr">
             <span>Tóm tắt: </span>{post?.tldr || "Bài viết không có tóm tắt"}
           </p>
-          <div className="post-detail__content" dangerouslySetInnerHTML={{__html: post?.content}}></div>
+          <div className="post-detail__content mce-content-body" dangerouslySetInnerHTML={{__html: post?.content}}></div>
           <div className="post-detail__reactInfo">
             <span>{post.votes.reduce((total, item)=>{
                   if(item.type == "upvote") return total + 1
@@ -135,8 +155,12 @@ export default function PostDetail() {
                 <span className="post-detail__action--text">Bình luận</span>
               </div>
             </li>
-            <li className="post-detail__action">
-              <FacebookShareButton url={`${window.location.origin}/post/${post.slug}`} href="https://facebook.com">
+            <li className="post-detail__action flex-2">
+              <FacebookShareButton 
+                url={"https://viblo.asia/p/" + post.slug}
+                hashtag="#tdtu"
+                // url={`${window.location.origin}/post/${post.slug}`}
+                >
                 <div className="post-detail__action--wrapper" data-tip="Chia sẻ lên facebook" >
                   <span className="post-detail__action--ico">
                     <BiShareAlt></BiShareAlt>
@@ -144,6 +168,15 @@ export default function PostDetail() {
                   <span className="post-detail__action--text">Chia sẻ lên facebook</span>
                 </div>
               </FacebookShareButton>
+            </li>
+            <li className={`post-detail__action ${isBookmark ? "is-save" : ""}`}>
+              <div className="post-detail__action--wrapper" data-tip="Lưu bài viết" onClick={handleSavePost}>
+                <span className="post-detail__action--ico">
+                  {isBookmark ? <BsBookmarkFill></BsBookmarkFill> : <BsBookmark></BsBookmark>}
+                  
+                </span>
+                <span className="post-detail__action--text">{isBookmark ? "Đã lưu" : "Lưu bài viết"}</span>
+              </div>
             </li>
           </ul>
 

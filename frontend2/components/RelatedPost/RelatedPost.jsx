@@ -7,7 +7,6 @@ import PostItemSkeleton from '../PostItemSkeleton/PostItemSkeleton'
 export default function RelatedPost({post}) {
     const posts = useSelector(state => state.posts)
     const [postRelated, setPostRelated] = React.useState([]);
-    console.log("State: ", posts)
     useEffect(()=> {
         let tags = post.tags;
         let postsRelatedNew = []

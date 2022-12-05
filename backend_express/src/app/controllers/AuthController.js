@@ -2,6 +2,7 @@ const fetch = require("node-fetch")
 const { backend_laravel, secret_key} = require("../../credentials")
 const jwt = require('jsonwebtoken');
 const User = require("../models/User")
+const Bookmark = require("../models/Bookmark")
 const multiparty = require("multiparty");
 const uploadImages = require("../../utils/uploadImage");
 
@@ -10,9 +11,10 @@ class AuthController {
     async fetchDataUser(req, res, next) {
         let user = req.user;
         try {
-            const data = await User.findOne({_id: user._id})
+            const data = await User.findOne({_id: user._id}).lean();
+            const bookmarks = await Bookmark.find({user_id: user._id}).populate("post");
+            data.bookmarks = bookmarks;
             return res.json({status: true, message: "Lấy dữ liệu thành công", user: data});
-
         }catch(e) {
             return res.json({status: false, message: "Có lỗi xảy ra"});
         }

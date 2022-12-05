@@ -1,27 +1,31 @@
 import React from 'react'
-
-export default function PostItemShort() {
+import moment from 'moment';
+import Link from 'next/link';
+export default function PostItemShort({post}) {
   return (
+    <Link href={`/post/${post.slug}`}>
     <div className='post-itemshort'>
         <div className="post-itemshort__wrapper">
             <div className="post-itemshort__thumbnail">
-                <img src="https://source.unsplash.com/random" alt="" />
+                <img src={post?.thumbnail || "/default.png"} alt="" />
             </div>
             <div className="post-itemshort__content">
                 <div className="post-itemshort__content--title">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex, architecto.
+                    {post?.title}
                 </div>
                 <div className="post-itemshort__content--desc">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.
+                    {post?.tldr || "Không có tóm tắt bài viết"}
                 </div>
-                <time className="post-itemshort__content--time">3 ngayf truoc</time>
+                <time className="post-itemshort__content--time">{moment(post?.createdAt).startOf("hours").fromNow()}・</time>
+                <time className="post-itemshort__content--time">{Math.floor(post.content.length / 200) + 1} phút đọc</time>
                 <ul className="tag-list">
-                    <span className="tag-item">Html</span>
-                    <span className="tag-item">Css</span>
-                    <span className="tag-item">Javascript</span>
+                    {post?.tags.length > 0 && post?.tags?.map((tag) => (
+                        <span className="tag-item" key={tag}>{tag}</span>
+                    ))}
                 </ul>
             </div>
         </div>
     </div>
+    </Link>
   )
 }

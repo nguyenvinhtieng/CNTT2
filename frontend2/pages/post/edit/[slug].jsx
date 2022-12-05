@@ -1,21 +1,22 @@
 import React, { useEffect, useState, useId, useRef  } from 'react'
-import { connect } from 'react-redux'
+import { connect, useDispatch, useSelector } from 'react-redux'
 import Select from 'react-select';
 import { FaTimes } from 'react-icons/fa';
 import Editor from '~/components/Editer/Editer';
 import InputImage from '~/components/InputImage/InputImage'
 import displayToast from '~/utils/displayToast';
-import { createPost } from '~/redux/actions/postActions';
-import { postMethod } from '~/utils/fetchData';
+import { createPost, updatePost } from '~/redux/actions/postActions';
+import { getMethod, postMethod } from '~/utils/fetchData';
 import { useRouter } from 'next/router';
 const optionsSavePost = [
   {value: "unpublish", label: "Lưu nháp"},
   {value: "publish", label: "Công khai"}
 ]
-function CreatePostPage({ createPost }) {
-  const [editorLoaded, setEditorLoaded] = useState(false);
+function UpdatePost() {
   const tagRef = useRef();
+  const auth = useSelector(state => state.auth);
   const router = useRouter();
+  const { slug } = router.query;
   const [postData, setPostData] = useState({
     title: "",
     tldr: "",
@@ -24,11 +25,36 @@ function CreatePostPage({ createPost }) {
     thumbnail: [],
     tags: []
   });
+  const dispatch = useDispatch();
+  const [loaded, setLoaded] = useState(false);
+
   useEffect(() => {
-    setEditorLoaded(true);
-  }, []);
-  
+    if(!slug) {
+      return;
+    }
+    getMethod("post/"+ slug)
+      .then(res => {
+        const { data } = res;
+        if(data.status) {
+          let post = data.post
+          setPostData({...post, saveOption: post.status, thumbnail: [{url: post.thumbnail}]})
+          document.title = post.title;
+          if(!post && post?.author?._id != auth.user._id && !auth.isAdmin) {
+            router.push("/");
+            return;
+          }
+          setLoaded(true);
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+
+  }, [slug, auth]);
+
+
   const handleChangeForm = (e) => {
+    if(!loaded) return;
     const {name, value} = e.target;
     setPostData({ ...postData, [name]: value })
   }
@@ -44,7 +70,9 @@ function CreatePostPage({ createPost }) {
   }
 
   const handlePressTag = (e) => {
+    
     if (e.key === "Enter") {
+      e.preventDefault();
       let value = e.target.value;
       if(!value) return
       if(postData.tags.includes(value)) {
@@ -61,6 +89,8 @@ function CreatePostPage({ createPost }) {
       }
       setPostData({ ...postData, tags: [...postData.tags, value] })
       tagRef.current.value = "";
+    }else {
+      return;
     }
   }
 
@@ -69,12 +99,13 @@ function CreatePostPage({ createPost }) {
     tags.splice(index, 1);
     setPostData({ ...postData, tags: tags })
   }
-  const handleChangeContent = (content) => {
-    setPostData({ ...postData, content: content })
-  }
+
   const onChangeImage = (imageList, addUpdateIndex) => {
     setPostData({ ...postData, thumbnail: imageList })
   };
+  const handleChangeContent = (content) => {
+    setPostData({ ...postData, content: content })
+  }
   const handleSubmitForm = async (e) => {
     e.preventDefault();
     const {title, tldr, content, saveOption, thumbnail, tags} = postData;
@@ -95,17 +126,21 @@ function CreatePostPage({ createPost }) {
     formData.append("tldr", postData.tldr);
     formData.append("content", postData.content);
     formData.append("saveOption", postData?.saveOption?.value);
+    formData.append("post_id", postData._id);
     let blodImage = postData.thumbnail[0]?.file;
     if(blodImage) {
       formData.append("thumbnail", blodImage, postData.thumbnail[0]);
     }
-    postData.tags.forEach(item => formData.append("tags", item));
-    createPost(formData);
+    postData.tags.forEach(item => {
+      formData.append("tags", item);
+    });
+    dispatch(updatePost(formData));
     router.push("/posts")
   }
+
   return (
     <div className="createPage">
-      <h1 className='createPage__heading'>Tạo bài viết</h1>
+      <h1 className='createPage__heading'>Sửa bài viết</h1>
       <form action="" onSubmit={(e) => e.preventDefault()}>
         <div className="input__wrapper">
           <label className='input__label' htmlFor="">Tiêu đề</label>
@@ -117,7 +152,7 @@ function CreatePostPage({ createPost }) {
         </div>
         <div className="input__wrapper">
           <label className='input__label' htmlFor="">Nội dung bài viết</label>
-          <Editor onChangeFunc={handleChangeContent}/>
+          <Editor initialVal={postData.content} onChangeFunc={handleChangeContent} />
         </div>
         <div className="input__wrapper">
           <label className='input__label' htmlFor="" >Thẻ (Tối đa 4 thẻ)</label>
@@ -147,15 +182,11 @@ function CreatePostPage({ createPost }) {
           />
         </div>
         <div className="createPage__btn">
-          <button className='button button__lg' type='button' onClick={handleSubmitForm}>Lưu bài viết</button>
+          <button className='button button__lg' type='button' onClick={handleSubmitForm}>Cập nhật bài viết</button>
         </div>
       </form>
     </div>
   )
 }
-const mapDispatchToProps = (dispatch) => {
-  return {
-    createPost: (data) => dispatch(createPost(data))
-  }
-};
-export default connect(null, mapDispatchToProps)(CreatePostPage)
+
+export default UpdatePost

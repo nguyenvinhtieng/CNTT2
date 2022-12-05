@@ -14,35 +14,16 @@
 }
 
 // ck editer
-.ck.ck-toolbar.ck-toolbar_grouping {
-    background-color: $darkColor !important;
+.tox-tinymce {
+    border: none !important;
+    border-radius: 6px !important;
 }
-.ck.ck-toolbar__items {
-    > * {
-        color: #fff !important;
-        &:hover {
-            color: inherit !important;
-        }
-    }
+.tox:not(.tox-tinymce-inline) .tox-editor-header {
+    // padding: 0 !important;
 }
-.ck.ck-toolbar {
-    border: 1px solid $borderColor !important;
-    border-radius: 6px 6px 0 0 !important;
+.tox .tox-edit-area__iframe {
+    // background-color: $grayColor !important;
 }
-.ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
-    border: 1px solid $borderColor !important;
-    border-radius: 0 0 6px 6px !important;
-}
-.ck.ck-editor__main>.ck-editor__editable.ck-focused {
-    transition: all 0.2s linear;
-    border-color: rgba(255, 255, 255, 0.3) !important;
-    border-top: 1px solid $borderColor !important;
-    background-color: $borderColor !important;
-}
-.ck.ck-editor__main>.ck-editor__editable {
-    background-color: $darkColor !important;
-}
-
 // TOAST
 .Toastify__toast {
     min-height: 0px !important;
