@@ -8,7 +8,6 @@ export default function Editer({initialVal = "", onChangeFunc}) {
     if (editorRef.current) {
       let val = editorRef.current.getContent();
       onChangeFunc(val)
-      console.log('Content was updated:', val)
     }
   };
 

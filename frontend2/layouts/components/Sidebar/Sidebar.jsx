@@ -19,9 +19,9 @@ export default function Sidebar({ isOpen }) {
             </Link>
           </li>
           <li className='sidebar__menu--item'>
-            <Link href="/question">
+            <Link href="/questions">
               <span className="sidebar__menu--icon"><HiOutlineChatAlt2></HiOutlineChatAlt2></span>
-              <span className="sidebar__menu--ttl">Thảo luận</span>
+              <span className="sidebar__menu--ttl">Hỏi đáp</span>
             </Link>
           </li>
           <li className='sidebar__menu--item'>
