@@ -56,7 +56,7 @@ export default function PostDetail() {
   useEffect(()=>{
     let isBookmarkPost = false;
     if(auth.user && auth.isAuthenticated && post && auth.user.bookmarks){
-      isBookmarkPost = auth.user.bookmarks.find((b) => b.post._id === post._id);
+      isBookmarkPost = auth.user.bookmarks.find((b) => b.post?._id === post?._id);
     }
     setIsBookmark(isBookmarkPost);
   }, [post, auth])
@@ -101,7 +101,7 @@ export default function PostDetail() {
           <h1 className="post-detail__title">{post.title}</h1>
           <div className="post-detail__info">
             <span className="post-detail__info--author">
-              <UserItem name={post?.author_name} avatar={post?.author_avatar || "/default.png"} username={post?.authour_username}></UserItem>
+              <UserItem user={post.author}></UserItem>
             </span>
             <time className="post-detail__info--date">{moment(post?.createdAt).startOf("hour").fromNow()}</time>
           </div>

@@ -88,7 +88,7 @@ function CommentItem({comment, reply_for}) {
       <li className="comment-item">
         <div className="comment-item__head">
           <div className="comment-item__user">
-            <UserItem avatar={comment?.author?.avatar || "/default.png"} name={comment?.author?.fullname} username={comment?.author?.username} time={comment?.createdAt}></UserItem>
+            <UserItem user={comment.author} time={comment?.createdAt}></UserItem>
           </div>
         </div>
         <div className="comment-item__content">{comment.content}</div>

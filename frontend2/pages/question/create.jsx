@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useId, useRef  } from 'react'
-import { connect } from 'react-redux'
+import { connect, useDispatch } from 'react-redux'
 import Select from 'react-select';
 import { FaTimes } from 'react-icons/fa';
 import Editor from '~/components/Editer/Editer';
@@ -8,6 +8,8 @@ import displayToast from '~/utils/displayToast';
 import { createPost } from '~/redux/actions/postActions';
 import { postMethod } from '~/utils/fetchData';
 import { useRouter } from 'next/router';
+import InputMultiFile from '~/components/InputMultiFile/InputMultiFile';
+import { createQuestion } from '~/redux/actions/questionAction';
 function CreateQuestionPage() {
   const tagRef = useRef();
   const router = useRouter();
@@ -17,6 +19,7 @@ function CreateQuestionPage() {
     tags: [],
     files: []
   });
+  const dispatch = useDispatch();
 
   const handlePressTag = (e) => {
     if (e.key === "Enter") {
@@ -50,21 +53,21 @@ function CreateQuestionPage() {
   const handleChangeContent = (content) => {
     setQuestionData({ ...questionData, content: content })
   }
+  const handleChangeFile = (fileList) => {
+    setQuestionData({ ...questionData, files: fileList })
+  }
   const handleSubmitForm = async (e) => {
     e.preventDefault();
-    console.log("data: ", questionData);
-    // const formData = new FormData();
-    // formData.append("title", postData.title);
-    // formData.append("tldr", postData.tldr);
-    // formData.append("content", postData.content);
-    // formData.append("saveOption", postData?.saveOption?.value);
-    // let blodImage = postData.thumbnail[0]?.file;
-    // if(blodImage) {
-    //   formData.append("thumbnail", blodImage, postData.thumbnail[0]);
-    // }
-    // postData.tags.forEach(item => formData.append("tags", item));
-    // createPost(formData);
-    // router.push("/posts")
+    const formData = new FormData();
+    formData.append("title", questionData.title);
+    formData.append("content", questionData.content);
+    questionData.files.forEach(item => {
+      let bloobFile = item;
+      console.log("File need upload: ", item.file)
+      formData.append("files", bloobFile, item.name);
+    });
+    questionData.tags.forEach(item => formData.append("tags", item));
+    dispatch(createQuestion(formData));
   }
   return (
     <div className="createPage">
@@ -77,6 +80,10 @@ function CreateQuestionPage() {
         <div className="input__wrapper">
           <label className='input__label' htmlFor="">Nội dung Câu hỏi</label>
           <Editor onChangeFunc={handleChangeContent}/>
+        </div>
+        <div className="input__wrapper">
+          <label className='input__label' htmlFor="" >File đính kèm (tối đa 5 file)</label>
+          <InputMultiFile handleChange={handleChangeFile}></InputMultiFile>
         </div>
         <div className="input__wrapper">
           <label className='input__label' htmlFor="" >Thẻ (Tối đa 4 thẻ)</label>

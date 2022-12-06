@@ -3,6 +3,7 @@ export const GLOBAL_TYPES = {
     POST: 'POST',
     LOADING: 'LOADING',
     APP_STATE: 'APP_STATE',
+    QUESTION: 'QUESTION',
 }
 
 export const CREDENTIALS = {

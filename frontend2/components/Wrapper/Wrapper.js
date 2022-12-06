@@ -1,11 +1,14 @@
 import { useEffect } from "react";
-import { connect } from "react-redux";
+import {  useDispatch } from "react-redux";
 import { fetchDataUser } from "~/redux/actions/authActions";
 import { fetchPostData } from "~/redux/actions/postActions";
-function Wrapper({children, fetchDataUser, fetchPostData}) {
+import { fetchQuestionData } from "~/redux/actions/questionAction";
+function Wrapper({children}) {
+    const dispatch = useDispatch();
     useEffect(()=> {
-        fetchDataUser();
-        fetchPostData({});
+        dispatch(fetchDataUser());
+        dispatch(fetchPostData({}));
+        dispatch(fetchQuestionData({}));
     }, [])
     return (
         <>
@@ -13,10 +16,5 @@ function Wrapper({children, fetchDataUser, fetchPostData}) {
         </>
     )
 }
-const mapDispatchToProps = (dispatch) => {
-    return {
-        fetchDataUser: () => dispatch(fetchDataUser()),
-        fetchPostData: ({page, filter}) => dispatch(fetchPostData({page, filter})),
-    };
-};
-export default connect(null, mapDispatchToProps)(Wrapper);
+
+export default Wrapper;

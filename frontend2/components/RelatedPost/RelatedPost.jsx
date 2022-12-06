@@ -13,7 +13,7 @@ export default function RelatedPost({post}) {
         let numPost = 0;
         posts.data.forEach((p) => {
             if(numPost >= 3) return;
-            if(p.author._id === post.author._id) {
+            if(p.author._id === post.author._id && p._id !== post._id) {
                 postsRelatedNew.push(p);
                 numPost++;
             }
@@ -40,6 +40,7 @@ export default function RelatedPost({post}) {
         if(numPost < 3){
             posts.data.forEach((p) => {
                 if(numPost >= 3) return;
+                if(p._id !== post._id && postsRelatedNew.indexOf(p) === -1)
                 postsRelatedNew.push(p);
             })
         }

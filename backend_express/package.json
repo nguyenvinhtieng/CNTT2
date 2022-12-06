@@ -18,6 +18,7 @@
     "express-session": "^1.17.3",
     "fs": "0.0.1-security",
     "jsonwebtoken": "^8.5.1",
+    "megajs": "^1.1.0",
     "mongoose": "^6.7.0",
     "mongoose-slug-generator": "^1.0.4",
     "multiparty": "^4.2.3",

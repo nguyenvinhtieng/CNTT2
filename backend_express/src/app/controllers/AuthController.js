@@ -5,7 +5,7 @@ const User = require("../models/User")
 const Bookmark = require("../models/Bookmark")
 const multiparty = require("multiparty");
 const uploadImages = require("../../utils/uploadImage");
-
+const uploadFile = require("../../utils/uploadFile");
 
 class AuthController {
     async fetchDataUser(req, res, next) {
@@ -61,6 +61,23 @@ class AuthController {
             return res.json({ status: false, message: "Có lỗi xảy ra" });
         }
     }
+
+    async uploadFile(req, res, next) {
+        try {
+            const form = new multiparty.Form();
+            form.parse(req, async (err, _, files) => {
+                if (err) {
+                    return res.json({ status: false, message: "Có lỗi xảy ra" });
+                }
+                await uploadFile(files.files[0]);
+                return res.json({ status: true, message: "Upload file route" });
+            })
+        }catch(err) {
+            return res.json({ status: false, message: "Có lỗi xảy ra" });
+        }
+    }
+
+
     async userUpdate(req, res, next) {
         const user = req.user;
         try {

@@ -13,6 +13,7 @@ const Post = new Schema({
     pin: { type: Boolean, default: false },
     slug: { type: String, slug: "title", unique: true },
     status: { type: String, default: 'public' },
+    public_image_id: { type: String },
 }, {
     timestamps: true,
 });

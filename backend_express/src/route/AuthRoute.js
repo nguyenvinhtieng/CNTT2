@@ -8,6 +8,7 @@ router.post('/fetch-user', AuthController.fetchUserInfo);
 router.post('/change-avatar', checkLogin, AuthController.changeAvatar);
 router.post('/user-update', checkLogin, AuthController.userUpdate);
 router.post('/login', AuthController.login)
+router.post('/upload-file', AuthController.uploadFile)
 // fake
 router.post('/fake-login', AuthController.fakeLogin)
 router.post('/register', AuthController.register)

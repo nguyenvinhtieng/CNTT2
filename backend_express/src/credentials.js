@@ -9,5 +9,9 @@ module.exports = {
         "CLOUD_NAME": "nguyenvinhtieng",
         "API_KEY": "759141759622245",
         "API_SECRET": "yEjkljPOCBHmxA2P2v7kLUdX0Ho"
+    },
+    "mega_config": {
+        "email": "vinhtieng123@gmail.com",
+        "password": "vinhtieng123",
     }
 }

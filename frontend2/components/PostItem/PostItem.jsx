@@ -50,7 +50,7 @@ export default function PostItem({post}) {
       <div className="post-item__wrapper">
         <div className="post-item__head">
           <div className="post-item__user">
-            <UserItem name={post?.author.fullname || "Anonymous"} username={post?.author.username} avatar={post?.author?.avatar || "/default.png"}></UserItem>
+            <UserItem user={post.author} time={post.createdAt}></UserItem>
           </div>
           <div className="post-item__link">
             <Link href={`/post/${post.slug || ""}`}>

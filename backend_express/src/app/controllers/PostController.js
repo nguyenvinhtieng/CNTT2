@@ -2,8 +2,9 @@ const multiparty = require("multiparty");
 
 const Post = require("../models/Post");
 const PostVote = require("../models/PostVote");
-const uploadImages = require("../../utils/uploadImage");
 const Comment = require("../models/Comment");
+const uploadImage = require("../../utils/uploadImage");
+const deleteImage = require("../../utils/deleteImage");
 
 class PostController {
     async get(req, res, next) {
@@ -46,9 +47,12 @@ class PostController {
                 }
 
                 let thumbnail_link = ""; // set to default image later
+                let public_id = "";
                 if(files.thumbnail) {
                     if (files?.thumbnail[0]?.size > 0) {
-                        thumbnail_link = await uploadImages(files.thumbnail[0]);
+                        let result = await deleteImage(files.thumbnail[0]);
+                        thumbnail_link = result.url;
+                        public_id = result.public_id;
                     }
                 }
                 
@@ -60,6 +64,7 @@ class PostController {
                     thumbnail: thumbnail_link,
                     tags: tags,
                     status,
+                    public_image_id: public_id
                 });
                 await post.save();
                 let postNew = await Post.findOne({ _id: post._id }).populate('author').lean();
@@ -155,6 +160,8 @@ class PostController {
             if(post.author.toString() !== user._id.toString() && user.role !== "admin") {
                 return res.json({ status: false, message: "Bạn không có quyền xóa bài viết này" });
             }
+            let public_id = post.public_image_id;
+            await deleteImage(public_id);
             await Post.findOneAndDelete({ _id: post_id});
             await PostVote.deleteMany({ post_id: post_id });
             await Comment.deleteMany({ post_id: post_id })
@@ -193,9 +200,15 @@ class PostController {
                     return res.status(400).json({ status: false, message: "Bạn không có quyền sửa bài viết này" });
                 }
                 let thumbnail_link = post.thumbnail_link; 
+                let public_id = post.public_image_id;
                 if(files.thumbnail) {
+                    if(public_id) {
+                        await deleteImage(public_id);
+                    }
                     if (files?.thumbnail[0]?.size > 0) {
-                        thumbnail_link = await uploadImages(files.thumbnail[0]);
+                        let result = await uploadImage(files.thumbnail[0]);
+                        thumbnail_link = result.url;
+                        public_id = result.public_id;
                     }
                 }
 
@@ -206,6 +219,7 @@ class PostController {
                     tags: tags,
                     status: status,
                     thumbnail_link: thumbnail_link,
+                    public_image_id: public_id,
                 }, { new: true
                 }).populate('author').lean();
                 postNew.votes = await PostVote.find({ post_id: post_id }).lean();
