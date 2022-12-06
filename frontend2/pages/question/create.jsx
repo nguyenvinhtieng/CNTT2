@@ -58,16 +58,28 @@ function CreateQuestionPage() {
   }
   const handleSubmitForm = async (e) => {
     e.preventDefault();
+    if(!questionData.title) {
+        displayToast("warning", "Bạn chưa nhập tiêu đề");
+        return;
+    }
+    if(!questionData.content) {
+        displayToast("warning", "Bạn chưa nhập nội dung");
+        return;
+    }
+    if(questionData.tags.length === 0) {
+        displayToast("warning", "Bạn chưa nhập thẻ");
+        return;
+    }
+
     const formData = new FormData();
     formData.append("title", questionData.title);
     formData.append("content", questionData.content);
     questionData.files.forEach(item => {
       let bloobFile = item;
-      console.log("File need upload: ", item.file)
       formData.append("files", bloobFile, item.name);
     });
     questionData.tags.forEach(item => formData.append("tags", item));
-    dispatch(createQuestion(formData));
+    dispatch(createQuestion(formData, router));
   }
   return (
     <div className="createPage">

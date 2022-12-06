@@ -50,7 +50,7 @@ export const fetchQuestionData = ({page, filter}) => {
 }
 
 
-export const createQuestion = (formData) => {
+export const createQuestion = (formData, router) => {
     return async (dispatch, getState) => {
         try {
             const state = getState();
@@ -59,7 +59,18 @@ export const createQuestion = (formData) => {
                 payload: { ...state.appState, loading: true }
             })
             let res = await postMethod(`question`, formData);
-            console.log("res: ", res);
+            const { data } = res;
+            if(data.status) {
+                displayToast("success", data.message);
+                dispatch({
+                    type: GLOBAL_TYPES.QUESTION,
+                    payload: {
+                        ...state.questions,
+                        data: [data.question, ...state.questions.data]
+                    }
+                })
+                router.push('/')
+            }
             dispatch({
                 type: GLOBAL_TYPES.APP_STATE,
                 payload: { ...state.appState, loading: false }
@@ -68,4 +79,27 @@ export const createQuestion = (formData) => {
             console.log(error);
         }
     };
+}
+
+export const addAnswer = ({question_id, content, reply_id}) => {
+    return async (dispatch, getState) => {
+        const state = getState();
+        try {
+            let res = await postMethod(`answer`, {question_id, content, reply_id});
+            const { data } = res;
+            if(data.status) {
+                displayToast("success", data.message);
+                dispatch({
+                    type: GLOBAL_TYPES.QUESTION,
+                    payload: {
+                        ...state.questions,
+                        data: [...state.questions.data, data.question]
+                    }
+                })
+            }
+            
+        } catch (error) {
+            console.log(error);
+        }
+    }
 }

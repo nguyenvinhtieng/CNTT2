@@ -3,7 +3,7 @@ const Post = require("./PostRoute");
 const Comment = require("./CommentRoute");
 const Question = require("./QuestionRoute");
 const Bookmark = require("./BookMarkRoute");
-const Answer = require("./Answer");
+const AnswerRoute = require("./AnswerRoute");
 
 function route(app) {
     app.use("/api", Auth);
@@ -11,7 +11,7 @@ function route(app) {
     app.use("/api/comment", Comment);
     app.use("/api/bookmark", Bookmark);
     app.use("/api/question", Question);
-    app.use("/api/answer", Answer);
+    app.use("/api/answer", AnswerRoute);
 }
 
 module.exports = route;

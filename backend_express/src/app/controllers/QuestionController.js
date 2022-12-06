@@ -3,6 +3,7 @@ const QuestionModel = require("../models/Question");
 const Question = require("../models/Question");
 const uploadFile = require("../../utils/uploadFile");
 const uploadImage = require("../../utils/uploadImage");
+const Answer = require("../models/Answer");
 class QuestionController {
     async getQuestionDetail(req, res) {
         let slug = req.params.slug;
@@ -27,7 +28,12 @@ class QuestionController {
                                 .populate("author")
                                 .sort({createdAt: -1})
                                 .skip(page * SKIP)
-                                .limit(SKIP);
+                                .limit(SKIP)
+                                .lean();
+            for(const [index, q] of questions.entries()) {
+                let answers = await Answer.find({ question_id: q._id }).populate("author");
+                questions[index].answers = answers;
+            }
             return res.json({ status: true, message: "Lấy các câu hỏi thành công", questions: questions });
         } catch (err) {
             return res.json({ status: false, message: "Có lỗi xảy ra" });
@@ -43,16 +49,16 @@ class QuestionController {
                 let content = fields.content[0];
                 let tags = fields.tags;
                 let files_data = [];
-                if (files.files.length > 0) {
+                if (files?.files?.length > 0) {
                     for(const file of files.files) {
                         let fileType = file.headers["content-type"].split("/")[0];
                         if (fileType == "image") {
                             let result = await uploadImage(file);
                             let file_link = result.secure_url;
-                            files_data.push({type: "image", url: file_link, public_id: result.public_id})
+                            files_data.push({type: "image", url: file_link, public_id: result.public_id, file_name: file.originalFilename})
                         }else {
                             let file_link = await uploadFile(file);
-                            files_data.push({type: "file", url: file_link})
+                            files_data.push({type: "file", url: file_link, file_name: file.originalFilename})
                         }
                     }
                 }

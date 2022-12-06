@@ -6,4 +6,39 @@
       margin-bottom: 12px;
     }
   }
+  &__files {
+    margin-top: 25px;
+    a {
+      // display: block;
+    }
+    &--item {
+      margin-bottom: 4px;
+    }
+  }
+  &__addAnswer {
+    margin-top: 30px;
+    display: flex;
+    width: fit-content;
+    padding: 6px 20px;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $grayColor;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s linear;
+    &:hover {
+      background-color: rgb(29, 102, 212);
+    }
+    &--ttl {
+      margin-left: 8px;
+    }
+  }
+  &__comments {
+    h3 {
+      margin-top: 12px;
+      margin-bottom: 16px;
+    }
+  }
 }

@@ -3,11 +3,11 @@ const Schema = mongoose.Schema;
 
 const Answer = new Schema(
     {
-        author_username: { type: String },
-        author_name: { type: String },
-        question_id: { type: Schema.Types.ObjectId, ref: "Question" },
+        author: { type: Schema.Types.ObjectId, ref: "User" },
+        question_id: { type: String },
         content: { type: String },
-        is_confirm: { type: Boolean, default: false },
+        status: { type: String, default: "" },
+        reply_id: { type: String, default: "" },
     },
     {
         timestamps: true,
