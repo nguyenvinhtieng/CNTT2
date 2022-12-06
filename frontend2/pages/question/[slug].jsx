@@ -15,34 +15,37 @@ export default function QuestionDetailPage() {
       console.log(questionDataFind)
       setQuestion(questionDataFind)
     }else {
+      console.log("run there")
       if(slug) {
-        getMethod(`questions/${slug}`).then(res => {
-          console.log(res)
-        })
-        .catch(err => console.log(err))
+        getMethod(`questions/${slug}`)
+          .then(res => {
+            console.log(res)
+          })
+          .catch(err => console.log(err))
       }
     }
 
   }, [slug])
+  console.log("question: ", question)
   return (
     <div className='questionDetailPage'>
-      <UserItem user={question.author}></UserItem>
-      <div className="questionDetailPage__content">
-        <h3 className='questionDetailPage__content--ttl'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam, fuga.</h3>
-        <ul className="tag-list">
-          <li className="tag-item">HTML</li>
-        </ul>
-        <div className="questionDetailPage__content--body mce-content-body" 
-          // dangerouslySetInnerHTML={{__html: post?.content}}
-          >
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Itaque, debitis.
+      
+        <UserItem user={question?.author}></UserItem>
+        <div className="questionDetailPage__content">
+          <h3 className='questionDetailPage__content--ttl'>{question?.title}</h3>
+          <ul className="tag-list">
+            {question?.tags?.length > 0 && question.tags.map((tag, _) => (<li className="tag-item" key={tag}>{tag}</li>))}
+          </ul>
+          <div className="questionDetailPage__content--body mce-content-body" 
+            dangerouslySetInnerHTML={{__html: question?.content}}
+            ></div>
+          <div className="questionDetailPage__files">
+            <a href="/" target='_blank'>
+              Lien ket
+            </a>
+          </div>
         </div>
-        <div className="questionDetailPage__files">
-          <a href="/" target='_blank'>
-            Lien ket
-          </a>
-        </div>
-      </div>
+    
     </div>
   )
 }
