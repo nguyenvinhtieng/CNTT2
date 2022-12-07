@@ -1,11 +1,11 @@
 import Link from 'next/link'
 import React from 'react'
-import { FiHome } from 'react-icons/fi'
-import { HiOutlineChatAlt2, HiOutlineUsers } from 'react-icons/hi'
-import { MdOutlinePostAdd, MdOutlineArticle } from 'react-icons/md'
+import { FiHome, FiUsers } from 'react-icons/fi'
+import { HiOutlineChatAlt2, HiOutlineNewspaper, HiOutlineUsers } from 'react-icons/hi'
+import { MdOutlinePostAdd, MdOutlineArticle, MdOutlineReport } from 'react-icons/md'
 import { AiOutlineQuestionCircle } from 'react-icons/ai'
 import { GrArticle } from 'react-icons/gr'
-import { BsBookmark, BsInfoLg } from 'react-icons/bs'
+import { BsBookmark, BsInfoLg, BsQuestionSquare } from 'react-icons/bs'
 import { VscQuestion } from 'react-icons/vsc'
 import { RiLogoutBoxRLine } from 'react-icons/ri'
 export default function Sidebar({ isOpen }) {
@@ -62,30 +62,33 @@ export default function Sidebar({ isOpen }) {
               <span className="sidebar__menu--ttl">Bài viết đã lưu</span>
             </Link>
           </li>
-          {/* <li className='sidebar__menu--item'>
+        </ul>
+        <p className="sidebar__ttl">Quản trị</p>
+        <ul className="sidebar__menu">
+          <li className='sidebar__menu--item'>
             <Link href="/manage/users">
-              <span className="sidebar__menu--icon"><HiOutlineUsers></HiOutlineUsers></span>
+              <span className="sidebar__menu--icon"><FiUsers></FiUsers></span>
               <span className="sidebar__menu--ttl">Quản lý người dùng</span>
             </Link>
           </li>
           <li className='sidebar__menu--item'>
             <Link href="/manage/posts">
-              <span className="sidebar__menu--icon"><HiOutlineChatAlt2></HiOutlineChatAlt2></span>
+              <span className="sidebar__menu--icon"><HiOutlineNewspaper></HiOutlineNewspaper></span>
               <span className="sidebar__menu--ttl">Quản lý bài viết</span>
             </Link>
           </li>
           <li className='sidebar__menu--item'>
             <Link href="/manage/questions">
-              <span className="sidebar__menu--icon"><MdOutlinePostAdd></MdOutlinePostAdd></span>
+              <span className="sidebar__menu--icon"><BsQuestionSquare></BsQuestionSquare></span>
               <span className="sidebar__menu--ttl">Quản lý câu hỏi</span>
             </Link>
           </li>
           <li className='sidebar__menu--item'>
-            <Link href="/manage/reports">
-              <span className="sidebar__menu--icon"><AiOutlineQuestionCircle></AiOutlineQuestionCircle></span>
-              <span className="sidebar__menu--ttl">Báo cáo phản hồi</span>
+            <Link href="/">
+              <span className="sidebar__menu--icon"><MdOutlineReport></MdOutlineReport></span>
+              <span className="sidebar__menu--ttl">Báo cáo người dùng</span>
             </Link>
-          </li> */}
+          </li>
         </ul>
         <p className="sidebar__ttl">Cá nhân</p>
         <ul className="sidebar__menu">
@@ -102,6 +105,7 @@ export default function Sidebar({ isOpen }) {
             </Link>
           </li>
         </ul>
+        
       </div>
     </aside>
   )

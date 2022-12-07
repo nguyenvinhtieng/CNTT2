@@ -302,12 +302,12 @@ export const bookmarkPost = ({post_id}) => {
                             ...state.auth,
                             user: {
                                 ...state.auth.user,
-                                bookmarks: [...state.auth.user.bookmarks, data.bookmark]
+                                bookmarks: [...state.auth?.user?.bookmarks, data.bookmark]
                             }
                         }
                     })
                 }else {
-                    let newBookmarkUser = state.auth.user.bookmarks.filter(item => item.post._id !== post_id);
+                    let newBookmarkUser = state.auth?.user?.bookmarks.filter(item => item.post._id !== post_id);
                     dispatch({
                         type: GLOBAL_TYPES.AUTH,
                         payload: {

@@ -1,4 +1,5 @@
 .managePage {
+    padding-bottom: 50px;
     &__heading {
         font-size: 18px;
         margin-bottom: 25px;
@@ -13,9 +14,18 @@
     &__filter {
         margin-top: 12px;
         margin-bottom: 12px;
-        padding: 16px;
         border: 1px solid $borderColor;
         border-radius: 6px;
+        overflow: hidden;
+        max-height: 0;
+        transition: all 0.2s linear;
+        opacity: 0;
+        padding: 16px;
+        max-width: 600px;
+        &.is-show {
+            opacity: 1;
+            max-height: 1000px;
+        }
     }
     &__pagination {
         display: flex;
