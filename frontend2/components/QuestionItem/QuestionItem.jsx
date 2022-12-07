@@ -18,12 +18,12 @@ export default function QuestionItem({question}) {
             <div className="question__item--info">
                 <span className="question__item--infoItem">
                     <span className="ico"><BiChat></BiChat></span>
-                    <span className='num'>100 câu trả lời</span>
+                    <span className='num'>{question?.answers?.length || 0 } câu trả lời</span>
                 </span>
-                <span className="question__item--infoItem is-active">
+                {question?.answers?.filter(item => item.status == "accepted").length > 0 && <span className="question__item--infoItem is-active">
                     <span className="ico"><TiTick></TiTick></span>
                     <span>Đã được giải đáp</span>
-                </span>
+                </span>}
             </div>
         </Link>
     </li>

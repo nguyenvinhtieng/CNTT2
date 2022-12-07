@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import ReactTooltip from "react-tooltip";
 import { useRouter } from "next/router";
 import routes from "~/config/route";
@@ -6,7 +7,7 @@ import "../styles/main.scss";
 import { ToastContainer } from "react-toastify";
 import tooltipConfig from "~/config/tooltipConfig";
 import "react-toastify/dist/ReactToastify.css";
-import { useEffect, useState } from "react";
+import 'react-medium-image-zoom/dist/styles.css'
 
 import DataProvider from "~/redux/store";
 import Wrapper from "~/components/Wrapper/Wrapper";

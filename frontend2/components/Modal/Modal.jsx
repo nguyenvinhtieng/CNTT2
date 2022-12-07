@@ -18,7 +18,7 @@ export default function Modal({ isShow = false, handleCloseModal, size, title, h
         <div className="modal__footer">
           {/* Modal footer */}
           <button className="modal__btn" onClick={handleCloseModal}>Hủy bỏ</button>
-          <button className={`modal__btn modal__btn--${danger ? "secondary" : "primary"}`} onClick={handleSubmit}>{danger ? "Xóa" : "Lưu" }</button>
+          <button className={`modal__btn modal__btn--${danger ? "secondary" : "primary"}`} onClick={handleSubmit}>{danger ? "Xác nhận" : "Lưu" }</button>
         </div>
       </div>
     </>

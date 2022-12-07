@@ -50,7 +50,7 @@ class PostController {
                 let public_id = "";
                 if(files.thumbnail) {
                     if (files?.thumbnail[0]?.size > 0) {
-                        let result = await deleteImage(files.thumbnail[0]);
+                        let result = await uploadImage(files.thumbnail[0]);
                         thumbnail_link = result.url;
                         public_id = result.public_id;
                     }

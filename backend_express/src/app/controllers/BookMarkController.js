@@ -33,8 +33,8 @@ class BookMarkController {
         const bookmarks = await Bookmark.find({user_id: user._id}).sort({createdAt: -1}).populate("post").lean();
         for(const [index, b] of bookmarks.entries()) {
           const post = b.post;
-          const votes = await PostVote.find({post: post._id});
-          const comments = await Comment.find({post: post._id});
+          const votes = await PostVote.find({post_id: post._id});
+          const comments = await Comment.find({post_id: post._id});
           bookmarks[index].post.votes = votes;
           bookmarks[index].post.comments = comments;
           const user = await User.findOne({_id: post.author});

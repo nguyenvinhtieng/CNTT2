@@ -17,7 +17,7 @@ app.use(expressSession({
     saveUninitialized: false,
     secret: credentials.cookieSecret,
 }))
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use(express.json());
 app.use(express.static(__dirname));
 route(app)

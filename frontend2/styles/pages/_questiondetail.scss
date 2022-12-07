@@ -1,4 +1,22 @@
 .questionDetailPage {
+  position: relative;
+  padding-bottom: 50px;
+  &__resolve {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 12px;
+    color: yellow;
+    display: flex;
+    align-items: center;
+    background-color: rgba(255, 255, 0, 0.1);
+    padding: 6px 12px;
+    border-radius: 5px;
+    .ico {
+      margin-right: 6px;
+    }
+
+  }
   &__content {
     margin-top: 6px;
     &--ttl {
@@ -7,6 +25,9 @@
     }
   }
   &__files {
+    > h3 {
+      font-size: 16px;
+    }
     margin-top: 25px;
     a {
       // display: block;
@@ -36,7 +57,7 @@
     }
   }
   &__comments {
-    h3 {
+    > h3 {
       margin-top: 12px;
       margin-bottom: 16px;
     }

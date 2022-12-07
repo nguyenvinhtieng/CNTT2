@@ -14,6 +14,7 @@ export default function Editer({initialVal = "", onChangeFunc}) {
   return (
   <>
     <EditerTinyMce
+      apiKey='yheylvn8zaqz0ctxmvxmbfkq64y5rn318jfbdlh0u9p76lel'
       onInit={(evt, editor) => editorRef.current = editor}
       onEditorChange={log}
       initialValue={initialVal}

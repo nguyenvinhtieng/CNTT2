@@ -61,19 +61,22 @@
         margin-bottom: 16px;
     }
     &__actionItem {
-        margin-right: 16px;
+        margin-right: 2px;
         display: flex;
         justify-content: center;
         align-items: center;
         transition: all 0.2s linear;
-        // padding: 6px 12px;
-        &:hover {
-            // background-color: $grayColor;
-            cursor: pointer;
-            color: green;
+        padding: 6px 12px;
+        border-radius: 4px;
+        &.is-active {
+            color: rgb(50, 189, 50);
+            background-color: rgba(50, 189, 50, 0.1);
+            // font-weight: bold;
         }
-        &--ico {
-
+        &:hover {
+            background-color: $grayColor;
+            cursor: pointer;
+            // color: green;
         }
         &--ttl {
             font-size: 12px;

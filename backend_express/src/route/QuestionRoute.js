@@ -5,9 +5,10 @@ const QuestionController = require("../app/controllers/QuestionController");
 const checkLogin = require("../app/middleware/checkLogin");
 
 router.get("/", QuestionController.getPagination);
+router.get("/my-question",checkLogin, QuestionController.getMyQuestion);
 router.get("/:slug", QuestionController.getQuestionDetail);
 router.post("/", checkLogin, QuestionController.addQuestion);
-router.delete("/:slug", QuestionController.delete);
-router.put("/:slug", QuestionController.edit);
+router.post("/delete",checkLogin, QuestionController.deleteQuestion);
+router.post("/update",checkLogin, QuestionController.updateQuestion);
 
 module.exports = router;

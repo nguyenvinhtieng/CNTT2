@@ -19,6 +19,9 @@
   &.sm {
     width: min(calc(100% - 32px), 400px);
   }
+  &.md {
+    width: min(calc(100% - 32px), 600px);
+  }
   &__head {
     padding: 12px 12px 12px 25px;
     display: flex;
@@ -63,6 +66,7 @@
     transition: all 0.2s linear;
     font-size: 14px;
     margin-left: 12px;
+    font-family: inherit;
     &:hover {
       color: #fff;
       background-color: $borderColor;

@@ -1,13 +1,14 @@
-import React, { useId } from 'react'
+import React, { useEffect, useId } from 'react'
 import { FaFileAlt, FaTimes } from 'react-icons/fa'
 import { HiPlus } from 'react-icons/hi'
 import displayToast from '~/utils/displayToast'
 import getIconFileType from '~/utils/getIconFileType'
 
-export default function InputMultiFile({handleChange = () => {}, maxFiles = 5}) {
+export default function InputMultiFile({handleChange = () => {}, maxFiles = 5, initialFiles}) {
   const [files, setFiles] = React.useState([])
   const inputId = useId()
   const inputFileRef = React.useRef(null)
+  const filesRef = React.useRef(null)
   const handleAddFile = (e) => {
     const fileList = e.target.files
     if(fileList.length === 0) return
@@ -31,6 +32,8 @@ export default function InputMultiFile({handleChange = () => {}, maxFiles = 5}) 
     }
 
     setFiles(fileNew)
+    filesRef.current = fileNew
+    changeFileFunc()
   }
   const handleClickLabel = () => {
     if(files.length >= maxFiles) {
@@ -42,13 +45,23 @@ export default function InputMultiFile({handleChange = () => {}, maxFiles = 5}) 
     const newFiles = [...files]
     newFiles.splice(index, 1)
     setFiles(newFiles)
+    filesRef.current = newFiles
+    changeFileFunc()
+  }
+  const changeFileFunc = () => {
+    handleChange(filesRef.current)
   }
 
-  React.useEffect(() => {
-    handleChange(files)
-  }, [files])
 
-  
+  useEffect(()=> {
+    if(initialFiles) {
+      setFiles(initialFiles)
+    }
+  }, [initialFiles])
+
+  // console.log("Files: ", initialFiles)
+
+
   return (
     <>
     <div className="inputFile__wrapper">
@@ -57,9 +70,16 @@ export default function InputMultiFile({handleChange = () => {}, maxFiles = 5}) 
       <div className="inputFile__preview">
         {files.map((file, index) => {
           let fileSize = Math.floor(file.size / 1024)
-          let fileName = file.name.length > 30 ? file.name.slice(0, 30) + '...' : file.name
+          let fileName = ""
+          if(file.name) {
+            fileName = file.name.length > 30 ? file.name.slice(0, 30) + '...' : file.name
+          }else {
+            fileName = file.file_name
+          }
           let fileType = file.type.split('/')[1]
           let FileIcon = getIconFileType(fileType)
+
+
           return (
             <div key={index} className="inputFile__preview-item">
               <div className="inputFile__preview-item__delete" onClick={()=>handleDeleteFile(index)}>

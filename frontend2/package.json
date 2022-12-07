@@ -21,6 +21,7 @@
     "react-dom": "18.2.0",
     "react-icons": "^4.7.1",
     "react-images-uploading": "^3.1.7",
+    "react-medium-image-zoom": "^5.1.2",
     "react-quill": "^2.0.0",
     "react-redux": "^8.0.5",
     "react-router-redux": "^4.0.8",

@@ -16,7 +16,7 @@ import displayToast from "~/utils/displayToast";
 import PostCommentBlock from "~/components/PostCommentBlock/PostCommentBlock";
 import RelatedPost from "~/components/RelatedPost/RelatedPost";
 import { BsBookmark, BsBookmarkCheck, BsBookmarkFill } from "react-icons/bs";
-
+import ZoomImage from "~/components/ZoomImage/ZoomImage";
 export default function PostDetail() {
   const [isLoaded, setIsLoaded] = React.useState(false);
   const [post, setPost] = React.useState(null);
@@ -96,7 +96,9 @@ export default function PostDetail() {
       {isLoaded && 
         <div className="post-detail">
           <div className="post-detail__thumbail">
-            <img src={post.thumbnail || "/default.png"} alt="Post thumbnail" />
+            <ZoomImage>
+              <img src={post.thumbnail || "/default.png"} alt="Post thumbnail" />
+            </ZoomImage>
           </div>
           <h1 className="post-detail__title">{post.title}</h1>
           <div className="post-detail__info">
@@ -115,7 +117,9 @@ export default function PostDetail() {
           <p className="post-detail__tldr">
             <span>Tóm tắt: </span>{post?.tldr || "Bài viết không có tóm tắt"}
           </p>
-          <div className="post-detail__content mce-content-body" dangerouslySetInnerHTML={{__html: post?.content}}></div>
+          <ZoomImage>
+            <div className="post-detail__content mce-content-body" dangerouslySetInnerHTML={{__html: post?.content}}></div>
+          </ZoomImage>
           <div className="post-detail__reactInfo">
             <span>{post.votes.reduce((total, item)=>{
                   if(item.type == "upvote") return total + 1

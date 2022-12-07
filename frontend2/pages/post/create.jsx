@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useId, useRef  } from 'react'
 import { connect } from 'react-redux'
-import Select from 'react-select';
+// import Select from 'react-select';
 import { FaTimes } from 'react-icons/fa';
 import Editor from '~/components/Editer/Editer';
 import InputImage from '~/components/InputImage/InputImage'
@@ -8,9 +8,10 @@ import displayToast from '~/utils/displayToast';
 import { createPost } from '~/redux/actions/postActions';
 import { postMethod } from '~/utils/fetchData';
 import { useRouter } from 'next/router';
+import Select from '~/components/Select/Select';
 const optionsSavePost = [
-  {value: "unpublish", label: "Lưu nháp"},
-  {value: "publish", label: "Công khai"}
+  {value: "unpublish", title: "Lưu nháp"},
+  {value: "publish", title: "Công khai"}
 ]
 function CreatePostPage({ createPost }) {
   const [editorLoaded, setEditorLoaded] = useState(false);
@@ -24,6 +25,7 @@ function CreatePostPage({ createPost }) {
     thumbnail: [],
     tags: []
   });
+  const selectRef = useRef();
   useEffect(() => {
     setEditorLoaded(true);
   }, []);
@@ -33,8 +35,8 @@ function CreatePostPage({ createPost }) {
     setPostData({ ...postData, [name]: value })
   }
 
-  const handleChangeSaveOption = (selectedOption) => {
-    setPostData({ ...postData, saveOption: selectedOption })
+  const handleChangeSaveOption = (val) => {
+    setPostData({ ...postData, saveOption: val })
   }
   
   const handleChangeTitle = (e) => {
@@ -94,7 +96,7 @@ function CreatePostPage({ createPost }) {
     formData.append("title", postData.title);
     formData.append("tldr", postData.tldr);
     formData.append("content", postData.content);
-    formData.append("saveOption", postData?.saveOption?.value);
+    formData.append("saveOption", postData?.saveOption);
     let blodImage = postData.thumbnail[0]?.file;
     if(blodImage) {
       formData.append("thumbnail", blodImage, postData.thumbnail[0]);
@@ -137,14 +139,24 @@ function CreatePostPage({ createPost }) {
         <div className="input__wrapper">
           <label className='input__label' htmlFor="">Chế độ lưu</label>
           <Select
+            onChangeFunc={handleChangeSaveOption}
+            options={optionsSavePost}
+            initialVal="Chế độ lưu"
+          ></Select>
+          {/* <Select
+            ref={selectRef}
             value={postData.saveOption}
             onChange={handleChangeSaveOption}
+            onFocus={()=> {
+              console.log("focus")
+              console.log(selectRef)
+            }}
             options={optionsSavePost}
             className="reactSelect"
             isSearchable={false}
             autoFocus={true}
             instanceId={useId()}
-          />
+          /> */}
         </div>
         <div className="createPage__btn">
           <button className='button button__lg' type='button' onClick={handleSubmitForm}>Lưu bài viết</button>

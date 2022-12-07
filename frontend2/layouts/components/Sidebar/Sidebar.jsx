@@ -5,7 +5,9 @@ import { HiOutlineChatAlt2, HiOutlineUsers } from 'react-icons/hi'
 import { MdOutlinePostAdd, MdOutlineArticle } from 'react-icons/md'
 import { AiOutlineQuestionCircle } from 'react-icons/ai'
 import { GrArticle } from 'react-icons/gr'
-import { BsBookmark } from 'react-icons/bs'
+import { BsBookmark, BsInfoLg } from 'react-icons/bs'
+import { VscQuestion } from 'react-icons/vsc'
+import { RiLogoutBoxRLine } from 'react-icons/ri'
 export default function Sidebar({ isOpen }) {
   return (
     <aside className={`sidebar scroll-css ${isOpen ? "is-open" : ""}`}>
@@ -24,6 +26,9 @@ export default function Sidebar({ isOpen }) {
               <span className="sidebar__menu--ttl">Hỏi đáp</span>
             </Link>
           </li>
+        </ul>
+        <p className="sidebar__ttl">Chia sẻ</p>
+        <ul className="sidebar__menu">
           <li className='sidebar__menu--item'>
             <Link href="/post/create">
               <span className="sidebar__menu--icon"><MdOutlinePostAdd></MdOutlinePostAdd></span>
@@ -40,9 +45,15 @@ export default function Sidebar({ isOpen }) {
         <p className="sidebar__ttl">Quản lý</p>
         <ul className="sidebar__menu">
           <li className='sidebar__menu--item'>
-            <Link href="/posts">
+            <Link href="/my-post">
               <span className="sidebar__menu--icon"><MdOutlineArticle></MdOutlineArticle></span>
               <span className="sidebar__menu--ttl">Bài viết của tôi</span>
+            </Link>
+          </li>
+          <li className='sidebar__menu--item'>
+            <Link href="/my-question">
+              <span className="sidebar__menu--icon"><VscQuestion></VscQuestion></span>
+              <span className="sidebar__menu--ttl">Câu hỏi của tôi</span>
             </Link>
           </li>
           <li className='sidebar__menu--item'>
@@ -51,7 +62,7 @@ export default function Sidebar({ isOpen }) {
               <span className="sidebar__menu--ttl">Bài viết đã lưu</span>
             </Link>
           </li>
-          <li className='sidebar__menu--item'>
+          {/* <li className='sidebar__menu--item'>
             <Link href="/manage/users">
               <span className="sidebar__menu--icon"><HiOutlineUsers></HiOutlineUsers></span>
               <span className="sidebar__menu--ttl">Quản lý người dùng</span>
@@ -73,6 +84,21 @@ export default function Sidebar({ isOpen }) {
             <Link href="/manage/reports">
               <span className="sidebar__menu--icon"><AiOutlineQuestionCircle></AiOutlineQuestionCircle></span>
               <span className="sidebar__menu--ttl">Báo cáo phản hồi</span>
+            </Link>
+          </li> */}
+        </ul>
+        <p className="sidebar__ttl">Cá nhân</p>
+        <ul className="sidebar__menu">
+          <li className='sidebar__menu--item'>
+            <Link href="/my-post">
+              <span className="sidebar__menu--icon"><BsInfoLg></BsInfoLg></span>
+              <span className="sidebar__menu--ttl">Thông tin cá nhân</span>
+            </Link>
+          </li>
+          <li className='sidebar__menu--item'>
+            <Link href="/logout">
+              <span className="sidebar__menu--icon"><RiLogoutBoxRLine></RiLogoutBoxRLine></span>
+              <span className="sidebar__menu--ttl">Đăng xuất</span>
             </Link>
           </li>
         </ul>

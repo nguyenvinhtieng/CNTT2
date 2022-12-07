@@ -13,6 +13,7 @@ export default function SavedPage() {
       .then((res) => {
         const { data } = res;
         if(data.status){
+          console.log("data: ", data)
           setBookmarks(data.bookmarks);
         }
         setLoaded(true);
