@@ -68,7 +68,11 @@ return (
                     <td>{question.title}</td>
                     <td>{moment(question.createdAt).format("LLL")}</td>
                     <td>{question.answers.length} câu trả lời</td>
-                    <td>{question.answers.filter(item => item.status == "accepted").length > 0 ? "Đã được giải đáp" : "Chưa được giải đáp"}</td>
+                    <td>
+                      <span className={question.answers.filter(item => item.status == "accepted").length > 0 ? "resolve" : "notResolve"}>
+                        {question.answers.filter(item => item.status == "accepted").length > 0 ? "Đã được giải đáp" : "Chưa được giải đáp"}
+                      </span>
+                    </td>
                     <td>
                       <div className="table__actions">
                         <div className="table__actionsItem view" data-tip="Xem câu hỏi">

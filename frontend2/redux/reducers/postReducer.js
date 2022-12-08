@@ -6,6 +6,7 @@ const initialState = {
     pageTemp: 0,
     loading: false,
     isEnd: false,
+    searchContent: ''
 }
 function postReducer(state = initialState, action) {
     switch (action.type) {

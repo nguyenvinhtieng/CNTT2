@@ -33,6 +33,7 @@ export default function ManageUserPage() {
         getMethod("manage/users")
             .then(res => {
                 const {data} = res;
+                console.log("res: ", res)
                 if(data.status) {
                     setUsersFetch(data.users)
                     setUsersFilter(data.users)
@@ -43,6 +44,7 @@ export default function ManageUserPage() {
             })
             .catch(err => console.log(err))
     }
+    
     const showModalConfirmBlock = (user_id) => {
         userSelectedId.current = user_id;
         toggleModalConfirmBlock();
@@ -193,11 +195,11 @@ return (
         <div className="managePage__filter__search">
             <div className="input__wrapper">
                 <label htmlFor="" className="input__label">Tên</label>
-                <input type="text" placeHolder="Tên người dùng" ref={nameRef}/>
+                <input type="text" placeholder="Tên người dùng" ref={nameRef}/>
             </div>
             <div className="input__wrapper">
                 <label htmlFor="" className="input__label">Email</label>
-                <input type="text" placeHolder="Email người dùng" ref={emailRef}/>
+                <input type="text" placeholder="Email người dùng" ref={emailRef}/>
             </div>
             <div className="input__wrapper">
                 <label htmlFor="" className="input__label">Trạng thái tài khoản</label>

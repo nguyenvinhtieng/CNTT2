@@ -5,6 +5,8 @@ const ManageController = require('../app/controllers/ManageController.js');
 const checkLogin = require('../app/middleware/checkLogin.js')
 
 router.get("/users", checkLogin, ManageController.getUsers);
+router.post("/posts", ManageController.getPosts);
+router.post("/questions", ManageController.getQuestions);
 router.post("/change-status-user", checkLogin, ManageController.changeStatusUser);
 
 module.exports = router;

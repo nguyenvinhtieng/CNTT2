@@ -11,7 +11,7 @@ import Modal from "~/components/Modal/Modal";
 import PostItem from "~/components/PostItem/PostItem";
 import UserItem from "~/components/UserItem/UserItem";
 import { getMethod } from "~/utils/fetchData";
-import { bookmarkPost, commentPost, votePost } from "~/redux/actions/postActions";
+import { addPostToStore, bookmarkPost, commentPost, votePost } from "~/redux/actions/postActions";
 import displayToast from "~/utils/displayToast";
 import PostCommentBlock from "~/components/PostCommentBlock/PostCommentBlock";
 import RelatedPost from "~/components/RelatedPost/RelatedPost";
@@ -39,11 +39,12 @@ export default function PostDetail() {
       setPost(postState);
       setIsLoaded(true);
     }else {
-      if(slug){
+      if(slug && !post){
         getMethod("post/" + slug).then((res) => {
           const { data } = res;
           if(data.status){
             setPost(data.post);
+            dispatch(addPostToStore(data.post))
             setIsLoaded(true);
           }else {
             router.push("/");

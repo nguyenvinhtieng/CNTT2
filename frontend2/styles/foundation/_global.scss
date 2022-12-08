@@ -54,3 +54,10 @@ blockquote {
   border-left: 5px solid #ce3df3 !important;
   padding-left: 12px;
 }
+.col {
+  display: flex;
+  gap: 12px;
+  @include sp {
+    flex-direction: column;
+  }
+}

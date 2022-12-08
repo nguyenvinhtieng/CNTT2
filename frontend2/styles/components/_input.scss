@@ -17,7 +17,7 @@
         border-color: rgba(255, 255, 255, 0.2);
       }
     }
-    input[type="text"], input[type="password"], input[type="email"] {
+    input[type="text"], input[type="password"], input[type="email"],input[type="date"] {
       width: 100%;
       background-color: $borderColor;
       border: 1px solid $grayColor;
@@ -30,6 +30,10 @@
       &:focus {
         border-color: rgba(255, 255, 255, 0.2);
       }
+    }
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      -webkit-filter: invert(100%);
+      filter: invert(100%);
     }
   }
   &__label {

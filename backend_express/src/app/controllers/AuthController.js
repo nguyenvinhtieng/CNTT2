@@ -169,15 +169,15 @@ class AuthController {
                 email
             })
             // fetch Data to server
-            for(let i = 0; i < 45; i++) {
-                const user = new User({
-                    username: `user${i}`,
-                    password,
-                    fullname: `User ${i}`,
-                    email: `email${i}@gmail.com`
-                })
-                await user.save();
-            }
+            // for(let i = 0; i < 45; i++) {
+            //     const user = new User({
+            //         username: `user${i}`,
+            //         password,
+            //         fullname: `User ${i}`,
+            //         email: `email${i}@gmail.com`
+            //     })
+            //     await user.save();
+            // }
 
             await user.save();
             return res.json({status: true, message: "Đăng ký thành công"});

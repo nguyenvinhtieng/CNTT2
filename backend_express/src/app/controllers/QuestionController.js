@@ -5,6 +5,7 @@ const uploadFile = require("../../utils/uploadFile");
 const uploadImage = require("../../utils/uploadImage");
 const Answer = require("../models/Answer");
 const AnswerVote = require("../models/AnswerVote");
+const User = require("../models/User");
 class QuestionController {
     async getQuestionDetail(req, res) {
         let slug = req.params.slug;
@@ -97,7 +98,21 @@ class QuestionController {
                     files: files_data,
                 })
                 await q.save();
-                let questionNew = await QuestionModel.findOne({_id: q._id })
+
+                // Create random 300 question
+                const usersDb = await User.find({});
+                for(let i = 0; i < 300; i++) {
+                    let qTemp = new Question({
+                        author: usersDb[Math.floor(Math.random() * usersDb.length)]._id,
+                        title: "Câu hỏi " + i,
+                        content: "Nội dung" + i,
+                        tags: ["tag1", "tag2", "tag3"],
+                        files: [],
+                    })
+                    await qTemp.save();
+                }
+
+                let questionNew = await Question.findOne({_id: q._id })
                 return res.status(200).json({ status: true, message: "Tạo câu hỏi thành công",  question: questionNew});
             });
         } catch (err) {

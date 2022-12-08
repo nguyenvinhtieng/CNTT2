@@ -5,6 +5,7 @@ const PostVote = require("../models/PostVote");
 const Comment = require("../models/Comment");
 const uploadImage = require("../../utils/uploadImage");
 const deleteImage = require("../../utils/deleteImage");
+const User = require("../models/User");
 
 class PostController {
     async get(req, res, next) {
@@ -15,9 +16,9 @@ class PostController {
             if (!post) {
                 return res.status(404).json({ status: false, message: "Không tìm thấy bài viết" });
             }
-            let comments = await Comment.find({ post: post._id }).populate('author');
+            let comments = await Comment.find({ post_id: post._id }).populate('author');
             post.comments = comments;
-            let votes = await PostVote.find({ post: post._id });
+            let votes = await PostVote.find({ post_id: post._id });
             post.votes = votes;
             return res.status(200).json({ status: true, post: post });
         } catch (err) {
@@ -42,7 +43,7 @@ class PostController {
                 if (!title || !content) {
                     return res.status(400).json({ status: false, message: "Tiêu đề và nội dung không được để trống" });
                 }
-                if (tags.length > 5) {
+                if (tags?.length > 5) {
                     return res.status(400).json({ status: false, message: "Tối đa 5 tags" });
                 }
 
@@ -67,6 +68,25 @@ class PostController {
                     public_image_id: public_id
                 });
                 await post.save();
+                //
+                // let Alluser = await User.find({}).lean();
+                // for(let i = 0 ; i < 200 ; i++) {
+                //     // get random user
+                //     let randomUser = Alluser[Math.floor(Math.random() * Alluser.length)];
+                //     // get random status
+                //     let randomStatus = ["publish", "unpublish"][Math.floor(Math.random() * 3)];
+                //     // create random post
+                //     let randomPost = new Post({
+                //         author: randomUser._id,
+                //         title: "Random post " + i,
+                //         tldr: "Random tldr " + i,
+                //         content: "Random content " + i,
+                //         thumbnail: "",
+                //         tags: ["random"],
+                //         status: randomStatus
+                //     });
+                //     await randomPost.save();
+                // }
                 let postNew = await Post.findOne({ _id: post._id }).populate('author').lean();
                 postNew.votes = [];
                 postNew.comments = [];
@@ -103,9 +123,15 @@ class PostController {
     // localhost:3001/api/post?page=5
     async getPagination(req, res, next) {
         try {
-            const page = req.query.page ? parseInt(req.query.page) : 0;
+            // const page = req.query.page ? parseInt(req.query.page) : 0;
+            let { page, content } = req.body;
+            page = page ? parseInt(page) : 0;
             const SKIP = 10; 
-            const posts = await Post.find({})
+            let filterCondition = {}
+            if(content) {
+                filterCondition = {$or: [{title: { $regex: content }}, {content: { $regex: content }}]}
+            }
+            const posts = await Post.find(filterCondition)
                 .sort({createdAt: -1})
                 .populate('author')
                 .skip(page*SKIP)
@@ -160,13 +186,16 @@ class PostController {
             if(post.author.toString() !== user._id.toString() && user.role !== "admin") {
                 return res.json({ status: false, message: "Bạn không có quyền xóa bài viết này" });
             }
-            let public_id = post.public_image_id;
-            await deleteImage(public_id);
+            let public_id = post?.public_image_id;
+            if(public_id){
+                await deleteImage(public_id);
+            }
             await Post.findOneAndDelete({ _id: post_id});
             await PostVote.deleteMany({ post_id: post_id });
             await Comment.deleteMany({ post_id: post_id })
             return res.json({ status: true, message: "Xóa bài viết thành công" });
         } catch (error) {
+            console.log(error)
             return res.status(500).json({ status: false, message: "Có lỗi xảy ra" });
         }
     }

@@ -13,14 +13,12 @@ import Modal from "~/components/Modal/Modal";
 import Select from "~/components/Select/Select";
 
 export default function ManagePost() {
-    const [ postsFetch, setPostsFetch ] = React.useState([]);
-    const [posts, setPosts] = React.useState([]);
+    const [questions, setQuestions] = React.useState([]);
     const [isShowModalConfirmDelete, setIsShowModalConfirmDelete] = React.useState(false);
     const [currentPage, setCurrentPage] = React.useState(1);
     const [totalPage, setTotalPage] = React.useState(1);
-    const [startDate, setStartDate] = React.useState(new Date());
     const [ isLoading, setIsLoading ] = React.useState(false);
-    const postIdSelectedRef = React.useRef(null);
+    const questionIdSelected = React.useRef(null);
     const authorNameRef = React.useRef(null);
     const titleRef = React.useRef(null);
     const fromDateRef = React.useRef(null);
@@ -37,7 +35,7 @@ export default function ManagePost() {
     }
     const startFilter = () => {
         toggleFilter();
-        fetchDataPost({page: 1});
+        fetchDataQuestion({page: 1});
     }
     const deleteFilter = () => {
         authorNameRef.current.value = "";
@@ -47,21 +45,21 @@ export default function ManagePost() {
         tagRef.current.value = "";
         statusRef.current = null;
         toggleFilter();
-        fetchDataPost({page: 1});
+        fetchDataQuestion({page: 1});
     }
     const nextPage = () => {
         if(currentPage < totalPage) {
             setCurrentPage(currentPage + 1);
         }
-        fetchDataPost({page: currentPage + 1});
+        fetchDataQuestion({page: currentPage + 1});
     }
     const prevPage = () => {
         if(currentPage > 1) {
             setCurrentPage(currentPage - 1);
         }
-        fetchDataPost({page: currentPage - 1});
+        fetchDataQuestion({page: currentPage - 1});
     }
-    const fetchDataPost = async ({page}) => {
+    const fetchDataQuestion = async ({page}) => {
         let conditionFilter = {
             page: page || currentPage,
             author_name: authorNameRef.current.value || null,
@@ -72,45 +70,43 @@ export default function ManagePost() {
             status: statusRef.current || null
         }
         setIsLoading(true);
-        const res = await postMethod("manage/posts", conditionFilter);
-        console.log("res: ", res)
+        const res = await postMethod("manage/questions", conditionFilter);
         const { data } = res;
         if(data.status) {
-            setPosts(data.posts);
+            setQuestions(data.questions);
             setTotalPage(Math.ceil(data.total / 10));
             setCurrentPage(page ? page : currentPage);
         }
         setIsLoading(false);
     }
-    const handleShowConfirmDelete = (post_id) => {
+    const handleShowConfirmDelete = (question_id) => {
         toggleModalConfirmDelete();
-        postIdSelectedRef.current = post_id;
+        questionIdSelected.current = question_id;
     }
-    const deletePostHandler = async () => {
-        if(!postIdSelectedRef.current) return;
-        const res = await postMethod("post/delete", {post_id: postIdSelectedRef.current});
+    const deleteQuestionHandler = async () => {
+        if(!questionIdSelected.current) return;
+        const res = await postMethod("question/delete", {question_id: questionIdSelected.current});
         const { data } = res;
-        console.log(res)
         if(data.status) {
-            if(posts.length === 1 && currentPage == totalPage) {
-                fetchDataPost({page: currentPage - 1});
+            if(questions.length === 1 && currentPage == totalPage) {
+                fetchDataQuestion({page: currentPage - 1});
                 setCurrentPage(currentPage - 1);
             }else {
-                fetchDataPost({page: currentPage});
+                fetchDataQuestion({page: currentPage});
             }
         }
         toggleModalConfirmDelete();
     }
     useEffect(()=>{
-        fetchDataPost({});
+        fetchDataQuestion({});
     }, [])
-
+    console.log("questions: ", questions)
 return (
     <div className="managePage">
-    <Modal title="Xoá bài viết" size="sm" danger={true} handleCloseModal={toggleModalConfirmDelete} isShow={isShowModalConfirmDelete} handleSubmit={deletePostHandler}>
-        <p>Bạn có chắc chắn muốn xoá bài viết này?</p>
+    <Modal title="Xoá câu hỏi" size="sm" danger={true} handleCloseModal={toggleModalConfirmDelete} isShow={isShowModalConfirmDelete} handleSubmit={deleteQuestionHandler}>
+        <p>Bạn có chắc chắn muốn xoá câu hỏi này?</p>
     </Modal>
-    <h2 className="managePage__heading" >Quản lý bài viết</h2>
+    <h2 className="managePage__heading" >Quản lý câu hỏi</h2>
     <span className="filter" onClick={toggleFilter}>
         <span className="filter__ttl">Lọc dữ liệu</span>
         <span className="filter__ico">
@@ -119,35 +115,39 @@ return (
     </span>
     <div className={`managePage__filter ${isShowFilter ? "is-show" : ""}`}>
         <div className="managePage__filter__search">
-            <div className="input__wrapper">
-                <label htmlFor="" className="input__label">Tên tác giả</label>
-                <input type="text" placeHolder="Tên tác giả" ref={authorNameRef} />
+            <div className="col">
+                <div className="input__wrapper">
+                    <label htmlFor="" className="input__label">Tên tác giả</label>
+                    <input type="text" placeHolder="Tên tác giả" ref={authorNameRef} />
+                </div>
+                <div className="input__wrapper">
+                    <label htmlFor="" className="input__label">Thẻ</label>
+                    <input type="text" placeHolder="Nhập thẻ bài viết" ref={tagRef}/>
+                </div>
+                <div className="input__wrapper">
+                    <label htmlFor="" className="input__label">Tiêu đề</label>
+                    <input type="text" placeHolder="Tiêu đề bài viết" ref={titleRef}/>
+                </div>
             </div>
-            <div className="input__wrapper">
-                <label htmlFor="" className="input__label">Tiêu đề</label>
-                <input type="text" placeHolder="Tiêu đề bài viết" ref={titleRef}/>
-            </div>
-            <div className="input__wrapper">
-                <label htmlFor="" className="input__label">Thẻ</label>
-                <input type="text" placeHolder="Nhập thẻ bài viết" ref={tagRef}/>
-            </div>
-            <div className="input__wrapper">
-                <label htmlFor="" className="input__label">Từ ngày</label>
-                <input type="date" ref={fromDateRef}/>
-                
-            </div>
-            <div className="input__wrapper">
-                <label htmlFor="" className="input__label">Đên ngày</label>
-                <input type="date" ref={toDateRef}/>
-            </div>
+            <div className="col">
+                <div className="input__wrapper">
+                    <label htmlFor="" className="input__label">Từ ngày</label>
+                    <input type="date" ref={fromDateRef}/>
+                </div>
+                <div className="input__wrapper">
+                    <label htmlFor="" className="input__label">Đên ngày</label>
+                    <input type="date" ref={toDateRef}/>
+                </div>
+                </div>
             <div className="input__wrapper">
                 <label htmlFor="" className="input__label">Trạng thái</label>
-                <Select onChangeFunc={handleChangeStatus} initialVal={"Choose"} options={[{title: "Công khai", value: "publish"}, {title: "Bản nháp", value: "unpublish"}, {title: "Tất cả", value: ""}]}></Select>
+                <Select onChangeFunc={handleChangeStatus} initialVal={"Choose"} options={[{title: "Đã được giải đáp", value: "resolve"}, {title: "Chưa được giải đáp", value: "unresolve"}, {title: "Tất cả", value: ""}]}></Select>
             </div>
             <button className="button" onClick={startFilter}>Lọc</button>
             <button className="button button--danger" onClick={deleteFilter}>Xoá bộ lọc</button>
         </div>
     </div>
+
     <div className="managePage__num">Trang {currentPage}/{totalPage}</div>
     <div className="managePage__content">
         <div className="table__wrapper">
@@ -160,39 +160,38 @@ return (
                     <th>Thẻ</th>
                     <th>Ngày tạo</th>
                     <th>Trạng thái</th>
-                    <th>Số bình luận</th>
-                    <th>Số lượt vote</th>
+                    <th>Số câu trả lời</th>
                     <th>Thao tác</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {!isLoading && posts.length > 0 && posts.map((post, index) => 
-                    <tr key={post._id}>
+                    {!isLoading && questions.length > 0 && questions.map((question, index) => 
+                    <tr key={question._id}>
                         <td>{(currentPage - 1) * 10 + index + 1}</td>
                         <td>
-                            <UserItem user={post.author}></UserItem>
+                            <UserItem user={question.author}></UserItem>
                         </td>
-                        <td>{post.title}</td>
+                        <td>{question.title}</td>
                         <td>
-                            {post.tags.map((tag, index) =>
+                            {question.tags.map((tag, index) =>
                                 <span key={index} className="tag">{tag}</span>
                             )}
                         </td>
-                        <td>{moment(post.createdAt).subtract(10, 'days').calendar()}</td>
+                        <td>{moment(question.createdAt).subtract(10, 'days').calendar()}</td>
                         <td>
-                        {post.status == "publish" ? <span className="status status--public">Công khai</span> :
-                        <span className="status status--draf">Bản nháp</span>}
+                        {question.answers.filter(a => a.status == "accepted").length > 0 ? 
+                        <span className="status status--public">Đã được giải đáp</span> :
+                        <span className="status status--draf">Chưa được giải đáp</span>}
                         </td>
-                        <td className="center">{post.commentTotal} bình luận</td>
-                        <td className="center">{post.voteTotal} lượt vote</td>
+                        <td className="center">{question.answers.length} bình luận</td>
                         <td>
                             <div className="table__actions">
-                                <Link href={`/post/${post.slug}`}>
-                                    <div className="table__actionsItem view" data-tip="Xem bài viết">
+                                <Link href={`/question/${question.slug}`}>
+                                    <div className="table__actionsItem view" data-tip="Xem câu hỏi">
                                         <span className="table__action--ico"><AiOutlineEye></AiOutlineEye></span>
                                     </div>
                                 </Link>
-                                <div className="table__actionsItem delete" data-tip="Xóa bài viết" onClick={()=>handleShowConfirmDelete(post._id)}>
+                                <div className="table__actionsItem delete" data-tip="Xóa câu hỏi" onClick={()=>handleShowConfirmDelete(question._id)}>
                                     <span className="table__action--ico"><BiTrashAlt></BiTrashAlt></span>
                                 </div>
                             </div>
@@ -205,15 +204,15 @@ return (
             {isLoading && new Array(10).fill(1).map((_, index) => 
                 <Skeleton width="100%" height="50px" marginBottom="6px"></Skeleton>
             )}
-            {!isLoading && posts.length == 0 && <div className="noData">Không có bài viết nào</div>}
+            {!isLoading && questions.length == 0 && <div className="noData">Không có bài viết nào</div>}
 
         </div>
         <div className="managePage__pagination">
-            {!isLoading && posts.length > 0 && currentPage > 1 && totalPage > 1 && 
+            {!isLoading && questions.length > 0 && currentPage > 1 && totalPage > 1 && 
             <span className="prevPage" data-tip="Trang trước" onClick={prevPage}>
                 <AiOutlineLeft></AiOutlineLeft>
             </span>}
-            {!isLoading && posts.length > 0 && totalPage > 1 && currentPage < totalPage && 
+            {!isLoading && questions.length > 0 && totalPage > 1 && currentPage < totalPage && 
             <span className="nextPage" data-tip="Trang kế" onClick={nextPage}>
                 <AiOutlineRight></AiOutlineRight>
                 {/* Trang kế */}

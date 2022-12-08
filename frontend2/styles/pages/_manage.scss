@@ -25,6 +25,7 @@
         &.is-show {
             opacity: 1;
             max-height: 1000px;
+            overflow: unset;
         }
     }
     &__pagination {

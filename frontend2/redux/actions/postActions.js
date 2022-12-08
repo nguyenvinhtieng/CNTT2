@@ -4,11 +4,16 @@ import displayToast from "~/utils/displayToast";
 import { getMethod, postMethod, postMethodMultipart } from "~/utils/fetchData";
 import { CREDENTIALS, GLOBAL_TYPES } from "../constants";
 
-export const fetchPostData = ({page, filter}) => {
+export const fetchPostData = ({page, search}) => {
     return async (dispatch, getState) => {
         try {
             const state = getState();
+            // if(search && search !== state.posts.searchContent) {
+            //     let newPage = 0;
+
+            // }
             if(state.posts.isEnd || state.posts.loading) return;
+            // if
             dispatch({
                 type: GLOBAL_TYPES.POST,
                 payload: {
@@ -18,9 +23,14 @@ export const fetchPostData = ({page, filter}) => {
             })
 
             page = state.posts.page + 1;
-            if(page) page = page <= 0 ? 0 : page
-            const url = `post?page=${page <= 0 ? 0 : page}`;
-            const res = await getMethod(url);
+            if(page) page = page <= 0 ? 0 : page;
+            let filterCondition = {
+                page: page,
+                content: search
+            }
+            const res = await postMethod("post/get-posts", filterCondition);
+
+
             const { data } = res;
             if(data.status) {
                 let oldPosts = state.posts.data;
@@ -327,5 +337,18 @@ export const bookmarkPost = ({post_id}) => {
             console.log(error);
             displayToast("error", error.message);
         }
+    }
+}
+
+export const addPostToStore = (post) => {
+    return async (dispatch, getState) => {
+        const state = getState();
+        dispatch({
+            type: GLOBAL_TYPES.POST,
+            payload: {
+                ...state.posts,
+                data: [...state.posts.data, post]
+            }
+        })
     }
 }
