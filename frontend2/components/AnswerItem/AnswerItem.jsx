@@ -14,7 +14,7 @@ import TooltipMenu from '../TooltipMenu/TooltipMenu'
 import UserItem from '../UserItem/UserItem'
 import ZoomImage from '../ZoomImage/ZoomImage'
 
-export default function AnswerItem({answer, reply_id}) {
+export default function AnswerItem({answer, reply_id, author_question_id}) {
     const [isShowMenu, setIsShowMenu] = React.useState(false)
     const [menu, setMenu] = React.useState([])
     const [isShowModalReply, setIsShowModalReply] = React.useState(false)
@@ -53,81 +53,88 @@ export default function AnswerItem({answer, reply_id}) {
     useOnClickOutside(menuRef, ()=> setIsShowMenu(false))
 
     useEffect(()=> {
-        let menuNew = [
-            {
-                Icon: FiEdit2,
-                title: 'Chỉnh sửa câu trả lời',
-                clickAction: () => toggleModalEdit()
-            },
-            {
-                Icon: MdDeleteOutline,
-                title: 'Xóa câu trả lời',
-                clickAction: () => toggleModalDelete()
-            },
-        ]
-        if(answer.status === 'accepted') {
+        let menuNew = []
+        if(auth?.user?._id == answer.author._id) {
             menuNew = [
                 {
-                    Icon: FaTimes,
-                    title: 'Bỏ xác nhận câu trả lời',
-                    clickAction: () => {
-                        answerStatusRef.current = ''
-                        toggleModalDeleteAccept();
-                    }
-                },{
-                    Icon: FaTimes,
-                    title: 'Từ chối câu trả lời',
-                    clickAction: () => {
-                        answerStatusRef.current = 'rejected'
-                        toggleModalRejectAnswer();
-                    }
+                    Icon: FiEdit2,
+                    title: 'Chỉnh sửa câu trả lời',
+                    clickAction: () => toggleModalEdit()
                 },
-                ...menuNew]
-        }
-        if(answer.status === 'rejected') {
-            menuNew = [
                 {
-                    Icon: TiTick,
-                    title: 'Xác nhận câu trả lời',
-                    clickAction: () => {
-                        answerStatusRef.current = 'accepted'
-                        toggleModalAcceptAnswer();
-                    }
-                },{
-                    Icon: FaTimes,
-                    title: 'Bỏ từ chối câu trả lời',
-                    clickAction: () => {
-                        answerStatusRef.current = ''
-                        toggleModalDeleteReject();
-                    }
+                    Icon: MdDeleteOutline,
+                    title: 'Xóa câu trả lời',
+                    clickAction: () => toggleModalDelete()
                 },
-                ...menuNew
             ]
         }
-        if(answer.status === "") {
-            menuNew = [
-                {
-                    Icon: TiTick,
-                    title: 'Xác nhận câu trả lời',
-                    clickAction: () => {
-                        answerStatusRef.current = 'accepted'
-                        toggleModalAcceptAnswer();
-                    }
-                },
-                {
-                    Icon: FaTimes,
-                    title: 'Từ chối câu trả lời',
-                    clickAction: () => {
-                        answerStatusRef.current = 'rejected'
-                        toggleModalRejectAnswer();
-                    }
-                },
-                ...menuNew
-            ]
-            menuNew = menuNew.filter(item => item.title !== 'Bỏ xác nhận câu trả lời' || item.title !== 'Bỏ từ chối câu trả lời')
+        console.log("answer: ", answer)
+        if(author_question_id == auth?.user?._id) {
+        
+            if(answer.status === 'accepted') {
+                menuNew = [
+                    {
+                        Icon: FaTimes,
+                        title: 'Bỏ xác nhận câu trả lời',
+                        clickAction: () => {
+                            answerStatusRef.current = ''
+                            toggleModalDeleteAccept();
+                        }
+                    },{
+                        Icon: FaTimes,
+                        title: 'Từ chối câu trả lời',
+                        clickAction: () => {
+                            answerStatusRef.current = 'rejected'
+                            toggleModalRejectAnswer();
+                        }
+                    },
+                    ...menuNew]
+            }
+            if(answer.status === 'rejected') {
+                menuNew = [
+                    {
+                        Icon: TiTick,
+                        title: 'Xác nhận câu trả lời',
+                        clickAction: () => {
+                            answerStatusRef.current = 'accepted'
+                            toggleModalAcceptAnswer();
+                        }
+                    },{
+                        Icon: FaTimes,
+                        title: 'Bỏ từ chối câu trả lời',
+                        clickAction: () => {
+                            answerStatusRef.current = ''
+                            toggleModalDeleteReject();
+                        }
+                    },
+                    ...menuNew
+                ]
+            }
+            if(answer.status === "") {
+                menuNew = [
+                    {
+                        Icon: TiTick,
+                        title: 'Xác nhận câu trả lời',
+                        clickAction: () => {
+                            answerStatusRef.current = 'accepted'
+                            toggleModalAcceptAnswer();
+                        }
+                    },
+                    {
+                        Icon: FaTimes,
+                        title: 'Từ chối câu trả lời',
+                        clickAction: () => {
+                            answerStatusRef.current = 'rejected'
+                            toggleModalRejectAnswer();
+                        }
+                    },
+                    ...menuNew
+                ]
+                menuNew = menuNew.filter(item => item.title !== 'Bỏ xác nhận câu trả lời' || item.title !== 'Bỏ từ chối câu trả lời')
+            }
         }
         setMenu(menuNew)
-    }, [answer])
+    }, [answer, auth])
 
     const handleSubmitEdit = () => {
         dispatch(editAnswer({question_id: answer.question_id, content: editContent, answer_id: answer._id}))
@@ -231,10 +238,12 @@ export default function AnswerItem({answer, reply_id}) {
                 <div className="answer__actionItem--ico"><BsReplyAll></BsReplyAll></div>
                 <span className='answer__actionItem--ttl'>Phản hồi</span>
             </div>
-            <div className={`answer__actionItemMenu ${isShowMenu ? "is-active" : ""}`} onClick={toggleShowMenu} ref={menuRef}>
-                <div className="answer__actionItem--ico"><BiDotsVerticalRounded></BiDotsVerticalRounded></div>
-                <TooltipMenu isShow={isShowMenu} menu={menu}></TooltipMenu>
-            </div>
+            {menu.length > 0 && 
+                <div className={`answer__actionItemMenu ${isShowMenu ? "is-active" : ""}`} onClick={toggleShowMenu} ref={menuRef}>
+                    <div className="answer__actionItem--ico"><BiDotsVerticalRounded></BiDotsVerticalRounded></div>
+                    <TooltipMenu isShow={isShowMenu} menu={menu}></TooltipMenu>
+                </div>
+            }
         </div>
     </div>
   )

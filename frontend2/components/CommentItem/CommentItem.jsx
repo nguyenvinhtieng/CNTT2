@@ -60,7 +60,7 @@ function CommentItem({comment, reply_for}) {
         clickAction: () => {},
       }
     ];
-    if(comment.author._id === auth.user._id || auth.isAdmin){
+    if(comment.author?._id === auth?.user?._id || auth?.isAdmin){
       menuNew = [
         {
           Icon: AiOutlineEdit,

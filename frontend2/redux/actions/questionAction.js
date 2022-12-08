@@ -158,6 +158,8 @@ export const addAnswer = ({question_id, content, reply_id}) => {
                         data: newQuestion
                     }
                 })
+            }else {
+                displayToast("error", data.message);
             }
             
         } catch (error) {
@@ -289,6 +291,8 @@ export const voteAnswer = ({answer_id, vote_type}) => {
                         data: newQuestion
                     }
                 })
+            }else {
+                displayToast("error", data.message);
             }
         }catch(error) {
             console.log(error);

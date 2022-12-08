@@ -7,7 +7,7 @@
   border-right: 1px solid $borderColor;
   overflow-y: auto;
   transition: all 0.2s linear;
-  z-index: 10;
+  z-index: 3;
   @include tablet {
     top: 0;
     background-color: $darkColor;

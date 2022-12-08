@@ -104,7 +104,7 @@ export default function QuestionDetailPage() {
           </div>
           <div className="questionDetailPage__comments">
             <h3>Các câu trả lời</h3>
-            <AnswerBlock answers={question?.answers}></AnswerBlock>
+            <AnswerBlock author_question_id={question?.author?._id} answers={question?.answers}></AnswerBlock>
           </div>
         </>}
     </div>

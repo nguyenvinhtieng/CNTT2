@@ -125,8 +125,11 @@ class PostController {
         try {
             // const page = req.query.page ? parseInt(req.query.page) : 0;
             let { page, content } = req.body;
-            page = page ? parseInt(page) : 0;
-            const SKIP = 10; 
+            page = page ? parseInt(page) : 1;
+            const LIMIT = 10
+            const SKIP = (page - 1 )* 10;
+            // const SKIP = 10;
+
             let filterCondition = {}
             if(content) {
                 filterCondition = {$or: [{title: { $regex: content }}, {content: { $regex: content }}]}
@@ -134,8 +137,8 @@ class PostController {
             const posts = await Post.find(filterCondition)
                 .sort({createdAt: -1})
                 .populate('author')
-                .skip(page*SKIP)
-                .limit(SKIP)
+                .skip(SKIP)
+                .limit(LIMIT)
                 .lean();
             for(const [index, p] of posts.entries()) {
                 posts[index].votes = await PostVote.find({ post_id: p._id }).lean();

@@ -13,7 +13,7 @@ class QuestionController {
             if(!slug) {
                 return res.json({ status: false, message: "Không có slug" });
             }
-            let question = await QuestionModel.findOne({ slug }).populate("author");
+            let question = await QuestionModel.findOne({ slug }).populate("author").lean();
             if(!question) {
                 return res.json({ status: false, message: "Không có câu hỏi" });
             }

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import AnswerItem from '../AnswerItem/AnswerItem'
 
-export default function AnswerBlock({answers}) {
+export default function AnswerBlock({answers, author_question_id}) {
     const [answerThread, setAnswerThread] = React.useState([]);
     useEffect(()=> {
         if(!answers || answers.length === 0) return;
@@ -30,9 +30,9 @@ export default function AnswerBlock({answers}) {
     <div className="answer__list">
         {answerThread.length > 0 && answerThread.map((thread, index) => (
             <div className="answer__thread" key={thread._id}>
-                <AnswerItem answer={thread} reply_id={thread._id}></AnswerItem>
+                <AnswerItem author_question_id={author_question_id} answer={thread} reply_id={thread._id}></AnswerItem>
                 {thread.replies.length > 0 && thread.replies.map((reply, index) => (
-                    <AnswerItem key={reply._id} answer={reply} reply_id={thread._id}></AnswerItem>
+                    <AnswerItem author_question_id={author_question_id} key={reply._id} answer={reply} reply_id={thread._id}></AnswerItem>
                 ))}
             </div>
         ))}
