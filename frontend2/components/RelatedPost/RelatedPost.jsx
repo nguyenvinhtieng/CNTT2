@@ -1,5 +1,4 @@
-import React from 'react'
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import PostItem from '../PostItem/PostItem'
 import PostItemSkeleton from '../PostItemSkeleton/PostItemSkeleton'

@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { AiFillCaretDown } from 'react-icons/ai'
+import React, { useState } from 'react';
+import { AiFillCaretDown } from 'react-icons/ai';
 import useOnClickOutside from '~/hooks/useClickOutside';
 
 export default function Select({initialVal, onChangeFunc, options}) {

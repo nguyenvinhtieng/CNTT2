@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import React from 'react'
 import { BiChat } from 'react-icons/bi'
 import { TiTick } from 'react-icons/ti'
 import UserItem from '../UserItem/UserItem'

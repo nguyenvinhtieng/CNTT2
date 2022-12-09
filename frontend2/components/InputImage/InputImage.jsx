@@ -1,5 +1,5 @@
-import ImageUploading from 'react-images-uploading';
 import Image from 'next/image';
+import ImageUploading from 'react-images-uploading';
 
 function InputImage({ onChangeImage, images }) {
   const maxNumber = 69;

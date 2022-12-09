@@ -1,13 +1,13 @@
-import React, { useEffect, useState, useId, useRef  } from 'react'
-import { connect, useDispatch, useSelector } from 'react-redux'
-import Select from 'react-select';
-import { FaTimes } from 'react-icons/fa';
-import Editor from '~/components/Editer/Editer';
-import InputImage from '~/components/InputImage/InputImage'
-import displayToast from '~/utils/displayToast';
-import { createPost, updatePost } from '~/redux/actions/postActions';
-import { getMethod, postMethod } from '~/utils/fetchData';
 import { useRouter } from 'next/router';
+import { useEffect, useId, useRef, useState } from 'react';
+import { FaTimes } from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux';
+import Select from 'react-select';
+import Editor from '~/components/Editer/Editer';
+import InputImage from '~/components/InputImage/InputImage';
+import { updatePost } from '~/redux/actions/postActions';
+import displayToast from '~/utils/displayToast';
+import { getMethod } from '~/utils/fetchData';
 const optionsSavePost = [
   {value: "unpublish", label: "Lưu nháp"},
   {value: "publish", label: "Công khai"}

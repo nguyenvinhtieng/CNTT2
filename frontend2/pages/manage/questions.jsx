@@ -1,16 +1,15 @@
-import React, { useEffect } from "react";
 import moment from "moment";
+import React, { useEffect } from "react";
 // import DatePicker from 'react-date-picker';
-import DatePicker from 'react-date-picker/dist/entry.nostyle';
-import { AiOutlineDoubleRight, AiOutlineEye, AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
-import { BiBlock, BiTrashAlt } from "react-icons/bi";
-import { VscSettings } from "react-icons/vsc";
-import UserItem from "~/components/UserItem/UserItem";
-import { getMethod, postMethod } from "~/utils/fetchData";
-import Skeleton from "~/components/Skeleton/Skeleton";
 import Link from "next/link";
+import { AiOutlineEye, AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
+import { BiTrashAlt } from "react-icons/bi";
+import { VscSettings } from "react-icons/vsc";
 import Modal from "~/components/Modal/Modal";
 import Select from "~/components/Select/Select";
+import Skeleton from "~/components/Skeleton/Skeleton";
+import UserItem from "~/components/UserItem/UserItem";
+import { postMethod } from "~/utils/fetchData";
 
 export default function ManagePost() {
     const [questions, setQuestions] = React.useState([]);

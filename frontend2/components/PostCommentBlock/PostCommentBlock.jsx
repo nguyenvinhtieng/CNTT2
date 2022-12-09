@@ -1,7 +1,5 @@
-import React from 'react'
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import CommentItem from '../CommentItem/CommentItem';
-import CommentThread from '../CommentThread/CommentThread'
 
 export default function PostCommentBlock({post}) {
     const [commentThread, setCommentThread] = React.useState([]);

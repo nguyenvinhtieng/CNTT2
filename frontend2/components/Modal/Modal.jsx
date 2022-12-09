@@ -1,6 +1,5 @@
-import React from 'react'
-import Overlay from '../Overlay/Overlay'
 import { MdClose } from 'react-icons/md'
+import Overlay from '../Overlay/Overlay'
 
 export default function Modal({ isShow = false, handleCloseModal, size, title, handleSubmit, danger, children}) {
   return (

@@ -1,22 +1,19 @@
-import React, { useRef } from "react";
-import moment from 'moment'
-import { FaExternalLinkAlt } from "react-icons/fa";
-import { BiDotsVerticalRounded, BiUpvote } from "react-icons/bi";
-import { RiMessage3Line } from "react-icons/ri";
-import { FiFacebook, FiShare2 } from "react-icons/fi";
+import moment from 'moment';
 import { FacebookShareButton } from 'next-share';
-import { CiBookmark } from "react-icons/ci";
-import { SlFlag } from "react-icons/sl";
-import { RxCopy } from "react-icons/rx";
-import { BiDownvote } from "react-icons/bi";
 import Link from "next/link";
-import TooltipMenu from "../TooltipMenu/TooltipMenu";
+import React, { useRef } from "react";
+import { BiDotsVerticalRounded, BiDownvote, BiUpvote } from "react-icons/bi";
+import { FaExternalLinkAlt } from "react-icons/fa";
+import { FiFacebook, FiShare2 } from "react-icons/fi";
+import { RiMessage3Line } from "react-icons/ri";
+import { RxCopy } from "react-icons/rx";
+import { SlFlag } from "react-icons/sl";
 import useOnClickOutside from "~/hooks/useClickOutside";
-import UserItem from "../UserItem/UserItem";
-import { useRouter } from "next/router";
 import displayToast from "~/utils/displayToast";
-import Modal from "../Modal/Modal";
 import { postMethod } from "~/utils/fetchData";
+import Modal from "../Modal/Modal";
+import TooltipMenu from "../TooltipMenu/TooltipMenu";
+import UserItem from "../UserItem/UserItem";
 
 export default function PostItem({post}) {
   const [isShowMenu, setIsShowMenu] = React.useState(false);

@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
 import { Editor as EditerTinyMce } from '@tinymce/tinymce-react';
+import { useRef } from 'react';
 
 
 export default function Editer({initialVal = "", onChangeFunc}) {

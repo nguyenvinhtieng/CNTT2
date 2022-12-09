@@ -1,6 +1,6 @@
-import React from 'react'
 import moment from 'moment'
 import Link from 'next/link'
+import React from 'react'
 export default function UserItem({user, time}) {
   const [isShow, setIsShow] = React.useState(false)
   const timerRef = React.useRef(null)

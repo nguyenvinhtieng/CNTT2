@@ -1,8 +1,6 @@
-import { push } from 'react-router-redux';
-import API from "~/api";
 import displayToast from "~/utils/displayToast";
-import { getMethod, postMethod } from "~/utils/fetchData";
-import { CREDENTIALS, GLOBAL_TYPES } from "../constants";
+import { postMethod } from "~/utils/fetchData";
+import { GLOBAL_TYPES } from "../constants";
 
 export const changeAvatar = (formData) => {
     return async (dispatch, getState) => {

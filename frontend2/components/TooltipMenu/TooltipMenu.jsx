@@ -1,5 +1,4 @@
 import Link from "next/link";
-import React from "react";
 
 export default function TooltipMenu({ position, menu, isShow}) {
   return (

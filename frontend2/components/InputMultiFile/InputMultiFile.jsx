@@ -1,5 +1,5 @@
 import React, { useEffect, useId } from 'react'
-import { FaFileAlt, FaTimes } from 'react-icons/fa'
+import { FaTimes } from 'react-icons/fa'
 import { HiPlus } from 'react-icons/hi'
 import displayToast from '~/utils/displayToast'
 import getIconFileType from '~/utils/getIconFileType'

@@ -1,14 +1,14 @@
-import React, { useEffect } from "react";
 import moment from "moment";
-import { AiOutlineDoubleRight, AiOutlineEye, AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
-import { BiTrashAlt } from "react-icons/bi";
-import Skeleton from "~/components/Skeleton/Skeleton";
-import { getMethod } from "~/utils/fetchData";
 import Link from "next/link";
-import Modal from "~/components/Modal/Modal";
-import { useDispatch } from "react-redux";
-import { deletePost } from "~/redux/actions/postActions";
+import React, { useEffect } from "react";
+import { AiOutlineEye } from "react-icons/ai";
+import { BiTrashAlt } from "react-icons/bi";
 import { FiEdit } from "react-icons/fi";
+import { useDispatch } from "react-redux";
+import Modal from "~/components/Modal/Modal";
+import Skeleton from "~/components/Skeleton/Skeleton";
+import { deletePost } from "~/redux/actions/postActions";
+import { getMethod } from "~/utils/fetchData";
 
 export default function MyPost() {
   const [isLoading, setIsLoading] = React.useState(true);

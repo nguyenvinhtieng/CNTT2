@@ -1,22 +1,20 @@
 
-import React, { useEffect } from "react";
-import moment from 'moment'
-import { useDispatch, useSelector } from "react-redux";
+import moment from 'moment';
 import { FacebookShareButton } from 'next-share';
 import { useRouter } from "next/router";
-import { BiDotsVerticalRounded, BiDownvote, BiShareAlt, BiUpvote } from "react-icons/bi";
+import React, { useEffect } from "react";
+import { BiDownvote, BiShareAlt, BiUpvote } from "react-icons/bi";
+import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 import { RiMessage3Line } from "react-icons/ri";
-import CommentThread from "~/components/CommentThread/CommentThread";
+import { useDispatch, useSelector } from "react-redux";
 import Modal from "~/components/Modal/Modal";
-import PostItem from "~/components/PostItem/PostItem";
-import UserItem from "~/components/UserItem/UserItem";
-import { getMethod } from "~/utils/fetchData";
-import { addPostToStore, bookmarkPost, commentPost, votePost } from "~/redux/actions/postActions";
-import displayToast from "~/utils/displayToast";
 import PostCommentBlock from "~/components/PostCommentBlock/PostCommentBlock";
 import RelatedPost from "~/components/RelatedPost/RelatedPost";
-import { BsBookmark, BsBookmarkCheck, BsBookmarkFill } from "react-icons/bs";
+import UserItem from "~/components/UserItem/UserItem";
 import ZoomImage from "~/components/ZoomImage/ZoomImage";
+import { addPostToStore, bookmarkPost, commentPost, votePost } from "~/redux/actions/postActions";
+import displayToast from "~/utils/displayToast";
+import { getMethod } from "~/utils/fetchData";
 export default function PostDetail() {
   const [isLoaded, setIsLoaded] = React.useState(false);
   const [post, setPost] = React.useState(null);

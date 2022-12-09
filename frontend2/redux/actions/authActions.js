@@ -1,4 +1,3 @@
-import { push } from 'react-router-redux';
 import API from "~/api";
 import displayToast from "~/utils/displayToast";
 import { getMethod, postMethod } from "~/utils/fetchData";

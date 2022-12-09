@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { BiDotsVerticalRounded, BiDownvote, BiUpvote } from 'react-icons/bi'
-import { BsBack, BsBookmarkXFill, BsFillBookmarkStarFill, BsReplyAll } from 'react-icons/bs'
+import { BsBookmarkXFill, BsFillBookmarkStarFill, BsReplyAll } from 'react-icons/bs'
 import { FaTimes } from 'react-icons/fa'
 import { FiEdit2 } from 'react-icons/fi'
 import { MdDeleteOutline } from 'react-icons/md'

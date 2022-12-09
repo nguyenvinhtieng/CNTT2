@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react'
-import AnswerItem from '../AnswerItem/AnswerItem'
+import React, { useEffect } from 'react';
+import AnswerItem from '../AnswerItem/AnswerItem';
 
 export default function AnswerBlock({answers, author_question_id}) {
     const [answerThread, setAnswerThread] = React.useState([]);
