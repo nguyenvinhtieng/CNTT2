@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import moment from 'moment'
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { BiDotsVerticalRounded, BiUpvote } from "react-icons/bi";
@@ -15,12 +15,45 @@ import useOnClickOutside from "~/hooks/useClickOutside";
 import UserItem from "../UserItem/UserItem";
 import { useRouter } from "next/router";
 import displayToast from "~/utils/displayToast";
+import Modal from "../Modal/Modal";
+import { postMethod } from "~/utils/fetchData";
 
 export default function PostItem({post}) {
   const [isShowMenu, setIsShowMenu] = React.useState(false);
+  const [isShowModalReport, setIsShowModalReport] = React.useState(false)
   const menuRef = React.useRef(null);
   useOnClickOutside(menuRef, () => setIsShowMenu(false));
   const toggleMenu = () => setIsShowMenu(!isShowMenu);
+  const toggleModalReport = () => setIsShowModalReport(!isShowModalReport)
+  const contentReportRef = useRef()
+  const [reason, setReason] = React.useState("")
+
+  const report = async () => {
+    if(!reason) {
+      displayToast("warning", "Vui lòng chọn lý do báo cáo")
+      return;
+    }
+    const res = await postMethod("report", {
+      type: "post",
+      report_for: post._id,
+      post_id: `${post._id}`,
+      reason,
+      reason_detail: contentReportRef.current.value
+    })
+
+    const {data } = res;
+    if(data.status) {
+      displayToast("success", data.message)
+      toggleModalReport()
+    }else {
+      displayToast("error", data.message)
+    }
+    contentReportRef.current.value = ""
+    setReason("")
+  } 
+  const onChangeReason = (e) => {
+    setReason(e.target.value)
+  }
   const menu = [
     {
       Icon: FiFacebook,
@@ -37,9 +70,16 @@ export default function PostItem({post}) {
     {
       Icon: SlFlag,
       title: "Baó cáo bài viết",
-      clickAction: () => {},
+      clickAction: () => toggleModalReport(),
     },
   ];
+  const reasons = [
+    {id: 1,title: "Nội dung không phù hợp"},
+    {id: 2,title: "Nội dung không đúng với chủ đề"},
+    {id: 3,title: "Từ ngữ không phù hợp"},
+    {id: 4,title: "Spam"},
+    {id: 5,title: "Khác"},
+  ]
   const copyLink = () => {
     navigator.clipboard.writeText(`${window.location.origin}/post/${post?.slug}`);
     setIsShowMenu(false);
@@ -47,6 +87,20 @@ export default function PostItem({post}) {
   }
   return (
     <li className="post-item">
+      <Modal isShow={isShowModalReport} handleCloseModal={toggleModalReport} size="sm" title="Báo cáo bình luận" handleSubmit={report}>
+        <label htmlFor="" className='input__label'>Lý do</label>
+        {reasons.map((reason, _) => {
+          return <div className="input__wrapper input__wrapper--radio" onChange={onChangeReason}>
+                  <input name="reason" type="radio" id={reason.id} value={reason.title}/>
+                  <label htmlFor={reason.id}>{reason.title}</label>
+                </div>
+        })}
+        
+        <div className="input__wrapper">
+          <label htmlFor="" className='input__label'>Chi tiết lý do</label>
+          <textarea ref={contentReportRef} name="" id="" cols="30" rows="10" placeholder='Nhập chi tiết lý do'></textarea>
+        </div>
+      </Modal>
       <div className="post-item__wrapper">
         <div className="post-item__head">
           <div className="post-item__user">

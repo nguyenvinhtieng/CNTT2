@@ -21,6 +21,15 @@
   &__name {
     display: block;
     white-space: nowrap;
+    .tagvip {
+      background-color: rgba(255, 255, 0, 0.1);
+      font-size: 11px;
+      padding: 4px 6px;
+      color: rgb(6, 227, 6);
+      font-weight: bold;
+      margin-left: 6px;
+      border-radius: 4px;
+    }
   }
   &__time {
     font-size: 11px;

@@ -5,6 +5,7 @@ const PostVote = require("../models/PostVote");
 const Comment = require("../models/Comment");
 const Question = require("../models/Question");
 const Answer = require("../models/Answer");
+const Report = require("../models/Report");
 
 class ManageController {
     async getUsers(req, res) {
@@ -87,6 +88,7 @@ class ManageController {
             return res.status(500).json({ status: false, message: error.message });
         }
     }
+
     async getQuestions(req, res) {
         try {
             let { page, author_name, title , from_date, to_date, tag, status } = req.body;
@@ -134,6 +136,15 @@ class ManageController {
             }
             return res.status(200).json({ status: true, message: "Lấy câu hỏi thành công!", questions: questions, total: total });
 
+        }catch(error) {
+            return res.status(500).json({ status: false, message: error.message });
+        }
+    }
+
+    async getReports(req, res) {
+        try {
+            let reports = await Report.find({}).sort({createdAt: -1}).populate("reporter").lean();
+            return res.status(200).json({ status: true, message: "Lấy báo cáo thành công!", reports: reports });
         }catch(error) {
             return res.status(500).json({ status: false, message: error.message });
         }

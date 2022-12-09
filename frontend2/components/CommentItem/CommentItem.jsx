@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useId } from 'react'
 import UserItem from '../UserItem/UserItem'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { SlFlag } from 'react-icons/sl'
@@ -10,7 +10,9 @@ import Modal from '../Modal/Modal'
 import displayToast from '~/utils/displayToast'
 import { useDispatch, useSelector } from 'react-redux'
 import { commentPost, deleteComment, updateComment } from '~/redux/actions/postActions'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
+import { postMethod } from '~/utils/fetchData'
+import { useRouter } from 'next/router'
   
 
 function CommentItem({comment, reply_for}) {
@@ -19,15 +21,21 @@ function CommentItem({comment, reply_for}) {
   const [isShowModalComment, setIsShowModalComment] = React.useState(false);
   const [isShowModalDelete, setIsShowModalDelete] = React.useState(false)
   const [isShowModalEditComment, setIsShowModalEditComment] = React.useState(false)
-
+  const [isShowModalReport, setIsShowModalReport] = React.useState(false)
+  const [isReport, setIsReport] = React.useState(false)
+  const router = useRouter()
   const menuRef = useRef()
   const inputReply = useRef()
   const inputEditRef = useRef()
+  const contentReportRef = useRef()
   const [menu, setMenu] = React.useState([])
   const dispatch = useDispatch()
   const toggleMenu = () => setIsShowMenu(!isShowMenu);
   const toggleModalComment = () => setIsShowModalComment(!isShowModalComment);
   const toggleModalDeleteComment = () => setIsShowModalDelete(!isShowModalDelete)
+  const toggleModalReport = () => setIsShowModalReport(!isShowModalReport)
+  
+  const [reason, setReason] = React.useState("")
 
   const replyComment = () => {
     let val = inputReply.current.value;
@@ -52,15 +60,57 @@ function CommentItem({comment, reply_for}) {
     dispatch(updateComment({comment_id: comment._id, content: val}));
     toggleModalEditComment();
   }
+  const reportBtnClick = () => {
+    toggleModalReport()
+    setTimeout(()=>{
+      setIsShowMenu(false)
+    }, 300)
+  }
+  const onChangeReason = (e) => {
+    setReason(e.target.value)
+  }
+  const report = async () => {
+    if(!reason) {
+      displayToast("warning", "Vui lòng chọn lý do báo cáo")
+      return;
+    }
+    // type, report_for, link_to, reason, reason_detail
+    const res = await postMethod("report", {
+      type: "comment",
+      report_for: comment._id,
+      post_id: `${comment.post_id}`,
+      comment_id: `${comment._id}`,
+      reason,
+      reason_detail: contentReportRef.current.value
+    })
+
+    const {data } = res;
+    if(data.status) {
+      displayToast("success", data.message)
+      toggleModalReport()
+    }else {
+      displayToast("error", data.message)
+    }
+    contentReportRef.current.value = ""
+    setReason("")
+  } 
+  const reasons = [
+    {id: 1,title: "Nội dung không phù hợp"},
+    {id: 2,title: "Nội dung không đúng với chủ đề"},
+    {id: 3,title: "Từ ngữ không phù hợp"},
+    {id: 4,title: "Spam"},
+    {id: 5,title: "Khác"},
+  ]
+  
   useEffect(()=> {
     let menuNew = [
       {
         Icon: SlFlag,
         title: "Báo cáo bình luận",
-        clickAction: () => {},
+        clickAction: () => reportBtnClick(),
       }
     ];
-    if(comment.author?._id === auth?.user?._id || auth?.isAdmin){
+    if(comment.author?._id === auth?.user?._id || auth?.user?.role === "admin"){
       menuNew = [
         {
           Icon: AiOutlineEdit,
@@ -82,10 +132,16 @@ function CommentItem({comment, reply_for}) {
   const deleteCommentHandler =() => {
     dispatch(deleteComment({comment_id: comment._id}))
   }
-
+  useEffect(()=> {
+    const {query} = router;
+    const { comment_id } = query;
+    if(comment_id === comment._id) {
+      setIsReport(true)
+    }
+  }, [router])
   return (
     <>
-      <li className="comment-item">
+      <li className={`comment-item ${isReport ? "report" : ""}`}>
         <div className="comment-item__head">
           <div className="comment-item__user">
             <UserItem user={comment.author} time={comment?.createdAt}></UserItem>
@@ -102,6 +158,21 @@ function CommentItem({comment, reply_for}) {
           </div>
         </div>
       </li>
+      <Modal isShow={isShowModalReport} handleCloseModal={toggleModalReport} size="sm" title="Báo cáo bình luận" handleSubmit={report}>
+        <label htmlFor="" className='input__label'>Lý do</label>
+        {reasons.map((reason, _) => {
+          return <div className="input__wrapper input__wrapper--radio" onChange={onChangeReason}>
+                  <input name="reason" type="radio" id={reason.id} value={reason.title}/>
+                  <label htmlFor={reason.id}>{reason.title}</label>
+                </div>
+        })}
+        
+        <div className="input__wrapper">
+          <label htmlFor="" className='input__label'>Chi tiết lý do</label>
+          <textarea ref={contentReportRef} name="" id="" cols="30" rows="10" placeholder='Nhập chi tiết lý do'></textarea>
+        </div>
+      </Modal>
+
       <Modal isShow={isShowModalComment} handleCloseModal={toggleModalComment} size="sm" title="Phản hồi bình luận" handleSubmit={replyComment}>
         <div className="input__wrapper">
           <label className='input__label' htmlFor="">Nhập nội dung bình luận</label>

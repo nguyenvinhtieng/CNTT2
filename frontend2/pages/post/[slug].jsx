@@ -4,7 +4,7 @@ import moment from 'moment'
 import { useDispatch, useSelector } from "react-redux";
 import { FacebookShareButton } from 'next-share';
 import { useRouter } from "next/router";
-import { BiDownvote, BiShareAlt, BiUpvote } from "react-icons/bi";
+import { BiDotsVerticalRounded, BiDownvote, BiShareAlt, BiUpvote } from "react-icons/bi";
 import { RiMessage3Line } from "react-icons/ri";
 import CommentThread from "~/components/CommentThread/CommentThread";
 import Modal from "~/components/Modal/Modal";
@@ -101,6 +101,9 @@ export default function PostDetail() {
               <img src={post.thumbnail || "/default.png"} alt="Post thumbnail" />
             </ZoomImage>
           </div>
+          {/* <div className="post-detail__dot">
+            <span><BiDotsVerticalRounded></BiDotsVerticalRounded></span>
+          </div> */}
           <h1 className="post-detail__title">{post.title}</h1>
           <div className="post-detail__info">
             <span className="post-detail__info--author">

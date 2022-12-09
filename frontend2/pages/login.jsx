@@ -1,13 +1,15 @@
 import Link from 'next/link'
 import React, { useRef } from 'react'
 import { useRouter } from 'next/router';
-import { connect } from 'react-redux'
+import { connect, useDispatch } from 'react-redux'
 import displayToast from '~/utils/displayToast'
 import { userLogin } from '~/redux/actions/authActions'
-function LoginPage({userLogin}) {
+
+function LoginPage() {
   const usernameRef = useRef()
   const passwordRef = useRef()
   const router = useRouter();
+  const dispatch = useDispatch()
   const handleSubmitLogin = async () => {
     // do something
     let username = usernameRef.current.value
@@ -16,7 +18,7 @@ function LoginPage({userLogin}) {
       displayToast("error", "Vui lòng điền đầy đủ thông tin");
       return;
     }
-    userLogin({username, password});
+    dispatch(userLogin({username, password, router}));
   }
   return (
     <div className="container">
@@ -41,9 +43,4 @@ function LoginPage({userLogin}) {
   )
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    userLogin: ({username, password}) => dispatch(userLogin({username, password}))
-  }
-}
-export default connect(null, mapDispatchToProps)(LoginPage)
+export default LoginPage

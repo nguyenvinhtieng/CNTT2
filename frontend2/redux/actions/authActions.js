@@ -48,7 +48,7 @@ export const fetchDataUser = () => {
         }
     };
 }
-export const userLogin = ({ username, password }) => {
+export const userLogin = ({ username, password, router }) => {
     return async (dispatch, getState) => {
         try {
             let response = await postMethod("login", { username, password });
@@ -61,7 +61,7 @@ export const userLogin = ({ username, password }) => {
                     type: GLOBAL_TYPES.AUTH,
                     payload: { isAuthenticated: true, isAdmin: false, user: data.user },
                 });
-                dispatch(push('/'));
+                router.push('/');
             } else {
                 displayToast("error", data.message);
             }

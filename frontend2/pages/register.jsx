@@ -63,7 +63,7 @@ function RegisterPage() {
           <button className='button button--01' onClick={handleRegister}>Đăng ký</button>
         </div>
         <p className="auth-page__note">Bạn đã có tài khoản? 
-          <Link href="/register">Đăng nhập tại đây</Link>
+          <Link href="/login">Đăng nhập tại đây</Link>
         </p>
       </div>
     </div>

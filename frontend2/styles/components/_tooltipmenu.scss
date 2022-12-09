@@ -9,7 +9,7 @@
   opacity: 0;
   transition: all 0.1s linear;
   pointer-events: none;
-  z-index: 2;
+  z-index: 4;
   list-style: none;
   &.is-show {
     opacity: 1;

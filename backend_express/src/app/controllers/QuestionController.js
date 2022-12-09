@@ -55,7 +55,7 @@ class QuestionController {
     async getMyQuestion(req, res) {
         const user = req.user;
         try {
-            const questions = await Question.find({author: user._id}).populate("author").lean();
+            const questions = await Question.find({author: user._id}).sort({createdAt: -1}).populate("author").lean();
             for(const [index, q] of questions.entries()) {
                 let answers = await Answer.find({ question_id: q._id }).populate("author").lean();
                 questions[index].answers = answers;
@@ -100,17 +100,17 @@ class QuestionController {
                 await q.save();
 
                 // Create random 300 question
-                const usersDb = await User.find({});
-                for(let i = 0; i < 300; i++) {
-                    let qTemp = new Question({
-                        author: usersDb[Math.floor(Math.random() * usersDb.length)]._id,
-                        title: "Câu hỏi " + i,
-                        content: "Nội dung" + i,
-                        tags: ["tag1", "tag2", "tag3"],
-                        files: [],
-                    })
-                    await qTemp.save();
-                }
+                // const usersDb = await User.find({});
+                // for(let i = 0; i < 300; i++) {
+                //     let qTemp = new Question({
+                //         author: usersDb[Math.floor(Math.random() * usersDb.length)]._id,
+                //         title: "Câu hỏi " + i,
+                //         content: "Nội dung" + i,
+                //         tags: ["tag1", "tag2", "tag3"],
+                //         files: [],
+                //     })
+                //     await qTemp.save();
+                // }
 
                 let questionNew = await Question.findOne({_id: q._id })
                 return res.status(200).json({ status: true, message: "Tạo câu hỏi thành công",  question: questionNew});

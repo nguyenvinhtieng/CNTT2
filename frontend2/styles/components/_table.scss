@@ -5,7 +5,8 @@
     min-width: 900px;
     &__wrapper {
         width: 100%;
-        overflow: auto;
+        overflow-y: hidden;
+        overflow-x: auto;
         padding-bottom: 10px;
         &::-webkit-scrollbar {
             height: 8px;

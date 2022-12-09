@@ -376,10 +376,17 @@
         background-color: $grayColor;
       }
     }
-
+    &--ico {
+      @include tablet {
+        font-size: 10px;
+      }
+    }
     &--text {
       font-size: 14px;
       margin-left: 6px;
+      @include tablet {
+        font-size: 10px;
+      }
     }
   }
 

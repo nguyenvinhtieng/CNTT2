@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { BiDotsVerticalRounded, BiDownvote, BiUpvote } from 'react-icons/bi'
-import { BsBookmarkXFill, BsFillBookmarkStarFill, BsReplyAll } from 'react-icons/bs'
+import { BsBack, BsBookmarkXFill, BsFillBookmarkStarFill, BsReplyAll } from 'react-icons/bs'
 import { FaTimes } from 'react-icons/fa'
 import { FiEdit2 } from 'react-icons/fi'
 import { MdDeleteOutline } from 'react-icons/md'
@@ -54,7 +54,7 @@ export default function AnswerItem({answer, reply_id, author_question_id}) {
 
     useEffect(()=> {
         let menuNew = []
-        if(auth?.user?._id == answer.author._id) {
+        if(auth?.user?._id == answer.author._id || auth?.user?.role == "admin") {
             menuNew = [
                 {
                     Icon: FiEdit2,
@@ -68,7 +68,6 @@ export default function AnswerItem({answer, reply_id, author_question_id}) {
                 },
             ]
         }
-        console.log("answer: ", answer)
         if(author_question_id == auth?.user?._id) {
         
             if(answer.status === 'accepted') {

@@ -1,0 +1,185 @@
+.chat {
+  display: flex;
+  margin: -32px -16px 0 -16px;
+  height: calc(100vh - 57px);
+  border: 1px solid $borderColor;
+  &__user {
+    width: 320px;
+    border-right: 1px solid $borderColor;
+    height: 100%;
+    overflow-x: auto;
+    padding: 16px 0;
+    /* width */
+    &::-webkit-scrollbar {
+      width: 3px;
+    }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+      background: #a8a8a8;
+    }
+
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+      background: #888;
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+    .heading {
+      margin-bottom: 16px;
+      padding-left: 12px;
+    }
+  }
+  &__userItem {
+    padding: 6px 12px;
+    // margin-right: 12px;
+    // border-radius: 3px;
+    transition: all 0.2s linear;
+    cursor: pointer;
+    &:hover {
+      background-color: $grayColor;
+    }
+    .info {
+      font-size: 12px;
+      margin-left: 8px;
+      width: calc(100% - 36px);
+      .name {
+        font-size: 14px;
+      }
+      .messWrapper {
+        display: flex;
+        align-items: flex-end;
+      }
+      .mess {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .timeMess {
+        color: rgb(126, 126, 126);
+        font-size: 10px;
+        margin-left: 4px;
+      }
+    }
+    .wrapper {
+      display: flex;
+      align-items: center;
+    }
+  }
+  &__content {
+    flex: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  &__contentHead {
+    padding: 8px 16px;
+    border-bottom: 1px solid $borderColor;
+  }
+  &__contentMess {
+    flex: 1;
+    // padding: 8px 16px;
+    // border-bottom: 1px solid $borderColor;
+    // background-color: blue;
+  }
+  &__contentInput {
+    padding: 6px 8px;
+    border-top: 1px solid $borderColor;
+    // position: ;
+    display: flex;
+    &--attach {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 35px;
+      height: 35px;
+      color: #fff;
+      cursor: pointer;
+      border-radius: 6px;
+      margin-right: 8px;
+      &:hover {
+        background-color: $borderColor;
+      }
+    }
+    &--input {
+      flex: 1;
+      .input__wrapper {
+        margin-bottom: 0;
+      }
+    }
+    &--btn {
+      .btn-send {
+        padding: 10px 20px;
+        border:rgb(126, 126, 126);
+        color: #fff;
+        font-size: 14px;
+        cursor: pointer;
+        border-radius: 3px;
+        font-family: inherit;
+        background-color: transparent;
+        transition: all 0.2s linear;
+        background-color: rgb(35, 108, 255);
+        &:hover {
+          opacity: 0.7;
+        }
+      }
+    }
+  }
+  &__contentMessWrapper {
+    padding-top: 30px;
+    height: 100%;
+    overflow: auto;
+    max-height: calc(100vh - 56px - 56px - 74px);
+    /* width */
+    &::-webkit-scrollbar {
+      width: 7px;
+    }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+      background: #888;
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+  }
+  // &__contentMessList {
+  //   height: 100%;
+  //   overflow: auto;
+  // }
+  &__contentMessItem {
+    padding: 6px 12px;
+    display: flex;
+    &.is-me {
+      flex-direction: row-reverse;
+    }
+    &--avatar {
+
+    }
+    &--content {
+      margin: 0 6px;
+      padding: 4px 16px;
+      background-color: $grayColor;
+      border-radius: 6px;
+      .time {
+        color: rgb(113, 113, 113);
+        font-size: 10px;
+        line-height: 1;
+      }
+    }
+    &--contentWrapper {
+      font-size: 14px;
+      overflow: auto;
+    }
+  }
+}

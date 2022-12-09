@@ -119,6 +119,8 @@ return (
     </span>
     <div className={`managePage__filter ${isShowFilter ? "is-show" : ""}`}>
         <div className="managePage__filter__search">
+            <div className="col">
+
             <div className="input__wrapper">
                 <label htmlFor="" className="input__label">Tên tác giả</label>
                 <input type="text" placeHolder="Tên tác giả" ref={authorNameRef} />
@@ -131,6 +133,8 @@ return (
                 <label htmlFor="" className="input__label">Thẻ</label>
                 <input type="text" placeHolder="Nhập thẻ bài viết" ref={tagRef}/>
             </div>
+            </div>
+            <div className="col">
             <div className="input__wrapper">
                 <label htmlFor="" className="input__label">Từ ngày</label>
                 <input type="date" ref={fromDateRef}/>
@@ -139,6 +143,7 @@ return (
             <div className="input__wrapper">
                 <label htmlFor="" className="input__label">Đên ngày</label>
                 <input type="date" ref={toDateRef}/>
+            </div>
             </div>
             <div className="input__wrapper">
                 <label htmlFor="" className="input__label">Trạng thái</label>

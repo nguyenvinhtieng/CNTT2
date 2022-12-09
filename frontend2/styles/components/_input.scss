@@ -2,6 +2,36 @@
   &__wrapper {
     width: 100%;
     margin-bottom: 12px;
+    &--radio {
+      input {
+        display: none;
+      }
+      label {
+        font-size: 12px;
+        padding-left: 16px;
+        position: relative;
+        cursor: pointer;
+        &::before {
+          content: "";
+          position: absolute;
+          width: 10px;
+          height: 10px;
+          left: 0;
+          top: 50%;
+          transform: translateY(-50%);
+          background-color: #eee;
+          box-shadow: 0 0 0 2px #eee;
+          transition: all 0.25s linear;
+          border-radius: 50%;
+        }
+      }
+      input:checked + label {
+        &::before {
+          box-shadow: 0 0 0 3px #fff;
+          background-color: #fd656b;
+        }
+      }
+    }
     textarea {
       width: 100%;
       background-color: $borderColor;
