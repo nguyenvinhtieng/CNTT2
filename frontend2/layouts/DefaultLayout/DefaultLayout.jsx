@@ -10,7 +10,7 @@ export default function DefaultLayout({ children }) {
     <>
       <Header toggleSidebar={toggleSidebar} />
       <main className="defaultLayout">
-        <Sidebar isOpen={isShowSidebar}></Sidebar>
+        <Sidebar isOpen={isShowSidebar} toggle={toggleSidebar}></Sidebar>
         <Overlay isShow={isShowSidebar} handleClick={toggleSidebar}></Overlay>
         <div className="defaultLayout__wrapper">
           <div className="container large">{children}</div>

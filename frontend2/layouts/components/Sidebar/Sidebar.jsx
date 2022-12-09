@@ -10,9 +10,19 @@ import { BsBookmark, BsInfoLg, BsQuestionSquare } from 'react-icons/bs'
 import { VscQuestion } from 'react-icons/vsc'
 import { RiLogoutBoxRLine } from 'react-icons/ri'
 import { useSelector } from 'react-redux'
-export default function Sidebar({ isOpen }) {
+import { useRouter } from 'next/router'
+export default function Sidebar({ isOpen , toggle}) {
   const [menu, setMenu] = React.useState([]);
   const auth = useSelector((state) => state.auth);
+  const router = useRouter();
+  const handleClickLink = (e, link) => {
+    e.preventDefault();
+    router.push(link);
+    // check window with is mobile
+    if (window.innerWidth < 768) {
+      toggle();
+    }
+  }
   useEffect(() => {
     if (!auth?.isAuthenticated) {
       setMenu(menuNotAuth);
@@ -22,6 +32,7 @@ export default function Sidebar({ isOpen }) {
       setMenu(menuAuth);
     }
   }, [auth]);
+
   return (
     <aside className={`sidebar scroll-css ${isOpen ? "is-open" : ""}`}>
       <div className="sidebar__wrapper">
@@ -31,10 +42,10 @@ export default function Sidebar({ isOpen }) {
             <ul className="sidebar__menu">
               {item.items.map((i, index) => (
                 <li className='sidebar__menu--item' key={i.title}>
-                  <Link href={i.link}>
+                  <a href={i.link} onClick={(e)=>handleClickLink(e, i.link)}>
                     <span className="sidebar__menu--icon"><i.icon></i.icon></span>
                     <span className="sidebar__menu--ttl">{i.title}</span>
-                  </Link>
+                  </a>
                 </li>
               ))}
             </ul>

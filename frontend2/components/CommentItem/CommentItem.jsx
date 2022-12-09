@@ -94,6 +94,10 @@ function CommentItem({comment, reply_for}) {
     contentReportRef.current.value = ""
     setReason("")
   } 
+  const showReplyComment = () => {
+    toggleModalComment();
+    inputReply.current.focus();
+  }
   const reasons = [
     {id: 1,title: "Nội dung không phù hợp"},
     {id: 2,title: "Nội dung không đúng với chủ đề"},
@@ -115,7 +119,10 @@ function CommentItem({comment, reply_for}) {
         {
           Icon: AiOutlineEdit,
           title: "Sửa bình luận",
-          clickAction: () => clickEditCommentBtn(),
+          clickAction: () => {
+            clickEditCommentBtn();
+            inputEditRef.current.focus();
+          },
         },
         {
           Icon: FiTrash,
@@ -149,7 +156,7 @@ function CommentItem({comment, reply_for}) {
         </div>
         <div className="comment-item__content">{comment.content}</div>
         <div className="comment-item__reply">
-          <span className="comment-item__reply--btn" onClick={toggleModalComment}>Phản hồi</span>
+          <span className="comment-item__reply--btn" onClick={showReplyComment}>Phản hồi</span>
           <div className={`comment-item__actions ${isShowMenu ? 'is-active' : ""}`} ref={menuRef}>
             <span className="comment-item__options" onClick={toggleMenu}>
               <BsThreeDotsVertical></BsThreeDotsVertical>

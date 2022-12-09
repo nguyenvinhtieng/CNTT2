@@ -63,7 +63,10 @@ export default function PostDetail() {
   }, [post, auth])
 
   const toggleModalAddComment = () => setIsShowModalAddComment(!isShowModalAddComment);
-  
+  const showModalAddComment = () => {
+    toggleModalAddComment()
+    inputAddCommentRef.current.focus();
+  }
   const addComment = () => {
     let val = inputAddCommentRef.current.value.trim();
     if(!val){
@@ -152,7 +155,7 @@ export default function PostDetail() {
                 <span className="post-detail__action--text">Downvote</span>
               </div>
             </li>
-            <li className="post-detail__action" onClick={toggleModalAddComment}>
+            <li className="post-detail__action" onClick={showModalAddComment}>
               <div
                 className="post-detail__action--wrapper"
                 data-tip="Bình luận bài viết"

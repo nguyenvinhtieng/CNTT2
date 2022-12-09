@@ -3,10 +3,15 @@ const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
 const cors = require('cors')
 const app = express();
+
+const server = require("http").Server(app);
+const io = require("socket.io")(server);
+
 const PORT = process.env.PORT || 3001;
 app.use(cors())
 const route = require('./route/index.js');
 const db = require('./config/db.js');
+const handleSocket = require('./socket/index.js')
 const credentials = require('./credentials');
 
 db.connect();
@@ -24,3 +29,4 @@ route(app)
 app.listen(PORT, () => {
     console.log(`App listening at http://localhost:${PORT}`);
 })
+handleSocket(io)
