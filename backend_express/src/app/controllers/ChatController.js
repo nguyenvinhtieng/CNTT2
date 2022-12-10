@@ -40,13 +40,41 @@ class ChatController {
   async getChatOfThread(req, res) {
     const user = req.user
     try {
-      let { chat_thread_id, skip } = req.query;
+      let { chat_thread_id, skip } = req.body;
       skip = skip || 0;
       let LIMIT = 30;
       let chats = await Chat.find({
         chat_thread_id: chat_thread_id
       }).populate("sender").sort({createdAt: -1}).skip(parseInt(skip)).limit(LIMIT);
+
       res.json({status: true, message: "Lấy chat thành công", data: chats});
+    }catch(err) {
+      res.status(500).json({status: false, message: err.message});
+    }
+  }
+  async getChatWithUser(req, res) {
+    const user = req.user
+    try {
+      let { user_slug, skip } = req.body;
+      // profileSlug
+      const userChatWith = await User.findOne({profileSlug: user_slug});
+      if(!userChatWith) {
+        return res.json({status: false, message: "Không tìm thấy user"});
+      }
+      let thread = await ChatThread.findOne({
+        users: { $all: [user._id, userChatWith._id] }
+      }).populate("users").populate("last_message").lean();
+
+      if(!thread) {
+        return res.json({status: true, message: "Không tìm thấy thread", data: [], user: userChatWith});
+      }
+
+      skip = skip || 0;
+      let LIMIT = 30;
+      let chats = await Chat.find({
+        chat_thread_id: thread._id
+      }).populate("sender").sort({createdAt: -1}).skip(parseInt(skip)).limit(LIMIT);
+      res.json({status: true, message: "Lấy chat thành công", data: chats, chat_thread: thread, user: userChatWith});
     }catch(err) {
       res.status(500).json({status: false, message: err.message});
     }
@@ -56,17 +84,14 @@ class ChatController {
     try {
       let threads = await ChatThread.find({
         users: user._id
-      }).populate("users").lean();
-      for(const thread of threads) {
-        let chat = await Chat.findOne({chat_thread_id: thread._id})
-                              .populate("sender")
-                              .sort({createdAt: -1});
-        thread.last_message = chat;
-      }
+      }).populate("users").populate("last_message").lean();
       return res.json({status: true, message: "Lấy thread thành công", data: threads});
     }catch(err) {
       res.status(500).json({status: false, message: err.message});
     }
+  }
+  async getChat(req, res) {
+    
   }
 
   async chat(req, res) {
@@ -74,8 +99,24 @@ class ChatController {
     const form = new multiparty.Form();
     form.parse(req, async (err, fields, files) => {
         if (err) return res.status(500).json({ status: false, message: "Có lỗi xảy ra" });
-        const chat_thread_id = fields.chat_thread_id[0];
+        let chat_thread_id = fields.chat_thread_id[0];
         const content = fields.content[0];
+        const user_chat_id = fields.user_chat_id[0];
+        let threadChatDb = null
+        if(chat_thread_id == "null" || chat_thread_id == "undefined") {
+          threadChatDb = new ChatThread({
+            users: [user._id, user_chat_id],
+          })
+          await threadChatDb.save();
+          chat_thread_id = threadChatDb._id
+        }else {
+          threadChatDb = await ChatThread.findOne({_id: chat_thread_id});
+          if(!threadChatDb) {
+            return res.json({status: false, message: "Không tìm thấy thread chat"});
+          }
+          chat_thread_id = threadChatDb._id
+        }
+
         let files_data = []
         if (files?.files?.length > 0) {
           for(const file of files.files) {
@@ -98,7 +139,11 @@ class ChatController {
           files: files_data
         });
         await chat.save();
-        res.json({status: true, message: "Gửi tin nhắn thành công", data: chat});
+        // update thread chat
+        threadChatDb.last_message = chat._id;
+        await threadChatDb.save();
+        let chatThreadNew = await ChatThread.findOne({_id: chat_thread_id}).populate("users").populate("last_message").lean();
+        res.json({status: true, message: "Gửi tin nhắn thành công", data: chat, thread: chatThreadNew});
     });
   }
 

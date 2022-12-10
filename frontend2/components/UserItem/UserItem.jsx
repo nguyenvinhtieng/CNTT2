@@ -19,7 +19,7 @@ export default function UserItem({user, time}) {
         onMouseEnter={onMouseEnterHandler}
         onMouseLeave={onMouseLeaveHandler}
         >
-        <Link href={`/@${user.profileSlug}`}>
+        <Link href={`/@${user?.profileSlug}`}>
         <span className="user-item__wrapper">
           <span className="avatar avatar__sm">
             <img src={user?.avatar || "/default.png"} alt="User avatar" />

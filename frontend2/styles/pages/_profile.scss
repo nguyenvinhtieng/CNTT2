@@ -78,6 +78,23 @@
 
             }
         }
+        &--chat {
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            right: 16px;
+            top: 0;
+            font-size: 12px;
+            transition: all 0.2s linear;
+            border-radius: 4px;
+            cursor: pointer;
+            padding: 8px 20px;
+            background-color: $grayColor;
+            &:hover {
+                background-color: rgb(26, 91, 230);
+            }
+        }
         &--save {
             font-size: 12px;
             background-color: $grayColor;

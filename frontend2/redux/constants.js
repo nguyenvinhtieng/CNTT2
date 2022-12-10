@@ -4,6 +4,7 @@ export const GLOBAL_TYPES = {
     LOADING: 'LOADING',
     APP_STATE: 'APP_STATE',
     QUESTION: 'QUESTION',
+    SOCKET: 'SOCKET',
 }
 
 export const CREDENTIALS = {

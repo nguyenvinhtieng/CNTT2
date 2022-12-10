@@ -5,7 +5,12 @@ const cors = require('cors')
 const app = express();
 
 const server = require("http").Server(app);
-const io = require("socket.io")(server);
+const io = require("socket.io")(server, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
+});
 
 const PORT = process.env.PORT || 3001;
 app.use(cors())
@@ -26,7 +31,7 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use(express.json());
 app.use(express.static(__dirname));
 route(app)
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`App listening at http://localhost:${PORT}`);
 })
 handleSocket(io)

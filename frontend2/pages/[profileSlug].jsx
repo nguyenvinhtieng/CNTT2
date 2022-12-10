@@ -1,4 +1,5 @@
 import moment from 'moment'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
 import { AiFillGithub, AiOutlineGlobal, AiOutlineInstagram, AiOutlineLinkedin } from 'react-icons/ai'
@@ -286,6 +287,12 @@ export default function ProfilePage() {
                         }
                     </ul>
                 </div>
+                {user.profileSlug != auth?.user?.profileSlug && <Link href={`/chat?user=${user.profileSlug}`}>
+                    <div className="profilePage__head--chat">
+                        Nhắn tin
+                    </div>
+                </Link>
+                }
                 {isMe && <>
                     {editingMode && <div className="profilePage__head--save" data-tip="Lưu thông tin" onClick={updateInfo}>
                         Lưu thông tin

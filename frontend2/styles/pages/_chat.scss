@@ -55,6 +55,15 @@
       .name {
         font-size: 14px;
       }
+      .tagvip {
+        font-size: 10px;
+        padding: 4px 6px;
+        margin-left: 6px;
+        color: rgb(6, 227, 6);
+        background-color: rgba(255, 255, 0, 0.1);
+        font-weight: bold;
+        border-radius: 4px;
+      }
       .messWrapper {
         display: flex;
         align-items: flex-end;
@@ -68,6 +77,7 @@
         color: rgb(126, 126, 126);
         font-size: 10px;
         margin-left: 4px;
+        min-width: 50px;
       }
     }
     .wrapper {
@@ -80,6 +90,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    height: calc(100vh - 56px);
     @include tablet {
       width: 100%;
       display: none;
@@ -102,7 +113,12 @@
     padding: 6px 8px;
     border-top: 1px solid $borderColor;
     // position: ;
-    display: flex;
+    &__files {
+
+    }
+    &--content {
+      display: flex;
+    }
     &--attach {
       display: flex;
       justify-content: center;
@@ -145,7 +161,7 @@
     padding-top: 30px;
     height: 100%;
     overflow: auto;
-    max-height: calc(100vh - 56px - 56px - 74px);
+    max-height: calc(100vh - 300px);
     /* width */
     &::-webkit-scrollbar {
       width: 7px;
@@ -166,6 +182,22 @@
       background: #555;
     }
   }
+  &__contentEmpty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-size: 16px;
+    color: rgb(155, 155, 155);
+    &--wrapper {
+      .ico {
+        font-size: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
   // &__contentMessList {
   //   height: 100%;
   //   overflow: auto;
@@ -181,7 +213,7 @@
     }
     &--content {
       margin: 0 6px;
-      padding: 4px 16px;
+      padding: 4px 10px;
       background-color: $grayColor;
       border-radius: 6px;
       .time {
