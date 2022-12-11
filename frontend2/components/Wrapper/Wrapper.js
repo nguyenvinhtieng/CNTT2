@@ -15,8 +15,6 @@ function Wrapper({children, socket}) {
     useEffect(()=> {
         if(auth.user) {
             if(Object.keys(auth?.user).length > 0) {
-                console.log("socket start")
-                console.log("user: ", auth.user)
                 dispatch(startSocket(socket))
                 socket.emit("user-login", auth.user)
             }

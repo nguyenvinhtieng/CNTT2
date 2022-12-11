@@ -143,7 +143,8 @@ class ChatController {
         threadChatDb.last_message = chat._id;
         await threadChatDb.save();
         let chatThreadNew = await ChatThread.findOne({_id: chat_thread_id}).populate("users").populate("last_message").lean();
-        res.json({status: true, message: "Gửi tin nhắn thành công", data: chat, thread: chatThreadNew});
+        let chatNew = await Chat.findOne({_id: chat._id}).populate("sender").lean()
+        res.json({status: true, message: "Gửi tin nhắn thành công", chat: chatNew, thread: chatThreadNew});
     });
   }
 

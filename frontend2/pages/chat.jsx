@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import ChatContent from '~/components/ChatContent/ChatContent'
 import ChatUsers from '~/components/ChatUsers/ChatUsers'
 import displayToast from '~/utils/displayToast'
@@ -13,6 +14,7 @@ export default function chat() {
   const [userChatNow, setUserChatNow] = React.useState({})
   const toggleShowContent = () => setIsShowContent(!isShowContent)
   const router = useRouter()
+  const socket = useSelector(state => state.socket)
   const getAllChatThreads = async() => {
     const res = await getMethod("chat/get-all-thread")
     const { data } = res
@@ -44,6 +46,7 @@ export default function chat() {
 
   const handleChangeThreadChat = async (thread, user) => {
     setChatThreadNow(thread)
+    console.log("click: ", thread)
     setUserChatNow(user)
     const res = await postMethod("chat/get-chat-of-thread", { chat_thread_id: thread._id })
     const { data } = res
@@ -62,6 +65,29 @@ export default function chat() {
     }
   },[])
 
+  // socket handler
+  useEffect(()=> {
+    if(Object.keys(socket).length > 0) {
+      socket.on("new-message", ({chat, thread}) => {
+        console.log("thread now: ", chatThreadNow)
+        console.log("thread send: ", thread)
+        if(chatThreadNow?._id == thread._id) {
+          setChatContent(prevChatConent => [chat, ...prevChatConent])
+        }
+        let isExitstThread = false;
+        chatThreads.forEach(item => {
+          if(item._id == thread._id) {
+            isExitstThread = true
+          }
+        })
+        if(isExitstThread) {
+          setChatThreads(prevThreads => prevThreads.map(item => item._id == thread._id ? thread : item))
+        }else {
+          setChatThreads(prevThreads => [thread, ...prevThreads])
+        }
+      })
+    }
+  }, [socket, chatThreadNow, chatThreads])
 
   return (
     <div className='chat'>
@@ -69,7 +95,7 @@ export default function chat() {
         <ChatUsers threads={chatThreads} onChangeThread={handleChangeThreadChat}></ChatUsers>
       </div>
       <div className={`chat__content ${isShowContent ? "is-show" : ""}`} onClick={toggleShowContent}>
-        <ChatContent userChatNow={userChatNow} thread={chatThreadNow} content={chatContent}></ChatContent>
+        <ChatContent userChatNow={userChatNow} thread={chatThreadNow} content={chatContent} setContent={setChatContent} setThread={setChatThreads}></ChatContent>
       </div>
     </div>
   )

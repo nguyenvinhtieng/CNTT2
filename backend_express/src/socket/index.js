@@ -16,6 +16,20 @@ function mySocket(io) {
         }
         console.log("number user online: ", users.length)
       })
+      socket.on("send-message", ({receiver, chat, thread}) => {
+        // check receiver is online?
+        let isOnline = false;
+        let socket_receiver_id = null
+        users.forEach(user => {
+          if(user.user._id == receiver._id) {
+            isOnline = true
+            socket_receiver_id = user.socket_id
+          }
+        })
+        if(isOnline) {
+          io.to(socket_receiver_id).emit('new-message', {chat, thread})
+        }
+      })
   })
 }
 
