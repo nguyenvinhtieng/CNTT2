@@ -2,11 +2,11 @@ import displayToast from "~/utils/displayToast";
 import { getMethod, postMethod } from "~/utils/fetchData";
 import { GLOBAL_TYPES } from "../constants";
 
-export const fetchQuestionData = ({page, filter}) => {
+export const fetchQuestionData = () => {
     return async (dispatch, getState) => {
         try {
             const state = getState();
-            if(state.questions.isEnd || state.questions.loading) return;
+            // if(state.questions.isEnd || state.questions.loading) return;
             dispatch({
                 type: GLOBAL_TYPES.QUESTION,
                 payload: {
@@ -15,10 +15,9 @@ export const fetchQuestionData = ({page, filter}) => {
                 }
             })
 
-            page = state.questions.page + 1;
-            if(page) page = page <= 0 ? 0 : page
-            const url = `question?page=${page <= 0 ? 0 : page}`;
-            const res = await getMethod(url);
+            // page = state.questions.page + 1;
+            // if(page) page = page <= 0 ? 0 : page
+            const res = await getMethod("question");
             const { data } = res;
             if(data.status) {
                 dispatch({

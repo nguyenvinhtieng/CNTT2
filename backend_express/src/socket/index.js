@@ -9,6 +9,13 @@ function mySocket(io) {
         }
         console.log("number user online: ", users.length)
       })
+      socket.on('user-logout', () => {
+        const isLeave = userLeave({socket_id: socket.id});
+        if(isLeave) {
+          io.emit("list-user-online", users)
+        }
+        console.log("number user online: ", users.length)
+      })
       socket.on('user-login', user => {
         let isJoin = userJoin({user: user, socket_id: socket.id})
         if(isJoin) {

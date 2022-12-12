@@ -5,6 +5,10 @@ import { useSelector } from "react-redux"
 export default function ChatUsers({threads, onChangeThread}) {
   const [usersOnline, setUsersOnline] = useState([])
   const {auth, socket} = useSelector(state => state)
+  // sort thread by updatedAt
+  threads.sort((a, b) => {
+    return new Date(b.updatedAt) - new Date(a.updatedAt)
+  })
   const handleClickUser = (thread, userChatWith) => {
     onChangeThread(thread, userChatWith)
   }
@@ -20,7 +24,7 @@ export default function ChatUsers({threads, onChangeThread}) {
     <div className="chat__userWrapper">
       <div className="heading">Trò chuyện</div>
       <div className="chat__userList">
-        {threads.length == 0 && <p>Không có cuộc trò chuyện nào</p>}
+        {threads.length == 0 && <p className="empty">Không có cuộc trò chuyện nào</p>}
         {threads.length > 0 && threads.map((thread, index) => {
           let userChatWith = null
           if(thread.users[0]._id == auth?.user?._id){
@@ -41,8 +45,8 @@ export default function ChatUsers({threads, onChangeThread}) {
                   {userChatWith?.role == "admin" && <span className="tagvip">Admin</span>}
                 </p>
                 <div className="messWrapper">
-                  <p className='mess'>{thread.last_message.content}</p>
-                  <time className="timeMess">{moment(thread.updatedAt).format("LT")}</time>
+                  <p className='mess'>{thread?.last_message?.content}</p>
+                  <time className="timeMess">{moment(thread?.updatedAt).format("LT")}</time>
                 </div>
               </div>
             </span>

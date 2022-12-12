@@ -10,7 +10,7 @@ function Wrapper({children, socket}) {
     useEffect(()=> {
         dispatch(fetchDataUser());
         dispatch(fetchPostData({}));
-        dispatch(fetchQuestionData({}));
+        dispatch(fetchQuestionData());
     }, [])
     useEffect(()=> {
         if(auth.user) {

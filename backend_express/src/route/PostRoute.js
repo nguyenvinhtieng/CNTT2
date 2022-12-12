@@ -4,7 +4,7 @@ const router = express.Router();
 const PostController = require('../app/controllers/PostController.js');
 const checkLogin = require('../app/middleware/checkLogin.js')
 
-router.post("/get-posts", PostController.getPagination);
+router.get("/get-posts", PostController.getPagination);
 router.get("/my-post", checkLogin, PostController.getMyPost);
 router.post("/get-post-user", PostController.getPostUser)
 router.post('/', checkLogin, PostController.create)

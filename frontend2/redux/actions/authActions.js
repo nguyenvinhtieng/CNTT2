@@ -5,6 +5,8 @@ import { CREDENTIALS, GLOBAL_TYPES } from "../constants";
 
 export const userLogout = () => {
     return async (dispatch, getState) => {
+        const state = getState();
+        const socket = state.socket;
         localStorage.removeItem(CREDENTIALS.TOKEN_NAME);
         dispatch({
             type: GLOBAL_TYPES.AUTH,

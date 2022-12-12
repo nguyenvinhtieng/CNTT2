@@ -124,22 +124,23 @@ class PostController {
     async getPagination(req, res, next) {
         try {
             // const page = req.query.page ? parseInt(req.query.page) : 0;
-            let { page, content } = req.body;
-            page = page ? parseInt(page) : 1;
-            const LIMIT = 10
-            const SKIP = (page - 1 )* 10;
+            // let { page, content } = req.body;
+            // page = page ? parseInt(page) : 1;
+            // const LIMIT = 10
+            // const SKIP = (page - 1 )* 10;
             // const SKIP = 10;
 
-            let filterCondition = {}
-            if(content) {
-                filterCondition = {$or: [{title: { $regex: content }}, {content: { $regex: content }}]}
-            }
-            const posts = await Post.find(filterCondition)
-                .sort({createdAt: -1})
-                .populate('author')
-                .skip(SKIP)
-                .limit(LIMIT)
-                .lean();
+            // let filterCondition = {}
+            // if(content) {
+            //     filterCondition = {$or: [{title: { $regex: content }}, {content: { $regex: content }}]}
+            // }
+            // const posts = await Post.find(filterCondition)
+            //     .sort({createdAt: -1})
+            //     .populate('author')
+            //     .skip(SKIP)
+            //     .limit(LIMIT)
+            //     .lean();
+            const posts = await Post.find({status: "publish"}).sort({createdAt: -1}).populate('author').lean();
             for(const [index, p] of posts.entries()) {
                 posts[index].votes = await PostVote.find({ post_id: p._id }).lean();
                 posts[index].comments = await Comment.find({ post_id: p._id }).populate('author');

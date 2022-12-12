@@ -1,8 +1,8 @@
 import displayToast from "~/utils/displayToast";
-import { postMethod } from "~/utils/fetchData";
+import { getMethod, postMethod } from "~/utils/fetchData";
 import { GLOBAL_TYPES } from "../constants";
 
-export const fetchPostData = ({page, search}) => {
+export const fetchPostData = () => {
     return async (dispatch, getState) => {
         try {
             const state = getState();
@@ -10,7 +10,7 @@ export const fetchPostData = ({page, search}) => {
             //     let newPage = 0;
 
             // }
-            if(state.posts.isEnd || state.posts.loading) return;
+            // if(state.posts.isEnd || state.posts.loading) return;
             // if
             dispatch({
                 type: GLOBAL_TYPES.POST,
@@ -20,33 +20,20 @@ export const fetchPostData = ({page, search}) => {
                 }
             })
 
-            page = state.posts.page + 1;
-            if(page) page = page <= 0 ? 0 : page;
-            let filterCondition = {
-                page: page,
-                content: search
-            }
-            const res = await postMethod("post/get-posts", filterCondition);
-
-
+            // page = state.posts.page + 1;
+            // if(page) page = page <= 0 ? 0 : page;
+            // let filterCondition = {
+            //     page: page,
+            //     content: search
+            // }
+            const res = await getMethod("post/get-posts");
             const { data } = res;
             if(data.status) {
-                let oldPosts = state.posts.data;
-                let newPosts = data.posts;
-                let newData = [...oldPosts]
-                newPosts.forEach(item => {
-                    if(!oldPosts.find(i => i._id === item._id)) {
-                        newData.push(item);
-                    }
-                })
                 dispatch({
                     type: GLOBAL_TYPES.POST,
                     payload: {
-                        ...state.posts,
-                        data: newData,
+                        data: data.posts,
                         loading: false,
-                        page: page,
-                        isEnd: newPosts.length < 10
                     }
                 })
             }

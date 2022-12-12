@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import ChatContent from '~/components/ChatContent/ChatContent'
 import ChatUsers from '~/components/ChatUsers/ChatUsers'
@@ -12,6 +12,17 @@ export default function chat() {
   const [chatThreadNow, setChatThreadNow] = React.useState(null)
   const [chatContent, setChatContent] = React.useState([])
   const [userChatNow, setUserChatNow] = React.useState({})
+  const chatThreadNowsRef = useRef(null)
+  const chatThreadsRef = useRef([])
+  const userChatNowRef = useRef(null)
+  const messageEndRef = useRef(null)
+  
+  useEffect(() => {
+    chatThreadNowsRef.current = chatThreadNow
+    chatThreadsRef.current = chatThreads
+    userChatNowRef.current = userChatNow
+  }, [chatThreadNow, chatThreads, userChatNow])
+
   const toggleShowContent = () => setIsShowContent(!isShowContent)
   const router = useRouter()
   const socket = useSelector(state => state.socket)
@@ -46,7 +57,6 @@ export default function chat() {
 
   const handleChangeThreadChat = async (thread, user) => {
     setChatThreadNow(thread)
-    console.log("click: ", thread)
     setUserChatNow(user)
     const res = await postMethod("chat/get-chat-of-thread", { chat_thread_id: thread._id })
     const { data } = res
@@ -65,29 +75,45 @@ export default function chat() {
     }
   },[])
 
+  const scrollToBottom = () => {
+    setTimeout(()=>{
+      messageEndRef.current?.scrollIntoView({behavior: "smooth"})
+    }, 100)
+  }
+
+
+  const handleReceiveNewMessage = ({chat, thread}) => {
+    console.log("thread now: ", chatThreadNowsRef.current)
+    console.log("thread send: ", thread)
+    console.log("list threads: ", chatThreadsRef.current)
+    console.log("userChatNowRef: ", userChatNowRef.current)
+
+    if(chatThreadNowsRef.current?._id == thread._id || userChatNowRef.current._id == chat.sender._id) {
+      setChatContent(prevChatConent => [chat, ...prevChatConent])
+      scrollToBottom()
+    }
+
+    let isExitstThread = false;
+    chatThreadsRef.current.forEach(item => {
+      if(item._id == thread._id) {
+        isExitstThread = true
+      }
+    })
+    console.log("isExitstThread: ", isExitstThread)
+    if(isExitstThread) {
+      setChatThreads(prevThreads => prevThreads.map(item => item._id == thread._id ? thread : item))
+    }else {
+      setChatThreads(prevThreads => [thread, ...prevThreads])
+    }
+  }
   // socket handler
   useEffect(()=> {
     if(Object.keys(socket).length > 0) {
       socket.on("new-message", ({chat, thread}) => {
-        console.log("thread now: ", chatThreadNow)
-        console.log("thread send: ", thread)
-        if(chatThreadNow?._id == thread._id) {
-          setChatContent(prevChatConent => [chat, ...prevChatConent])
-        }
-        let isExitstThread = false;
-        chatThreads.forEach(item => {
-          if(item._id == thread._id) {
-            isExitstThread = true
-          }
-        })
-        if(isExitstThread) {
-          setChatThreads(prevThreads => prevThreads.map(item => item._id == thread._id ? thread : item))
-        }else {
-          setChatThreads(prevThreads => [thread, ...prevThreads])
-        }
+        handleReceiveNewMessage({chat, thread})
       })
     }
-  }, [socket, chatThreadNow, chatThreads])
+  }, [socket])
 
   return (
     <div className='chat'>
@@ -95,7 +121,7 @@ export default function chat() {
         <ChatUsers threads={chatThreads} onChangeThread={handleChangeThreadChat}></ChatUsers>
       </div>
       <div className={`chat__content ${isShowContent ? "is-show" : ""}`} onClick={toggleShowContent}>
-        <ChatContent userChatNow={userChatNow} thread={chatThreadNow} content={chatContent} setContent={setChatContent} setThread={setChatThreads}></ChatContent>
+        <ChatContent scrollToBottom={scrollToBottom} messageEndRef={messageEndRef} userChatNow={userChatNow} thread={chatThreadNow} content={chatContent} setContent={setChatContent} setThread={setChatThreads}></ChatContent>
       </div>
     </div>
   )

@@ -103,12 +103,21 @@ class ChatController {
         const content = fields.content[0];
         const user_chat_id = fields.user_chat_id[0];
         let threadChatDb = null
+        // let 
         if(chat_thread_id == "null" || chat_thread_id == "undefined") {
-          threadChatDb = new ChatThread({
-            users: [user._id, user_chat_id],
-          })
-          await threadChatDb.save();
-          chat_thread_id = threadChatDb._id
+          let findThread = await ChatThread.findOne({
+            users: { $all: [user._id, user_chat_id] }
+          });
+          if(findThread) {
+            chat_thread_id = findThread._id
+            threadChatDb = findThread
+          }else {
+            threadChatDb = new ChatThread({
+              users: [user._id, user_chat_id],
+            })
+            await threadChatDb.save();
+            chat_thread_id = threadChatDb._id
+          }
         }else {
           threadChatDb = await ChatThread.findOne({_id: chat_thread_id});
           if(!threadChatDb) {
@@ -140,8 +149,9 @@ class ChatController {
         });
         await chat.save();
         // update thread chat
-        threadChatDb.last_message = chat._id;
-        await threadChatDb.save();
+        // threadChatDb.last_message = chat._id;
+        // await threadChatDb.save();
+        await ChatThread.findOneAndUpdate({_id: threadChatDb._id}, {last_message: chat._id});
         let chatThreadNew = await ChatThread.findOne({_id: chat_thread_id}).populate("users").populate("last_message").lean();
         let chatNew = await Chat.findOne({_id: chat._id}).populate("sender").lean()
         res.json({status: true, message: "Gửi tin nhắn thành công", chat: chatNew, thread: chatThreadNew});

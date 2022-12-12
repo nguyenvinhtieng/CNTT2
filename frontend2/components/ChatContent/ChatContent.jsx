@@ -8,10 +8,11 @@ import displayToast from '~/utils/displayToast'
 import { postMethod } from '~/utils/fetchData'
 import getIconFileType from '~/utils/getIconFileType'
 import UserItem from '../UserItem/UserItem'
+import ZoomImage from '../ZoomImage/ZoomImage'
 
-export default function ChatContent({userChatNow, thread, content, setContent, setThread}) {
+export default function ChatContent({userChatNow,scrollToBottom, messageEndRef, thread, content, setContent, setThread}) {
   const chatContentRef = useRef(null)
-  const messageEndRef = useRef(null)
+  // const messageEndRef = useRef(null)
   const [files, setFiles] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [chatContent, setChatContent] = useState("")
@@ -24,34 +25,19 @@ export default function ChatContent({userChatNow, thread, content, setContent, s
   let maxFiles = 3
   let revertArr = [...content].reverse()
   content = [...revertArr]
-  // console.log("content: ", content)
-  const scrollToBottom = () => {
-    // if(messageEndRef.current) {
-      // setIsFirstTimes(false)
-      messageEndRef.current?.scrollIntoView({behavior: "smooth"})
-    // }
+  // delete duplicate message by content._id
+  const deleteDuplicateMessage = (arr) => {
+    let newArr = []
+    let arrId = []
+    arr.forEach(item => {
+      if(!arrId.includes(item._id)) {
+        newArr.push(item)
+        arrId.push(item._id)
+      }
+    })
+    return newArr
   }
-  // useEffect(()=> {
-  //   scrollToBottom()
-  // })
-
-  // handler keydown
-  // const keyDownHandler = (event) => {
-  //   event.preventDefault();
-  //   if (event.key === 'Enter') {
-  //     handleSendMessage();
-  //   }
-  // }
-  // event key enter press chat content
-  // useEffect(() => {
-  //   if(chatContentRef.current) {
-  //     chatContentRef.current.focus()
-  //     chatContentRef.current.addEventListener('keydown', keyDownHandler)
-  //   }
-  //   return () => {
-  //     chatContentRef?.current?.removeEventListener('keydown', keyDownHandler);
-  //   };
-  // }, [chatContentRef])
+  content = deleteDuplicateMessage(content)
 
   const handleSendMessage = async () => {
     if(!chatContent && files.length === 0) {
@@ -126,9 +112,15 @@ export default function ChatContent({userChatNow, thread, content, setContent, s
     }
     setFiles(fileNew)
   }
+  useEffect(() => {
+    setTimeout(()=>{
+      scrollToBottom()
+    },1500)
+  }, [])
 
   return (
     <>
+
       {!thread && Object.keys(userChatNow).length === 0 && <div className="chat__contentEmpty">
         <div className="chat__contentEmpty--wrapper">
           <div className="ico"><RiChatHeartLine></RiChatHeartLine></div>
@@ -137,6 +129,7 @@ export default function ChatContent({userChatNow, thread, content, setContent, s
           </p>
         </div>
       </div>}
+      {isLoading && <span className='sending'> <div className="dashed-loading"></div> </span>}
       {Object.keys(userChatNow).length > 0 && <>
       <div className="chat__contentHead">
         <UserItem user={userChatNow}></UserItem>
@@ -154,18 +147,31 @@ export default function ChatContent({userChatNow, thread, content, setContent, s
                 <div className="chat__contentMessItem--content">
                   <div className="chat__contentMessItem--contentWrapper">
                     <p>{chat?.content}</p>
+                    {chat?.files.length > 0 && (
+                      <div className="chat__contentMessItem--contentFile">
+                        {chat?.files.map((file, index) => {
+                          if(file.type == "image") {
+                            return <ZoomImage key={file.url}>
+                              <img src={file.url} alt="" />
+                            </ZoomImage>
+                          }else {
+                            return <a key={file.url} href={file.url} target="_blank" rel="noreferrer">{ file.file_name }</a>
+                          }
+                        })}
+                      </div>
+                    )}
                   </div>
                   <time className="time">{moment(chat?.createdAt).format("LLL")}</time>
                 </div>
               </div>
             )}
-            <div className='messageEnd' ref={messageEndRef}></div>
           </div>
         </div>
+        <div className='messageEnd' ref={messageEndRef}></div>
       </div>
       <div className="chat__contentInput">
         <div className="chat__contentInput--file">
-        <div className="inputFile__preview">
+        <div className="inputFile__previewChat">
           {files.length > 0 && files.map((file, index) => {
             let fileSize = Math.floor(file.size / 1024)
             let fileName = ""
@@ -177,20 +183,18 @@ export default function ChatContent({userChatNow, thread, content, setContent, s
             let fileType = file.type.split('/')[1]
             let FileIcon = getIconFileType(fileType)
             return (
-              <div key={index} className="inputFile__preview-item">
-                <div className="inputFile__preview-item__delete" onClick={()=>handleDeleteFile(index)}>
+              <div key={index} className="inputFile__previewChat-item">
+                <div className="inputFile__previewChat-item--delete" onClick={()=>handleDeleteFile(index)}>
                   <FaTimes></FaTimes>
                 </div>
-                <div className="inputFile__preview-item__icon">
+                <div className="inputFile__previewChat-item--ico">
                   <FileIcon />
                 </div>
-                <div className="inputFile__preview-item__wrap">
-                  <div className="inputFile__preview-item__name">
-                    {fileName}
-                  </div>
-                  <div className="inputFile__preview-item__size">
-                    {fileSize > 1024 ? `${Math.floor(fileSize / 1024)} MB` : `${fileSize} KB`}
-                  </div>
+                <div className="inputFile__previewChat-item--name">
+                  {fileName}
+                </div>
+                <div className="inputFile__previewChat-item--size">
+                  {fileSize > 1024 ? `${Math.floor(fileSize / 1024)} MB` : `${fileSize} KB`}
                 </div>
               </div>
             )
@@ -210,7 +214,9 @@ export default function ChatContent({userChatNow, thread, content, setContent, s
             </div>
           </div>
           <div className="chat__contentInput--btn">
-            <button className='btn-send' onClick={handleSendMessage}>Gửi</button>
+            <button className="btn-send" onClick={handleSendMessage}>
+             Gửi
+            </button>
           </div>
         </div>
       </div>
