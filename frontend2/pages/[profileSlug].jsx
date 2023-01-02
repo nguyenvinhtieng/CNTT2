@@ -287,7 +287,7 @@ export default function ProfilePage() {
                         }
                     </ul>
                 </div>
-                {user.profileSlug != auth?.user?.profileSlug && <Link href={`/chat?user=${user.profileSlug}`}>
+                {auth.user && user.profileSlug != auth?.user?.profileSlug && <Link href={`/chat?user=${user.profileSlug}`}>
                     <div className="profilePage__head--chat">
                         Nhắn tin
                     </div>
