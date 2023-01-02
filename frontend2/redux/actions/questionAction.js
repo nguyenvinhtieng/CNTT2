@@ -6,17 +6,6 @@ export const fetchQuestionData = () => {
     return async (dispatch, getState) => {
         try {
             const state = getState();
-            // if(state.questions.isEnd || state.questions.loading) return;
-            dispatch({
-                type: GLOBAL_TYPES.QUESTION,
-                payload: {
-                    ...state.questions,
-                    loading: true
-                }
-            })
-
-            // page = state.questions.page + 1;
-            // if(page) page = page <= 0 ? 0 : page
             const res = await getMethod("question");
             const { data } = res;
             if(data.status) {
@@ -24,21 +13,11 @@ export const fetchQuestionData = () => {
                     type: GLOBAL_TYPES.QUESTION,
                     payload: {
                         ...state.questions,
-                        data: [...state.questions.data, ...data.questions],
-                        page: page,
-                        isEnd: data.questions.length <= 10,
-                        loading: false
+                        data: data.questions,
                     }
                 })
             }else {
-                dispatch({
-                    type: GLOBAL_TYPES.QUESTION,
-                    payload: {
-                        ...state.questions,
-                        loading: false,
-                        isEnd: true
-                    }
-                })
+                displayToast("error", data.message);
             }
         } catch (error) {
             console.log(error);

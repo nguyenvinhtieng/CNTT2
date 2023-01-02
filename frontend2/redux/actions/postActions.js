@@ -34,7 +34,7 @@ export const startFilterPost = ({content}) => {
     }
 }
 
-export const fetchPostData = ({content}) => {
+export const fetchPostData = ({content = ""}) => {
     return async (dispatch, getState) => {
         try {
             const state = getState();
@@ -42,9 +42,6 @@ export const fetchPostData = ({content}) => {
             let skip = state?.posts?.data?.length || 0;
             const res = await getMethod(`post/get-posts?skip=${skip}&content=${content}`);
             const { data } = res;
-            console.log("SKIP", skip)
-            console.log("res", res)
-
             if(data.status) {
                 let dataPostsOld = state?.posts?.data || [];
                 let dataPostsTempOld = state?.posts?.dataTemp || [];
