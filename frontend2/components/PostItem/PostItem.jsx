@@ -83,7 +83,7 @@ export default function PostItem({post}) {
     displayToast("success", "Đã sao chép liên kết");
   }
   return (
-    <li className="post-item">
+    <div className="post-item">
       <Modal isShow={isShowModalReport} handleCloseModal={toggleModalReport} size="sm" title="Báo cáo bình luận" handleSubmit={report}>
         <label htmlFor="" className='input__label'>Lý do</label>
         {reasons.map((reason, _) => {
@@ -171,6 +171,6 @@ export default function PostItem({post}) {
           </span>
         </Link>
       </div>
-    </li>
+    </div>
   );
 }

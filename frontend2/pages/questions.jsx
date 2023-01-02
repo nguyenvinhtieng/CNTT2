@@ -6,7 +6,7 @@ import QuestionItem from '~/components/QuestionItem/QuestionItem'
 export default function QuestionPage() {
   const [questionData, setQuestionData] = React.useState([]);
   const questions = useSelector(state => state.questions)
-  
+  console.log("state: ", useSelector(state => state))
   useEffect(()=>{
     setQuestionData(questions.data)
   }, [questions])

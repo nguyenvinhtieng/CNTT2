@@ -123,30 +123,44 @@ class PostController {
     // localhost:3001/api/post?page=5
     async getPagination(req, res, next) {
         try {
-            // const page = req.query.page ? parseInt(req.query.page) : 0;
-            // let { page, content } = req.body;
-            // page = page ? parseInt(page) : 1;
-            // const LIMIT = 10
-            // const SKIP = (page - 1 )* 10;
-            // const SKIP = 10;
-
-            // let filterCondition = {}
-            // if(content) {
-            //     filterCondition = {$or: [{title: { $regex: content }}, {content: { $regex: content }}]}
-            // }
-            // const posts = await Post.find(filterCondition)
-            //     .sort({createdAt: -1})
-            //     .populate('author')
-            //     .skip(SKIP)
-            //     .limit(LIMIT)
-            //     .lean();
-            const posts = await Post.find({status: "publish"}).sort({createdAt: -1}).populate('author').lean();
+            const skip = req.query.skip ? parseInt(req.query.skip) : 0;
+            const content = req.query.content || "";
+            let filterCondition = {
+                status: "publish",
+            };
+            if (content) {
+                filterCondition = {
+                    $and: [
+                        { status: "publish" },
+                        {
+                            $or: [
+                                { title: { $regex: content } },
+                                { content: { $regex: content } },
+                                { tags: { $in: [content] } },
+                            ],
+                        }
+                    ],
+                };
+            }
+            const posts = await Post.find({filterCondition})
+                                    .skip(skip)
+                                    .limit(10)
+                                    .sort({createdAt: -1})
+                                    .populate('author')
+                                    .lean();
+            let length = await Post.countDocuments({filterCondition});
             for(const [index, p] of posts.entries()) {
                 posts[index].votes = await PostVote.find({ post_id: p._id }).lean();
                 posts[index].comments = await Comment.find({ post_id: p._id }).populate('author');
             }
 
-            return res.status(200).json({ status: true, message: "Lấy bài viết thành công", posts: posts });
+            return res.status(200).json({ 
+                status: true, 
+                message: "Lấy bài viết thành công", 
+                posts: posts, 
+                total: length 
+            });
+
         } catch (error) {
             console.log(error)
             return res.status(500).json({ status: false, message: error.message });

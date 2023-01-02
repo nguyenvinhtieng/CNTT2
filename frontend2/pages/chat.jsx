@@ -24,6 +24,7 @@ export default function chat() {
   }, [chatThreadNow, chatThreads, userChatNow])
 
   const toggleShowContent = () => setIsShowContent(!isShowContent)
+
   const router = useRouter()
   const socket = useSelector(state => state.socket)
   const getAllChatThreads = async() => {
@@ -58,6 +59,7 @@ export default function chat() {
   const handleChangeThreadChat = async (thread, user) => {
     setChatThreadNow(thread)
     setUserChatNow(user)
+    toggleShowContent()
     const res = await postMethod("chat/get-chat-of-thread", { chat_thread_id: thread._id })
     const { data } = res
     if(data.status) {
@@ -114,14 +116,22 @@ export default function chat() {
       })
     }
   }, [socket])
-
+  
   return (
     <div className='chat'>
-      <div className={`chat__user ${isShowContent ? "is-hide" : ""}`} onClick={toggleShowContent}>
+      <div className={`chat__user ${isShowContent ? "is-hide" : ""}`}>
         <ChatUsers threads={chatThreads} onChangeThread={handleChangeThreadChat}></ChatUsers>
       </div>
-      <div className={`chat__content ${isShowContent ? "is-show" : ""}`} onClick={toggleShowContent}>
-        <ChatContent scrollToBottom={scrollToBottom} messageEndRef={messageEndRef} userChatNow={userChatNow} thread={chatThreadNow} content={chatContent} setContent={setChatContent} setThread={setChatThreads}></ChatContent>
+      <div className={`chat__content ${isShowContent ? "is-show" : ""}`}>
+        <ChatContent 
+          backToChat={toggleShowContent}
+          scrollToBottom={scrollToBottom} 
+          messageEndRef={messageEndRef} 
+          userChatNow={userChatNow} 
+          thread={chatThreadNow} 
+          content={chatContent} 
+          setContent={setChatContent} 
+          setThread={setChatThreads} />
       </div>
     </div>
   )

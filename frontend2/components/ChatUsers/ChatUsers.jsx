@@ -24,6 +24,20 @@ export default function ChatUsers({threads, onChangeThread}) {
     <div className="chat__userWrapper">
       <div className="heading">Trò chuyện</div>
       <div className="chat__userList">
+        {/* <div className="chat__userItem" onClick={()=>handleClickUser({}, {})}>
+          <span className="wrapper">
+            <span className="avatar avatar__sm">
+              <img src={"/default.png"} alt="User avatar" />
+            </span>
+            <div className="info">
+              <p className="name">CHAT GPT</p>
+              <div className="messWrapper">
+                <p className='mess'>Hello</p>
+                <time className="timeMess">Hihihi</time>
+              </div>
+            </div>
+          </span>
+        </div> */}
         {threads.length == 0 && <p className="empty">Không có cuộc trò chuyện nào</p>}
         {threads.length > 0 && threads.map((thread, index) => {
           let userChatWith = null

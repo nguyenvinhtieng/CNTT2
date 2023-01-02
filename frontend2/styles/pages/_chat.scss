@@ -157,6 +157,18 @@
   &__contentHead {
     padding: 8px 16px;
     border-bottom: 1px solid $borderColor;
+    display: flex;
+    align-items: center;
+    &--back {
+
+      margin-right: 10px;
+      cursor: pointer;
+      font-size: 11px;
+      display: none;
+      @include tablet {
+        display: block;
+      }
+    }
   }
   &__contentMess {
     flex: 1;

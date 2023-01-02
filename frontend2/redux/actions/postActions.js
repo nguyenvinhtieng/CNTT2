@@ -1,39 +1,75 @@
 import displayToast from "~/utils/displayToast";
 import { getMethod, postMethod } from "~/utils/fetchData";
 import { GLOBAL_TYPES } from "../constants";
-
-export const fetchPostData = () => {
+export const startFilterPost = ({content}) => {
     return async (dispatch, getState) => {
         try {
             const state = getState();
-            // if(search && search !== state.posts.searchContent) {
-            //     let newPage = 0;
-
-            // }
-            // if(state.posts.isEnd || state.posts.loading) return;
-            // if
-            dispatch({
-                type: GLOBAL_TYPES.POST,
-                payload: {
-                    ...state.posts,
-                    loading: true
-                }
-            })
-
-            // page = state.posts.page + 1;
-            // if(page) page = page <= 0 ? 0 : page;
-            // let filterCondition = {
-            //     page: page,
-            //     content: search
-            // }
-            const res = await getMethod("post/get-posts");
-            const { data } = res;
-            if(data.status) {
+            if(content) {
+                let dataPostsTemp = state?.posts?.dataTemp || [];
+                let dataPostsTempFilter = dataPostsTemp.filter((item) => 
+                    item.content.includes(content) || item.title.includes(content) || item.tags.includes(content) || item.author.fullname.includes(content)
+                );
+                console.log({dataPostsTemp})
                 dispatch({
                     type: GLOBAL_TYPES.POST,
                     payload: {
-                        data: data.posts,
-                        loading: false,
+                        ...state.posts,
+                        data: dataPostsTempFilter,
+                        total: dataPostsTempFilter.length,
+                    }});
+            }else {
+                dispatch({
+                    type: GLOBAL_TYPES.POST,
+                    payload: {
+                        ...state.posts,
+                        data: state.posts.dataTemp,
+                        total: state.posts.totalTemp,
+                    }});
+            }
+        } catch (error) {
+            console.log(error);
+            displayToast("error", "Lỗi", "Có lỗi xảy ra");
+        }
+    }
+}
+
+export const fetchPostData = ({content}) => {
+    return async (dispatch, getState) => {
+        try {
+            const state = getState();
+
+            let skip = state?.posts?.data?.length || 0;
+            const res = await getMethod(`post/get-posts?skip=${skip}&content=${content}`);
+            const { data } = res;
+            console.log("SKIP", skip)
+            console.log("res", res)
+
+            if(data.status) {
+                let dataPostsOld = state?.posts?.data || [];
+                let dataPostsTempOld = state?.posts?.dataTemp || [];
+                let dataPostsNews = [...dataPostsOld];
+                let dataPostsTempNews = [...dataPostsTempOld];
+                data.posts.forEach((item) => {
+                    // check duplicate post
+                    let isDuplicate = dataPostsNews.find((post) => post._id === item._id);
+                    if(!isDuplicate) {
+                        dataPostsNews.push(item);
+                    }
+                    // checck uplicate temp
+                    let isDuplicateTemp = dataPostsTempNews.find((post) => post._id === item._id);
+                    if(!isDuplicateTemp) {
+                        dataPostsTempNews.push(item);
+                    }
+
+                });
+                dispatch({
+                    type: GLOBAL_TYPES.POST,
+                    payload: {
+                        ...state.posts,
+                        data: dataPostsNews,
+                        dataTemp: dataPostsTempNews,
+                        total: data.total,
                     }
                 })
             }

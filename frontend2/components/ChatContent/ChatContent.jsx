@@ -10,7 +10,7 @@ import getIconFileType from '~/utils/getIconFileType'
 import UserItem from '../UserItem/UserItem'
 import ZoomImage from '../ZoomImage/ZoomImage'
 
-export default function ChatContent({userChatNow,scrollToBottom, messageEndRef, thread, content, setContent, setThread}) {
+export default function ChatContent({userChatNow,scrollToBottom, messageEndRef, thread, content, setContent, setThread, backToChat}) {
   const chatContentRef = useRef(null)
   // const messageEndRef = useRef(null)
   const [files, setFiles] = useState([])
@@ -40,6 +40,19 @@ export default function ChatContent({userChatNow,scrollToBottom, messageEndRef, 
   content = deleteDuplicateMessage(content)
 
   const handleSendMessage = async () => {
+    // console.log("Chatttt: ", chatContent)
+    // const aaaaaa = await fetch(`/api/openai`, {
+    //   body: JSON.stringify({
+    //     name: chatContent
+    //   }),
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   method: 'POST'
+    // })
+    // const dddddd = await aaaaaa.json();
+    // console.log(dddddd)
+    // return;
     if(!chatContent && files.length === 0) {
       displayToast("warning", "Bạn chưa nhập nội dung tin nhắn")
       return;
@@ -132,6 +145,7 @@ export default function ChatContent({userChatNow,scrollToBottom, messageEndRef, 
       {isLoading && <span className='sending'> <div className="dashed-loading"></div> </span>}
       {Object.keys(userChatNow).length > 0 && <>
       <div className="chat__contentHead">
+        <div className="chat__contentHead--back" onClick={backToChat}>{`< Back`}</div>
         <UserItem user={userChatNow}></UserItem>
       </div>
       <div className="chat__contentMess">
