@@ -10,10 +10,10 @@ router.post('/user-update', checkLogin, AuthController.userUpdate);
 router.post('/login', AuthController.login)
 router.post('/upload-file', AuthController.uploadFile)
 // fake
-router.post('/fake-login', AuthController.fakeLogin)
+// router.post('/fake-login', AuthController.fakeLogin)
 router.post('/register', AuthController.register)
 router.post('/forgot-pass', AuthController.forgotPass)
-router.post('/change-pass', AuthController.changePass)
+router.post('/change-pass',checkLogin, AuthController.changePass)
 
 
 module.exports = router;

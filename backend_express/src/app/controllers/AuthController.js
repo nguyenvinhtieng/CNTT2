@@ -1,4 +1,5 @@
 const fetch = require("node-fetch")
+const bcrypt = require('bcrypt');
 const { backend_laravel, secret_key} = require("../../credentials")
 const jwt = require('jsonwebtoken');
 const User = require("../models/User")
@@ -7,6 +8,7 @@ const multiparty = require("multiparty");
 const uploadImages = require("../../utils/uploadImage");
 const uploadFile = require("../../utils/uploadFile");
 
+const SALT_ROUNDS = 10;
 class AuthController {
     async fetchDataUser(req, res, next) {
         let user = req.user;
@@ -104,6 +106,13 @@ class AuthController {
             if(!user) {
                 return res.json({status: false, message: "Tài khoản hoặc mật khẩu không đúng"});   
             }
+            let userPasswordHash = user.password;
+            let checkPassword = await bcrypt.compare(password, userPasswordHash);
+            console.log("Check password", checkPassword)
+            if(!checkPassword) {
+                return res.json({status: false, message: "Tài khoản hoặc mật khẩu không đúng"});
+            }
+
             let token = jwt.sign({ user }, secret_key);
             return res.json({status: true, message: "Đăng nhập thành công", token, user});
 
@@ -161,10 +170,10 @@ class AuthController {
             if(oldUser2) {
                 return res.json({status: false, message: "Email đã tồn tại"});
             }
-
+            let passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
             const user = new User({
                 username,
-                password,
+                password: passwordHash,
                 fullname: name,
                 email
             })
@@ -188,8 +197,19 @@ class AuthController {
     forgotPass(req, res, next) {
         return res.json({ message: "Hello World" });
     }
-    changePass(req, res, next) {
-        return res.json({ message: "Hello World" });
+    async changePass(req, res, next) {
+        const user = req.user
+        const {password} = req.body;
+        try {
+            if(password == "") {
+                return res.json({status: false, message: "Vui lòng điền đầy đủ thông tin"});
+            }
+            let passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
+            await User.update({username: user.username}, {password: passwordHash})
+            return res.json({status: true, message: "Đổi mật khẩu thành công"});
+        }catch(err) {
+            return res.json({ status: false, message: "Có lỗi xảy ra" });
+        }
     }
 }
 

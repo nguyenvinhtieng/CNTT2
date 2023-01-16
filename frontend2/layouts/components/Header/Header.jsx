@@ -1,15 +1,17 @@
 import React, { useRef } from "react";
-import { TiThMenu } from "react-icons/ti";
 import TooltipMenu from "~/components/TooltipMenu/TooltipMenu";
 import { CiUser } from "react-icons/ci";
+// import { toast } from 'react-toastify';
 import { IoLogOutOutline, IoLogInOutline } from "react-icons/io5";
 import { AiOutlineMenu } from "react-icons/ai";
 import { MdOutlineAssignment } from "react-icons/md";
 import useOnClickOutside from "~/hooks/useClickOutside";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { RiLockPasswordLine } from "react-icons/ri";
 import Modal from "~/components/Modal/Modal";
+// import { postMethod } from "~/utils/fetchData";
+import { CREDENTIALS } from "~/redux/constants";
 
 export default function Header({ toggleSidebar }) {
   const [isShowMenu, setIsShowMenu] = React.useState(false);
@@ -22,9 +24,38 @@ export default function Header({ toggleSidebar }) {
   let menuItem = null
   const passwordNewRef = useRef()
   const passwordNewConfirmRef = useRef()
-
+  const dispatch = useDispatch()
   const changePass = async () => {
+    let passwordNew = passwordNewRef.current.value
+    let passwordNewConfirm = passwordNewConfirmRef.current.value
+    if(!passwordNew || !passwordNewConfirm) {
+      alert("Vui lòng nhập đầy đủ thông tin")
+      return
+    }
+    if(passwordNew !== passwordNewConfirm) {
+      alert("Mật khẩu không khớp")
+      return;
+    }
+    let token = localStorage.getItem(CREDENTIALS.TOKEN_NAME)
+    let url = CREDENTIALS.BACKEND_URL + "/change-pass"
+    let res = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        password: passwordNew,
+      }),
 
+    })
+    let data = await res.json()
+    if(data.status) {
+      alert("Đổi mật khẩu thành công")
+      toggleModalChangePass()
+    }else {
+      alert(data.message)
+    }
   }
 
   const menuItemLogined = [

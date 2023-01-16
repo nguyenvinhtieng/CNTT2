@@ -72,3 +72,21 @@ export const userLogin = ({ username, password, router }) => {
         }
     };
 };
+
+
+export const userChangePassword = ({password}) => {
+    return async (dispatch, getState) => {
+        try {
+            let response = await postMethod("change-pass", { password });
+            const { data } = response;
+            if (data.status) {
+                displayToast("success", "Đổi mật khẩu thành công");
+            } else {
+                displayToast("error", data.message);
+            }
+        } catch (err) {
+            console.log(err);
+            displayToast("error", "Server Internal Error");
+        }
+    };
+}
