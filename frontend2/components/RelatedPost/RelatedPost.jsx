@@ -10,17 +10,19 @@ export default function RelatedPost({post}) {
         let tags = post.tags;
         let postsRelatedNew = []
         let numPost = 0;
+        // remove post current
+        posts.data = posts.data.filter((p) => p._id !== post._id);
         posts.data.forEach((p) => {
-            if(numPost >= 3) return;
+            if(postsRelatedNew.length >= 3) return;
             if(p.author._id === post.author._id && p._id !== post._id) {
                 postsRelatedNew.push(p);
-                numPost++;
             }
         })
-
-        if(numPost < 3){
+        console.log("NUm post: ", numPost)
+        console.log("Related: ", postsRelatedNew)
+        if(postsRelatedNew.length < 3){
             posts.data.forEach((p) => {
-                if(numPost >= 3) return;
+                if(postsRelatedNew.length >= 3) return;
                 if(p._id !== post._id){
                     let count = 0;
                     tags.forEach((tag) => {
@@ -28,21 +30,24 @@ export default function RelatedPost({post}) {
                             count++;
                         }
                     })
-                    if(count > 0 && numPost < 3){
+                    if(count > 0 && postsRelatedNew.length < 3){
                         postsRelatedNew.push({...p, count});
-                        numPost++;
                     }
                 }
             })
         }
         
-        if(numPost < 3){
-            posts.data.forEach((p) => {
-                if(numPost >= 3) return;
-                if(p._id !== post._id && postsRelatedNew.indexOf(p) === -1)
-                postsRelatedNew.push(p);
-            })
-        }
+        // if(numPost < 3){
+        //     posts.data.forEach((p) => {
+        //         if(numPost >= 3) return;
+        //         if(p._id !== post._id && postsRelatedNew.indexOf(p) === -1)
+        //         postsRelatedNew.push(p);
+        //     })
+        // }
+        // remove post have the same _id in postsRelatedNew
+        postsRelatedNew = postsRelatedNew.filter((p, index) => {
+            return postsRelatedNew.findIndex((p2) => p2._id === p._id) === index;
+        })
 
         setPostRelated(postsRelatedNew);
     }, [post, posts])
@@ -56,7 +61,7 @@ export default function RelatedPost({post}) {
   return (
     <ul className="post-detail__related--list">
         {postRelated.length > 0 && postRelated.map((item, _) => 
-            <PostItem key={item._id} post={item}></PostItem>
+            <PostItem key={item._id + Math.random()} post={item}></PostItem>
         )}
     </ul>
   )

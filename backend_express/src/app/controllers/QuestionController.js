@@ -30,14 +30,14 @@ class QuestionController {
     }
     async getPagination(req, res) {
         try {
-            const page = req.query.page ? parseInt(req.query.page) : 0;
-            const SKIP = 10; 
+            const skip = req.query.skip ? parseInt(req.query.skip) : 0;
             const questions = await Question.find({})
                                 .populate("author")
                                 .sort({createdAt: -1})
-                                .skip(page * SKIP)
-                                .limit(SKIP)
+                                .skip(skip)
+                                .limit(10)
                                 .lean();
+            const total = await Question.countDocuments();
             for(const [index, q] of questions.entries()) {
                 let answers = await Answer.find({ question_id: q._id }).populate("author").lean();
                 for(const [index2, a] of answers.entries()) {
@@ -46,7 +46,7 @@ class QuestionController {
                 }
                 questions[index].answers = answers;
             }
-            return res.json({ status: true, message: "Lấy các câu hỏi thành công", questions: questions });
+            return res.json({ status: true, message: "Lấy các câu hỏi thành công", questions: questions, total: total });
         } catch (err) {
             return res.json({ status: false, message: "Có lỗi xảy ra" });
         }

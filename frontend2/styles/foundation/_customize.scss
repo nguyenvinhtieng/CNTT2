@@ -69,3 +69,13 @@
     padding: 50px 0;
     font-size: 14px;
 }
+.infinite-scroll-component {
+    // background-color: red !important;
+    // hidden scrollbar
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    &::-webkit-scrollbar {
+        display: none;  /* Chrome, Safari, Opera*/
+    }
+    
+}

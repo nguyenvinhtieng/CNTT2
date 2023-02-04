@@ -6,6 +6,7 @@ const initialState = {
     pageTemp: 0,
     loading: false,
     isEnd: false,
+    total: 0
 }
 function questionReducer(state = initialState, action) {
     switch (action.type) {

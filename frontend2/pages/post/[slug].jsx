@@ -166,9 +166,9 @@ export default function PostDetail() {
             </li>
             <li className="post-detail__action flex-2">
               <FacebookShareButton 
-                url={"https://viblo.asia/p/" + post.slug}
+                // url={"http://localhost:3000/post" + post.slug}
                 hashtag="#tdtu"
-                // url={`${window.location.origin}/post/${post.slug}`}
+                url={`${window.location.origin}/post/${post.slug}`}
                 >
                 <div className="post-detail__action--wrapper" data-tip="Chia sẻ lên facebook" >
                   <span className="post-detail__action--ico">

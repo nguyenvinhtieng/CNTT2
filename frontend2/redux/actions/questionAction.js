@@ -6,14 +6,21 @@ export const fetchQuestionData = () => {
     return async (dispatch, getState) => {
         try {
             const state = getState();
-            const res = await getMethod("question");
+            let skip = state?.questions?.data?.length || 0;
+            const res = await getMethod("question?skip=" + skip);
             const { data } = res;
             if(data.status) {
+                let questionOld = state.questions?.data || [];
+                let questionNew = data.questions;
+                let questionSet = [...questionOld, ...questionNew];
+                // remove the same _id in questionSet
+                questionSet = questionSet.filter((v, i, a) => a.findIndex(t => (t._id === v._id)) === i);
                 dispatch({
                     type: GLOBAL_TYPES.QUESTION,
                     payload: {
                         ...state.questions,
-                        data: data.questions,
+                        data: questionSet,
+                        total: data.total
                     }
                 })
             }else {
