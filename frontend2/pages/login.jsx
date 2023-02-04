@@ -38,6 +38,9 @@ function LoginPage() {
         <p className="auth-page__note">Bạn chưa có tài khoản? 
           <Link href="/register">Đăng ký tại đây</Link>
         </p>
+        <p className="auth-page__note">Quên mật khẩu? 
+          <Link href="/register">Reset mật khẩu</Link>
+        </p>
       </div>
     </div>
   )

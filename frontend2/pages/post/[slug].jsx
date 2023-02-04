@@ -97,11 +97,11 @@ export default function PostDetail() {
       {!isLoaded && <div className="loading">Đang tải nội dung bài viết . . .</div>}
       {isLoaded && 
         <div className="post-detail">
-          <div className="post-detail__thumbail">
+          {/* <div className="post-detail__thumbail">
             <ZoomImage>
               <img src={post.thumbnail || "/default.png"} alt="Post thumbnail" />
             </ZoomImage>
-          </div>
+          </div> */}
           {/* <div className="post-detail__dot">
             <span><BiDotsVerticalRounded></BiDotsVerticalRounded></span>
           </div> */}

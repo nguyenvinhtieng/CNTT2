@@ -18,8 +18,10 @@ const route = require('./route/index.js');
 const db = require('./config/db.js');
 const handleSocket = require('./socket/index.js')
 const credentials = require('./credentials');
-
+const init = require("./init");
 db.connect();
+// init account admin
+init.createAdminAccount();
 
 app.use(cookieParser())
 app.use(expressSession({

@@ -7,7 +7,9 @@ const Bookmark = require("../models/Bookmark")
 const multiparty = require("multiparty");
 const uploadImages = require("../../utils/uploadImage");
 const uploadFile = require("../../utils/uploadFile");
-
+const sendMail = require("../../utils/sendMail");
+const Token = require("../models/Token");
+const { deleteToken } = require("../../utils/otpUtils");
 const SALT_ROUNDS = 10;
 class AuthController {
     async fetchDataUser(req, res, next) {
@@ -46,6 +48,7 @@ class AuthController {
                 if(files.avatar) {
                     if (files?.avatar[0]?.size > 0) {
                         let avatar_link = await uploadImages(files.avatar[0]);
+                        avatar_link = avatar_link.url;
                         if(avatar_link) {
                             let userFind = await User.findOneAndUpdate({ _id: user._id }, { avatar: avatar_link }, { new: true });
                             return res.json({ status: true, message: "Cập nhật ảnh đại diện thành công", avatar_link });
@@ -115,23 +118,6 @@ class AuthController {
 
             let token = jwt.sign({ user }, secret_key);
             return res.json({status: true, message: "Đăng nhập thành công", token, user});
-
-            // const resp = await fetch(`${backend_laravel}/login`, {
-            //     method: "POST",
-            //     headers: { "Content-Type": "application/json" },
-            //     body: JSON.stringify({
-            //         username,
-            //         password
-            //     })
-            // });
-            // const data = await resp.json();
-            // if(data.status) {
-            //     return res.json({status: false, message: "Tên đăng nhập hoặc mật khẩu không đúng"});
-            // }else {
-            //     let userData = data.user;
-            //     let token = jwt.sign({ user: userData }, secret_key);
-            //     return res.json({status: true, message: "Đăng nhập thành công", token});
-            // }
         } catch(e) {
             return res.json({status: false, message: "Có lỗi xảy ra"});
         }
@@ -177,26 +163,61 @@ class AuthController {
                 fullname: name,
                 email
             })
-            // fetch Data to server
-            // for(let i = 0; i < 45; i++) {
+            await user.save();
+            // create random 50 user
+            // for(let i = 0; i < 50; i++) {
+            //     let username = "user" + i;
+            //     let password = username
+            //     let passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
+            //     let name = `User ${i}`
+            //     let email = `user${i}@gmail.com`;
             //     const user = new User({
-            //         username: `user${i}`,
-            //         password,
-            //         fullname: `User ${i}`,
-            //         email: `email${i}@gmail.com`
+            //         username,
+            //         password: passwordHash,
+            //         fullname: name,
+            //         email
             //     })
             //     await user.save();
             // }
-
-            await user.save();
             return res.json({status: true, message: "Đăng ký thành công"});
         }catch(err) {
             return res.json({ status: false, message: "Có lỗi xảy ra" });
         }
     }
-    forgotPass(req, res, next) {
-        return res.json({ message: "Hello World" });
+    async forgotPass(req, res, next) {
+        try {
+            const { email } = req.body;
+            // create token 
+            const token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+            await sendMail(email, token);
+            let tk = new Token({
+                email,
+                token
+            });
+            await tk.save();
+            deleteToken(tk._id);
+            return res.json({status: true, message: "Gửi mã resetlink thành công"});
+        }catch(err) {
+            console.log(err)
+            return res.json({ status: false, message: "Server Internal Error!" });
+        }
     }
+    async checkToken(req, res, next) {
+        try {
+            const {token, new_pass} = req.body;
+            let findToken  = await Token.findOne({token});
+            if(!findToken) {
+                return res.json({status: false, message: "Mã resetlink không đúng"});
+            }
+            let email = findToken.email;
+            let passwordHash = await bcrypt.hash(new_pass, SALT_ROUNDS);
+            await User.findOneAndUpdate({email}, {password: passwordHash});
+            return res.json({status: true, message: "Đổi mật khẩu thành công"});
+        }catch(err) {
+            return res.json({ status: false, message: "Server Internal Error!" });
+        }
+    }
+    async 
     async changePass(req, res, next) {
         const user = req.user
         const {password} = req.body;

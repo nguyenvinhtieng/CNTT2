@@ -103,14 +103,14 @@ export default function PostItem({post}) {
           <div className="post-item__user">
             <UserItem user={post.author} time={post.createdAt}></UserItem>
           </div>
-          <div className="post-item__link">
+          {/* <div className="post-item__link">
             <Link href={`/post/${post.slug || ""}`}>
               <span className="post-item__link--ttl">Đọc bài viết</span>
               <span className="post-item__link--ico">
                 <FaExternalLinkAlt></FaExternalLinkAlt>
               </span>
             </Link>
-          </div>
+          </div> */}
           <div
             className={`post-item__menu ${isShowMenu ? "is-active" : ""}`}
             ref={menuRef}
