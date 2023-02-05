@@ -1,7 +1,8 @@
-import { GLOBAL_TYPES } from '~/constants'
+import { GLOBAL_TYPES } from '../constants'
 const initialState = {
     isAuthenticated: false,
-    user: {}
+    isAdmin: false,
+    user: undefined
 }
 function authReducer(state = initialState, action) {
     switch (action.type) {
