@@ -24,3 +24,8 @@ Yêu cầu chung:
         Server fronend sẽ chạy tại http://localhost:3000
 
 Mở trình duyệt và truy cập vào đường dẫn http://localhost:3000 để có thể truy cập và sử dụng trang web
+
+Tài khoản của admin sẽ tự động được khởi tạo khi lần đầu chạy project
+Tài khoản admin: 
+Username: admin
+Mật khẩu: 123456
