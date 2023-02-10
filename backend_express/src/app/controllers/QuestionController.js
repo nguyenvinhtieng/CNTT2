@@ -30,14 +30,14 @@ class QuestionController {
     }
     async getPagination(req, res) {
         try {
-            const skip = req.query.skip ? parseInt(req.query.skip) : 0;
+            // const skip = req.query.skip ? parseInt(req.query.skip) : 0;
             const questions = await Question.find({})
                                 .populate("author")
                                 .sort({createdAt: -1})
-                                .skip(skip)
-                                .limit(10)
+                                // .skip(skip)
+                                // .limit(10)
                                 .lean();
-            const total = await Question.countDocuments();
+            // const total = await Question.countDocuments();
             for(const [index, q] of questions.entries()) {
                 let answers = await Answer.find({ question_id: q._id }).populate("author").lean();
                 for(const [index2, a] of answers.entries()) {
@@ -46,7 +46,7 @@ class QuestionController {
                 }
                 questions[index].answers = answers;
             }
-            return res.json({ status: true, message: "Lấy các câu hỏi thành công", questions: questions, total: total });
+            return res.json({ status: true, message: "Lấy các câu hỏi thành công", questions: questions});
         } catch (err) {
             return res.json({ status: false, message: "Có lỗi xảy ra" });
         }
@@ -67,7 +67,7 @@ class QuestionController {
         }
     }
     async addQuestion(req, res) {
-        const user = req.user;
+        let user = req.user;
         try {
             const form = new multiparty.Form();
             form.parse(req, async (err, fields, files) => {
@@ -98,20 +98,6 @@ class QuestionController {
                     files: files_data,
                 })
                 await q.save();
-
-                // Create random 300 question
-                // const usersDb = await User.find({});
-                // for(let i = 0; i < 300; i++) {
-                //     let qTemp = new Question({
-                //         author: usersDb[Math.floor(Math.random() * usersDb.length)]._id,
-                //         title: "Câu hỏi " + i,
-                //         content: "Nội dung" + i,
-                //         tags: ["tag1", "tag2", "tag3"],
-                //         files: [],
-                //     })
-                //     await qTemp.save();
-                // }
-
                 let questionNew = await Question.findOne({_id: q._id })
                 return res.status(200).json({ status: true, message: "Tạo câu hỏi thành công",  question: questionNew});
             });

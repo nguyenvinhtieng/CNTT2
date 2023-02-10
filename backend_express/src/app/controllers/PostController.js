@@ -123,32 +123,32 @@ class PostController {
     // localhost:3001/api/post?page=5
     async getPagination(req, res, next) {
         try {
-            const skip = req.query.skip ? parseInt(req.query.skip) : 0;
-            const content = req.query.content || "";
+            // const skip = req.query.skip ? parseInt(req.query.skip) : 0;
+            // const content = req.query.content || "";
             let filterCondition = {
                 status: "publish",
             };
-            if (content) {
-                filterCondition = {
-                    $and: [
-                        { status: "publish" },
-                        {
-                            $or: [
-                                { title: { $regex: content } },
-                                { content: { $regex: content } },
-                                { tags: { $in: [content] } },
-                            ],
-                        }
-                    ],
-                };
-            }
+            // if (content) {
+            //     filterCondition = {
+            //         $and: [
+            //             { status: "publish" },
+            //             {
+            //                 $or: [
+            //                     { title: { $regex: content } },
+            //                     { content: { $regex: content } },
+            //                     { tags: { $in: [content] } },
+            //                 ],
+            //             }
+            //         ],
+            //     };
+            // }
             const posts = await Post.find({filterCondition})
-                                    .skip(skip)
-                                    .limit(10)
+                                    // .skip(skip)
+                                    // .limit(10)
                                     .sort({createdAt: -1})
                                     .populate('author')
                                     .lean();
-            let length = await Post.countDocuments({filterCondition});
+            // let length = await Post.countDocuments({filterCondition});
             for(const [index, p] of posts.entries()) {
                 posts[index].votes = await PostVote.find({ post_id: p._id }).lean();
                 posts[index].comments = await Comment.find({ post_id: p._id }).populate('author');
@@ -157,8 +157,8 @@ class PostController {
             return res.status(200).json({ 
                 status: true, 
                 message: "Lấy bài viết thành công", 
-                posts: posts, 
-                total: length 
+                posts: posts
+                // total: length 
             });
 
         } catch (error) {

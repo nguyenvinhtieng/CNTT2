@@ -9,7 +9,7 @@ function Wrapper({children, socket}) {
     const dispatch = useDispatch();
     useEffect(()=> {
         dispatch(fetchDataUser());
-        dispatch(fetchPostData({}));
+        dispatch(fetchPostData());
         dispatch(fetchQuestionData());
     }, [])
     useEffect(()=> {

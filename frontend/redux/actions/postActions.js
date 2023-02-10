@@ -6,17 +6,15 @@ export const startFilterPost = ({content}) => {
         try {
             const state = getState();
             if(content) {
-                let dataPostsTemp = state?.posts?.dataTemp || [];
+                let dataPostsTemp = state?.posts?.data || [];
                 let dataPostsTempFilter = dataPostsTemp.filter((item) => 
                     item.content.includes(content) || item.title.includes(content) || item.tags.includes(content) || item.author.fullname.includes(content)
                 );
-                console.log({dataPostsTemp})
                 dispatch({
                     type: GLOBAL_TYPES.POST,
                     payload: {
                         ...state.posts,
-                        data: dataPostsTempFilter,
-                        total: dataPostsTempFilter.length,
+                        dataTemp: dataPostsTempFilter,
                     }});
             }else {
                 dispatch({
@@ -34,39 +32,37 @@ export const startFilterPost = ({content}) => {
     }
 }
 
-export const fetchPostData = ({content = ""}) => {
+export const fetchPostData = () => {
     return async (dispatch, getState) => {
         try {
             const state = getState();
-
-            let skip = state?.posts?.data?.length || 0;
-            const res = await getMethod(`post/get-posts?skip=${skip}&content=${content}`);
+            // let skip = state?.posts?.data?.length || 0;
+            const res = await getMethod(`post/get-posts`);
             const { data } = res;
             if(data.status) {
-                let dataPostsOld = state?.posts?.data || [];
-                let dataPostsTempOld = state?.posts?.dataTemp || [];
-                let dataPostsNews = [...dataPostsOld];
-                let dataPostsTempNews = [...dataPostsTempOld];
-                data.posts.forEach((item) => {
-                    // check duplicate post
-                    let isDuplicate = dataPostsNews.find((post) => post._id === item._id);
-                    if(!isDuplicate) {
-                        dataPostsNews.push(item);
-                    }
-                    // checck uplicate temp
-                    let isDuplicateTemp = dataPostsTempNews.find((post) => post._id === item._id);
-                    if(!isDuplicateTemp) {
-                        dataPostsTempNews.push(item);
-                    }
+                // let dataPostsOld = state?.posts?.data || [];
+                // let dataPostsTempOld = state?.posts?.dataTemp || [];
+                // let dataPostsNews = [...dataPostsOld];
+                // let dataPostsTempNews = [...dataPostsTempOld];
+                // data.posts.forEach((item) => {
+                //     // check duplicate post
+                //     let isDuplicate = dataPostsNews.find((post) => post._id === item._id);
+                //     if(!isDuplicate) {
+                //         dataPostsNews.push(item);
+                //     }
+                //     // checck uplicate temp
+                //     let isDuplicateTemp = dataPostsTempNews.find((post) => post._id === item._id);
+                //     if(!isDuplicateTemp) {
+                //         dataPostsTempNews.push(item);
+                //     }
 
-                });
+                // });
                 dispatch({
                     type: GLOBAL_TYPES.POST,
                     payload: {
                         ...state.posts,
-                        data: dataPostsNews,
-                        dataTemp: dataPostsTempNews,
-                        total: data.total,
+                        data: data.posts,
+                        dataTemp: data.posts,
                     }
                 })
             }

@@ -79,3 +79,44 @@
     }
     
 }
+
+/// PAGINATION
+.pagination {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px 0 50px 0;
+    list-style: none;
+    gap: 2px;
+
+    li {
+        width: 30px;
+        height: 30px;
+        border: 1px solid $borderColor;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 4px;
+        transition: all 0.2s linear;
+        cursor: pointer;
+        font-size: 12px;
+        border-radius: 2px;
+        &:hover {
+            background-color: rgb(101, 184, 252);
+        }
+        &.selected {
+            background-color: rgb(101, 184, 252);
+        }
+        &:first-child {
+            width: fit-content;
+            white-space: nowrap;
+            padding: 4px 8px;
+        }
+        &:last-child {
+            width: fit-content;
+            white-space: nowrap;
+            padding: 4px 8px;
+        }
+    }
+}

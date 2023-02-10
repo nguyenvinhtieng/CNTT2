@@ -6,21 +6,21 @@ export const fetchQuestionData = () => {
     return async (dispatch, getState) => {
         try {
             const state = getState();
-            let skip = state?.questions?.data?.length || 0;
-            const res = await getMethod("question?skip=" + skip);
+            // let skip = state?.questions?.data?.length || 0;
+            const res = await getMethod("question");
             const { data } = res;
             if(data.status) {
-                let questionOld = state.questions?.data || [];
-                let questionNew = data.questions;
-                let questionSet = [...questionOld, ...questionNew];
+                // let questionOld = state.questions?.data || [];
+                // let questionNew = data.questions;
+                // let questionSet = [...questionOld, ...questionNew];
                 // remove the same _id in questionSet
-                questionSet = questionSet.filter((v, i, a) => a.findIndex(t => (t._id === v._id)) === i);
+                // questionSet = questionSet.filter((v, i, a) => a.findIndex(t => (t._id === v._id)) === i);
                 dispatch({
                     type: GLOBAL_TYPES.QUESTION,
                     payload: {
                         ...state.questions,
-                        data: questionSet,
-                        total: data.total
+                        data: data.questions,
+                        dataTemp: data.questions
                     }
                 })
             }else {

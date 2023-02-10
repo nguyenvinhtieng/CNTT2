@@ -6,15 +6,26 @@ import { useSelector } from "react-redux";
 import PostItemSkeleton from "~/components/PostItemSkeleton/PostItemSkeleton";
 import { fetchPostData, startFilterPost } from "~/redux/actions/postActions";
 import { useDispatch } from "react-redux";
-import { postMethod } from "~/utils/fetchData";
-import InfiniteScroll from "react-infinite-scroll-component";
+import ReactPaginate from "react-paginate";
 
 function Home() {
   const dispatch = useDispatch();
 
+  const [itemOffset, setItemOffset] = useState(0);
+  
   const searchContentRef = useRef(null);
   const posts = useSelector((state) => state.posts);
-  
+
+  let itemsPerPage = 10;
+  const endOffset = itemOffset + itemsPerPage;
+  const currentItems = posts?.dataTemp?.slice(itemOffset, endOffset);
+  const pageCount = Math.ceil(posts?.dataTemp?.length / itemsPerPage) || 0;
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * itemsPerPage) % posts?.dataTemp?.length;
+    setItemOffset(newOffset);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   const startFilter = () => {
     let content = searchContentRef.current.value;
     dispatch(startFilterPost({content}));
@@ -31,29 +42,23 @@ function Home() {
             <button className="button" onClick={startFilter}>Tìm</button>
         </div>
     </div>
+
+      
       <div className="post__list">
-      {posts?.data?.length > 0 && 
-        <InfiniteScroll
-          dataLength={posts?.data.length}
-          next={()=> dispatch(fetchPostData({}))}
-          hasMore={posts?.total > posts?.data?.length || false}
-          scrollThreshold={"200px"}
-          className="post__list--infinity"
-          loader={<>
-            <PostItemSkeleton /><PostItemSkeleton /><PostItemSkeleton />
-          </>}
-          endMessage={
-            <p className="end-message">
-              Yay! You have seen it all
-            </p>
-          }
-        >
-          {posts?.data?.map((item) => <PostItem key={item._id} post={item}></PostItem>)}
-        </InfiniteScroll>
-        }
+        {currentItems?.length > 0 &&  currentItems?.map(item => <PostItem key={item._id} post={item}></PostItem>)}
         {posts?.data.length === 0 && <p className="end-message">Không có bài viết nào</p>}
-        {/* {isLoading && <><PostItemSkeleton /><PostItemSkeleton /><PostItemSkeleton /></>} */}
       </div>
+      {currentItems?.length > 0 && 
+          <ReactPaginate
+          breakLabel="..."
+          nextLabel="next >"
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={5}
+          pageCount={pageCount}
+          previousLabel="< previous"
+          renderOnZeroPageCount={null}
+          className="pagination"
+        />}
     </>
   );
 }

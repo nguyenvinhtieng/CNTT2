@@ -164,21 +164,6 @@ class AuthController {
                 email
             })
             await user.save();
-            // create random 50 user
-            // for(let i = 0; i < 50; i++) {
-            //     let username = "user" + i;
-            //     let password = username
-            //     let passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
-            //     let name = `User ${i}`
-            //     let email = `user${i}@gmail.com`;
-            //     const user = new User({
-            //         username,
-            //         password: passwordHash,
-            //         fullname: name,
-            //         email
-            //     })
-            //     await user.save();
-            // }
             return res.json({status: true, message: "Đăng ký thành công"});
         }catch(err) {
             return res.json({ status: false, message: "Có lỗi xảy ra" });
