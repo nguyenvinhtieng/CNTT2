@@ -9,6 +9,13 @@ export default function ChatUsers({threads, onChangeThread}) {
   threads.sort((a, b) => {
     return new Date(b.updatedAt) - new Date(a.updatedAt)
   })
+  // remove duplicate thread
+  threads = threads.filter((thing, index, self) =>
+    index === self.findIndex((t) => (
+      t.users[0]._id === thing.users[0]._id && t.users[1]._id === thing.users[1]._id
+    ))
+  )
+
   const handleClickUser = (thread, userChatWith) => {
     onChangeThread(thread, userChatWith)
   }
@@ -59,7 +66,9 @@ export default function ChatUsers({threads, onChangeThread}) {
                   {userChatWith?.role == "admin" && <span className="tagvip">Admin</span>}
                 </p>
                 <div className="messWrapper">
-                  <p className='mess'>{thread?.last_message?.content}</p>
+                    <p className={`mess ${
+                      ((thread?.last_message?.sender != auth?.user?._id) && thread?.new && "new")
+                    }`}>{thread?.last_message?.content}</p>
                   <time className="timeMess">{moment(thread?.updatedAt).format("LT")}</time>
                 </div>
               </div>

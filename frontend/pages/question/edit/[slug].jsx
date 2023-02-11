@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
@@ -102,6 +103,9 @@ function EditQuestionPage() {
 
   return (
     <div className="createPage">
+      {/* <Head>
+        <title>Chỉnh sửa câu hỏi</title>
+      </Head> */}
       <h1 className='createPage__heading'>Chỉnh sửa nội dung câu hỏi</h1>
       <form action="" onSubmit={(e) => e.preventDefault()}>
         <div className="input__wrapper">

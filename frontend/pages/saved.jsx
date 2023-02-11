@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import PostItem from '~/components/PostItem/PostItem';
@@ -30,6 +31,9 @@ export default function SavedPage() {
 
   return (
     <>
+      <Head>
+        <title>Bài viết đã lưu</title>
+      </Head>
       {!loaded && <>
         <ul className="post__list">
         <PostItemSkeleton></PostItemSkeleton>

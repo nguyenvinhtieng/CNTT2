@@ -10,6 +10,7 @@ import Modal from "~/components/Modal/Modal";
 import displayToast from "~/utils/displayToast";
 import { BsFillUnlockFill } from "react-icons/bs";
 import Select from "~/components/Select/Select";
+import Head from "next/head";
 
 export default function ManageUserPage() {
     const [ isShowFilter, setIsShowFilter ] = React.useState(false);
@@ -178,6 +179,9 @@ export default function ManageUserPage() {
 
 return (
     <div className="managePage">
+        <Head>
+            <title>Quản lý người dùng</title>
+        </Head>
         <Modal title="Khóa tài khoản ngời dùng" size="sm" danger={true} handleCloseModal={toggleModalConfirmBlock} isShow={isShowModalConfirmBlock} handleSubmit={blockUserHandler}>
             Bạn có chắc chắn muốn khóa tài khoản người dùng này không?
         </Modal>

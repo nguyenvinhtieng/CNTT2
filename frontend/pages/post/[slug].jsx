@@ -1,6 +1,7 @@
 
 import moment from 'moment';
 import { FacebookShareButton } from 'next-share';
+import Head from 'next/head';
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { BiDownvote, BiShareAlt, BiUpvote } from "react-icons/bi";
@@ -12,6 +13,7 @@ import PostCommentBlock from "~/components/PostCommentBlock/PostCommentBlock";
 import RelatedPost from "~/components/RelatedPost/RelatedPost";
 import UserItem from "~/components/UserItem/UserItem";
 import ZoomImage from "~/components/ZoomImage/ZoomImage";
+import Header from '~/layouts/components/Header/Header';
 import { addPostToStore, bookmarkPost, commentPost, votePost } from "~/redux/actions/postActions";
 import displayToast from "~/utils/displayToast";
 import { getMethod } from "~/utils/fetchData";
@@ -23,7 +25,6 @@ export default function PostDetail() {
   const posts = useSelector((state) => state.posts);
   const auth = useSelector((state) => state.auth);
   const [isBookmark, setIsBookmark] = React.useState(false);
-
   const router = useRouter();
   const dispatch = useDispatch();
   const { slug } = router.query;
@@ -32,17 +33,24 @@ export default function PostDetail() {
     dispatch(votePost({ type, post_id: post._id }));
   }
   useEffect(()=>{
-    let postState = posts.data.find((p) => p.slug === slug);
+    let postState = posts.data.find((p) => p.slug == slug);
+    if(!postState) {
+      postState = posts.dataTemp.find((p) => p.slug == slug);
+    }
+    console.log("postState", postState)
     if(postState){
+      console.log("update post")
       setPost(postState);
       setIsLoaded(true);
     }else {
+      console.log("update 2")
       if(slug && !post){
         getMethod("post/" + slug).then((res) => {
           const { data } = res;
           if(data.status){
             setPost(data.post);
-            dispatch(addPostToStore(data.post))
+            console.log("data.post", data.post)
+            // dispatch(addPostToStore(data.post))
             setIsLoaded(true);
           }else {
             router.push("/");
@@ -50,7 +58,7 @@ export default function PostDetail() {
         });
       }
     }
-  },[post, posts, slug])
+  },[posts, slug])
   
   useEffect(()=>{
     let isBookmarkPost = false;
@@ -87,6 +95,9 @@ export default function PostDetail() {
   
   return (
     <div className="container">
+      <Head>
+        <title>{post?.title || "Bài viết"}</title>
+      </Head>
       <Modal isShow={isShowModalAddComment} size="sm" title="Bình luận bài viết" handleCloseModal={toggleModalAddComment} handleSubmit={addComment}>
         <div className="input__wrapper">
           <label htmlFor="" className="input__label">Nhập nội dung bình luận</label>

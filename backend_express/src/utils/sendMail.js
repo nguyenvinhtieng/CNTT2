@@ -1,6 +1,7 @@
 const nodemailer = require("nodemailer");
+const os = require("os");
 let url = "http://localhost:3000/reset-password/"
-async function sendMail(receiver, token) {
+async function sendMail(receiver, otp) {
     let transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
         port: 465,
@@ -13,8 +14,8 @@ async function sendMail(receiver, token) {
             rejectUnauthorized: false,
         },
     });
-    let contentHTML = `Please visit link below to reset password: <a href="${url}${token}">${url}${token}</a>`
-    let subject = "RESET PASSWORD";
+    let contentHTML = "Vui lòng truy cập vào link sau để đổi mật khẩu: </br>" + url+otp;
+    let subject = "Yêu cầu đặt lại mật khẩu";
     let content = `Send Email By Nodemailer`;
     let mainOptions = {
         from: "System",

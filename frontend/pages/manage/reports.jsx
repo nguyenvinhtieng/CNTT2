@@ -11,6 +11,7 @@ import displayToast from "~/utils/displayToast";
 import { BsFillUnlockFill } from "react-icons/bs";
 import Select from "~/components/Select/Select";
 import UserItem from "~/components/UserItem/UserItem";
+import Head from "next/head";
 
 export default function ManageReport() {
     const [ isShowFilter, setIsShowFilter ] = React.useState(false);
@@ -53,6 +54,9 @@ export default function ManageReport() {
 
 return (
     <div className="managePage">
+      <Head>
+        <title>Quản lý báo cáo</title>
+      </Head>
         <Modal title="Xóa báo cáo phản hồi" size="sm" danger={true} handleCloseModal={toggleModalDelete} isShow={isShowModalDelete} handleSubmit={deleteReport}>
             Bạn có chắc muốn xóa báo cáo này không?
         </Modal>

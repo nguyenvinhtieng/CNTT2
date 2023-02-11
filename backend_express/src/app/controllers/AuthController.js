@@ -1,5 +1,7 @@
 const fetch = require("node-fetch")
+const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const { v4: uuidv4 } = require('uuid');
 const { backend_laravel, secret_key} = require("../../credentials")
 const jwt = require('jsonwebtoken');
 const User = require("../models/User")
@@ -10,6 +12,7 @@ const uploadFile = require("../../utils/uploadFile");
 const sendMail = require("../../utils/sendMail");
 const Token = require("../models/Token");
 const { deleteToken } = require("../../utils/otpUtils");
+const users = require("../../users.json")
 const SALT_ROUNDS = 10;
 class AuthController {
     async fetchDataUser(req, res, next) {
@@ -119,6 +122,7 @@ class AuthController {
             let token = jwt.sign({ user }, secret_key);
             return res.json({status: true, message: "Đăng nhập thành công", token, user});
         } catch(e) {
+            console.log(e.message);
             return res.json({status: false, message: "Có lỗi xảy ra"});
         }
     }
@@ -171,10 +175,18 @@ class AuthController {
     }
     async forgotPass(req, res, next) {
         try {
-            const { email } = req.body;
+            // const { email } = req.body;
+            const email = req.query.email;
+            let userFind = await User.findOne({email});
+            if(!userFind) {
+                return res.json({status: false, message: "Email không tồn tại"});
+            }
             // create token 
-            const token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+            // const token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+            const token = uuidv4();
+
             await sendMail(email, token);
+            await Token.findOneAndDelete({email});
             let tk = new Token({
                 email,
                 token
@@ -189,20 +201,19 @@ class AuthController {
     }
     async checkToken(req, res, next) {
         try {
-            const {token, new_pass} = req.body;
+            const {token, password} = req.body;
             let findToken  = await Token.findOne({token});
             if(!findToken) {
-                return res.json({status: false, message: "Mã resetlink không đúng"});
+                return res.json({status: false, message: "Token không tồn tại"});
             }
             let email = findToken.email;
-            let passwordHash = await bcrypt.hash(new_pass, SALT_ROUNDS);
+            let passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
             await User.findOneAndUpdate({email}, {password: passwordHash});
             return res.json({status: true, message: "Đổi mật khẩu thành công"});
         }catch(err) {
             return res.json({ status: false, message: "Server Internal Error!" });
         }
     }
-    async 
     async changePass(req, res, next) {
         const user = req.user
         const {password} = req.body;

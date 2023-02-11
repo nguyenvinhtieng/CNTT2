@@ -1,4 +1,5 @@
 import moment from "moment";
+import Head from "next/head";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { AiOutlineEye } from "react-icons/ai";
@@ -44,6 +45,9 @@ export default function MyPost() {
 
 return (
     <div className="managePage">
+      <Head>
+        <title>Câu hỏi của tôi</title>
+      </Head>
     <h2 className="managePage__heading" >Câu hỏi của tôi</h2>
     <Modal title="Xóa câu hỏi" isShow={isShowDeleteModal} handleCloseModal={toggleDeleteModal} danger={true} handleSubmit={handleDelete} size="sm">
       <p>Bạn có chắc chắn muốn xóa câu hỏi này?</p>
@@ -92,7 +96,7 @@ return (
                     </td>
                   </tr>
                 )}
-                {loaded && questions.length === 0 && <tr><td colSpan={6}>Không có bài viết nào</td></tr>}
+                {loaded && questions.length === 0 && <tr><td colSpan={6}>Không có câu hỏi nào</td></tr>}
               </tbody>
             </table>
             {!loaded && new Array(8).fill(null).map((_, index) => {

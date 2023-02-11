@@ -4,12 +4,13 @@ import { useRouter } from 'next/router';
 import { connect, useDispatch } from 'react-redux'
 import displayToast from '~/utils/displayToast'
 import { userLogin } from '~/redux/actions/authActions'
+import Head from 'next/head';
 
 function LoginPage() {
   const usernameRef = useRef()
   const passwordRef = useRef()
   const router = useRouter();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const handleSubmitLogin = async () => {
     // do something
     let username = usernameRef.current.value
@@ -22,6 +23,9 @@ function LoginPage() {
   }
   return (
     <div className="container">
+      <Head>
+        <title>Đặng nhập</title>
+      </Head>
       <div className="auth-page">
         <h1 className='auth-page__heading'>Đăng nhập </h1>
         <div className="input__wrapper">
@@ -39,7 +43,7 @@ function LoginPage() {
           <Link href="/register">Đăng ký tại đây</Link>
         </p>
         <p className="auth-page__note">Quên mật khẩu? 
-          <Link href="/register">Reset mật khẩu</Link>
+          <Link href="/reset-pass">Reset mật khẩu</Link>
         </p>
       </div>
     </div>

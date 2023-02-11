@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
@@ -37,6 +38,9 @@ function RegisterPage() {
   }  
   return (
     <div className="container">
+      <Head>
+        <title>Đăng ký tài khoản</title>
+      </Head>
       <div className="auth-page">
         <h1 className='auth-page__heading'>Đăng ký </h1>
         <div className="input__wrapper">

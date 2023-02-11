@@ -405,3 +405,16 @@
     }
   }
 }
+// post list display list
+.post__list.list {
+  display: block;
+  .post-item {
+    width: 100%;
+  }
+  .post-item__img {
+    display: none;
+  }
+  .post-item__actions {
+    display: none;
+  }
+}

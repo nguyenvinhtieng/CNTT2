@@ -10,6 +10,7 @@ import Select from "~/components/Select/Select";
 import Skeleton from "~/components/Skeleton/Skeleton";
 import UserItem from "~/components/UserItem/UserItem";
 import { postMethod } from "~/utils/fetchData";
+import Head from "next/head";
 
 export default function ManagePost() {
     const [ postsFetch, setPostsFetch ] = React.useState([]);
@@ -106,6 +107,9 @@ export default function ManagePost() {
 
 return (
     <div className="managePage">
+        <Head>
+            <title>Quản lý bài viết</title>
+        </Head>
     <Modal title="Xoá bài viết" size="sm" danger={true} handleCloseModal={toggleModalConfirmDelete} isShow={isShowModalConfirmDelete} handleSubmit={deletePostHandler}>
         <p>Bạn có chắc chắn muốn xoá bài viết này?</p>
     </Modal>

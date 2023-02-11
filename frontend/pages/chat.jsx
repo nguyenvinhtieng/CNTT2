@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import React, { useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
@@ -16,7 +17,6 @@ export default function chat() {
   const chatThreadsRef = useRef([])
   const userChatNowRef = useRef(null)
   const messageEndRef = useRef(null)
-  
   useEffect(() => {
     chatThreadNowsRef.current = chatThreadNow
     chatThreadsRef.current = chatThreads
@@ -27,6 +27,7 @@ export default function chat() {
 
   const router = useRouter()
   const socket = useSelector(state => state.socket)
+  const auth = useSelector(state => state.auth)
   const getAllChatThreads = async() => {
     const res = await getMethod("chat/get-all-thread")
     const { data } = res
@@ -62,6 +63,15 @@ export default function chat() {
     toggleShowContent()
     const res = await postMethod("chat/get-chat-of-thread", { chat_thread_id: thread._id })
     const { data } = res
+    if(thread?.new && thread?.last_message?.sender != auth?.user?.id) {
+      let newChatThreads = chatThreads.map(item => {
+        if(item._id == thread._id) {
+          item.new = false
+        }
+        return item
+      })
+      setChatThreads(newChatThreads)
+    }
     if(data.status) {
       setChatContent(data.data)
     }else {
@@ -119,6 +129,9 @@ export default function chat() {
   
   return (
     <div className='chat'>
+      <Head>
+        <title>Trò chuyện</title>
+      </Head>
       <div className={`chat__user ${isShowContent ? "is-hide" : ""}`}>
         <ChatUsers threads={chatThreads} onChangeThread={handleChangeThreadChat}></ChatUsers>
       </div>

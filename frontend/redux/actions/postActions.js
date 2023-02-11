@@ -160,11 +160,19 @@ export const votePost = ({post_id, type}) => {
                     }
                     return item;
                 })
+                let newDataTemp = state.posts.dataTemp.map(item => {
+                    if(item._id === post_id) {
+                        return {...item, ...data.post}
+                    }
+                    return item;
+                })
+
                 dispatch({
                     type: GLOBAL_TYPES.POST,
                     payload: {
                         ...state.posts,
-                        data: newData
+                        data: newData,
+                        dataTemp: newDataTemp
                     }
                 })
             }else {
@@ -191,11 +199,18 @@ export const commentPost = ({post_id, content, reply_id}) => {
                     }
                     return item;
                 })
+                let newDataTemp = state.posts.dataTemp.map(item => {
+                    if(item._id === post_id) {
+                        return {...item, comments: [...item.comments, data.comment]}
+                    }
+                    return item;
+                })
                 dispatch({
                     type: GLOBAL_TYPES.POST,
                     payload: {
                         ...state.posts,
-                        data: newData
+                        data: newData,
+                        dataTemp: newDataTemp
                     }
                 })
                 displayToast("success", data.message);
@@ -229,11 +244,23 @@ export const deleteComment = ({comment_id}) => {
                     })
                     newData.push({...item, comments: newComments2})
                 })
+                let newTempData = []
+                state.posts.dataTemp.forEach(item => {
+                    let newComments = item.comments.filter(i => i._id !== comment_id);
+                    let newComments2 = newComments.map(i => {
+                        if(i.reply_id === comment_id) {
+                            return {...i, reply_id: null}
+                        }
+                        return i;
+                    })
+                    newTempData.push({...item, comments: newComments2})
+                })
                 dispatch({
                     type: GLOBAL_TYPES.POST,
                     payload: {
                         ...state.posts,
-                        data: newData
+                        data: newData,
+                        dataTemp: newTempData
                     }
                 })
 
@@ -265,11 +292,22 @@ export const updateComment = ({comment_id, content}) => {
                     })
                     return {...item, comments: newComments}
                 })
+                let newTempData = state.posts.dataTemp.map(item => {
+                    let newComments = item.comments.map(i => {
+                        if(i._id === comment_id) {
+                            return {...i, content}
+                        }
+                        return i;
+                    })
+                    return {...item, comments: newComments}
+                })
+
                 dispatch({
                     type: GLOBAL_TYPES.POST,
                     payload: {
                         ...state.posts,
-                        data: newData
+                        data: newData,
+                        dataTemp: newTempData
                     }
                 })
                 displayToast("success", data.message);
@@ -357,6 +395,9 @@ export const bookmarkPost = ({post_id}) => {
 export const addPostToStore = (post) => {
     return async (dispatch, getState) => {
         const state = getState();
+        // check post have in store
+        let check = state.posts.data.find(item => item._id === post._id);
+        if(check) return;
         dispatch({
             type: GLOBAL_TYPES.POST,
             payload: {

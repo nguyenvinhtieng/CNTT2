@@ -5,6 +5,7 @@ const ChatThread = new Schema(
     {
         users: [{ type: Schema.Types.ObjectId, ref: "User" }],
         last_message: { type: Schema.Types.ObjectId, ref: "Chat" },
+        new: { type: Boolean, default: true },
     },
     {
         timestamps: true,

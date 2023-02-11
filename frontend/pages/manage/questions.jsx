@@ -10,6 +10,7 @@ import Select from "~/components/Select/Select";
 import Skeleton from "~/components/Skeleton/Skeleton";
 import UserItem from "~/components/UserItem/UserItem";
 import { postMethod } from "~/utils/fetchData";
+import Head from "next/head";
 
 export default function ManagePost() {
     const [questions, setQuestions] = React.useState([]);
@@ -102,6 +103,9 @@ export default function ManagePost() {
     console.log("questions: ", questions)
 return (
     <div className="managePage">
+        <Head>
+            <title>Quản lý câu hỏi</title>
+        </Head>
     <Modal title="Xoá câu hỏi" size="sm" danger={true} handleCloseModal={toggleModalConfirmDelete} isShow={isShowModalConfirmDelete} handleSubmit={deleteQuestionHandler}>
         <p>Bạn có chắc chắn muốn xoá câu hỏi này?</p>
     </Modal>

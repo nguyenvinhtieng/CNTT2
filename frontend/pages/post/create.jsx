@@ -8,6 +8,7 @@ import InputImage from '~/components/InputImage/InputImage';
 import Select from '~/components/Select/Select';
 import { createPost } from '~/redux/actions/postActions';
 import displayToast from '~/utils/displayToast';
+import Head from 'next/head';
 const optionsSavePost = [
   {value: "unpublish", title: "Lưu nháp"},
   {value: "publish", title: "Công khai"}
@@ -106,6 +107,9 @@ function CreatePostPage({ createPost }) {
   }
   return (
     <div className="createPage">
+      <Head>
+        <title>Tạo bài viết</title>
+      </Head>
       <h1 className='createPage__heading'>Tạo bài viết</h1>
       <form action="" onSubmit={(e) => e.preventDefault()}>
         <div className="input__wrapper">

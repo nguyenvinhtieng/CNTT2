@@ -30,6 +30,7 @@ class QuestionController {
     }
     async getPagination(req, res) {
         try {
+            
             // const skip = req.query.skip ? parseInt(req.query.skip) : 0;
             const questions = await Question.find({})
                                 .populate("author")
@@ -48,6 +49,7 @@ class QuestionController {
             }
             return res.json({ status: true, message: "Lấy các câu hỏi thành công", questions: questions});
         } catch (err) {
+            console.log(err)
             return res.json({ status: false, message: "Có lỗi xảy ra" });
         }
     }

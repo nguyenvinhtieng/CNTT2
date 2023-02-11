@@ -77,6 +77,10 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        &.new {
+          font-weight: bold;
+          color:rgb(6, 227, 6);
+        }
       }
       .timeMess {
         color: rgb(126, 126, 126);

@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useRef, useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
@@ -79,6 +80,9 @@ function CreateQuestionPage() {
   }
   return (
     <div className="createPage">
+      <Head>
+        <title>Tạo câu hỏi thảo luận</title>
+      </Head>
       <h1 className='createPage__heading'>Tạo câu hỏi</h1>
       <form action="" onSubmit={(e) => e.preventDefault()}>
         <div className="input__wrapper">

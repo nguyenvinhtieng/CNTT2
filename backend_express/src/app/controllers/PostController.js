@@ -123,42 +123,21 @@ class PostController {
     // localhost:3001/api/post?page=5
     async getPagination(req, res, next) {
         try {
-            // const skip = req.query.skip ? parseInt(req.query.skip) : 0;
-            // const content = req.query.content || "";
             let filterCondition = {
                 status: "publish",
             };
-            // if (content) {
-            //     filterCondition = {
-            //         $and: [
-            //             { status: "publish" },
-            //             {
-            //                 $or: [
-            //                     { title: { $regex: content } },
-            //                     { content: { $regex: content } },
-            //                     { tags: { $in: [content] } },
-            //                 ],
-            //             }
-            //         ],
-            //     };
-            // }
             const posts = await Post.find({filterCondition})
-                                    // .skip(skip)
-                                    // .limit(10)
                                     .sort({createdAt: -1})
                                     .populate('author')
                                     .lean();
-            // let length = await Post.countDocuments({filterCondition});
             for(const [index, p] of posts.entries()) {
                 posts[index].votes = await PostVote.find({ post_id: p._id }).lean();
                 posts[index].comments = await Comment.find({ post_id: p._id }).populate('author');
             }
-
             return res.status(200).json({ 
                 status: true, 
                 message: "Lấy bài viết thành công", 
                 posts: posts
-                // total: length 
             });
 
         } catch (error) {
@@ -271,7 +250,7 @@ class PostController {
                 }).populate('author').lean();
                 postNew.votes = await PostVote.find({ post_id: post_id }).lean();
                 postNew.comments = await Comment.find({ post : post_id }).populate('author').lean();
-                return res.status(200).json({ status: true, message: "Tạo bài viết thành công", post: postNew });
+                return res.status(200).json({ status: true, message: "Cập nhật bài viết thành công", post: postNew });
             });
         } catch (error) {
             return res.status(500).json({ status: false, message: "Có lỗi xảy ra" });

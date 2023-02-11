@@ -1,4 +1,5 @@
 import moment from 'moment'
+import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
@@ -221,6 +222,9 @@ export default function ProfilePage() {
     
     return (
     <div className='profilePage'>
+        <Head>
+            <title>{"Trang cá nhân của " + user?.fullname ||"Trang cá nhân"}</title>
+        </Head>
         {/* Modal change avatar */}
         <Modal title="Đổi ảnh đại diện" isShow={isShowModalChangeAvatar} handleCloseModal={toggleModalChangeAvatar} size="sm" handleSubmit={handleChangeAvatar}>
             <InputImage images={avatar} onChangeImage={onChangeImage}></InputImage>

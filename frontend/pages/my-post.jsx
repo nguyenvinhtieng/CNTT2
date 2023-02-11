@@ -1,4 +1,5 @@
 import moment from "moment";
+import Head from "next/head";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { AiOutlineEye } from "react-icons/ai";
@@ -47,6 +48,9 @@ export default function MyPost() {
   }, [])
 return (
     <div className="managePage">
+      <Head>
+        <title>Bài viết của tôi</title>
+      </Head>
     <h2 className="managePage__heading" >Bài viết của tôi</h2>
     <Modal title="Xóa bài viết" isShow={isShowDeleteModal} handleCloseModal={toggleDeleteModal} danger={true} handleSubmit={handleDeletePost} size="sm">
       <p>Bạn có chắc chắn muốn xóa bài viết này?</p>

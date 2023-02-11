@@ -14,6 +14,8 @@ router.post('/upload-file', AuthController.uploadFile)
 router.post('/register', AuthController.register)
 router.post('/forgot-pass', AuthController.forgotPass)
 router.post('/change-pass',checkLogin, AuthController.changePass)
+router.get('/reset-password', AuthController.forgotPass)
+router.post('/reset-password', AuthController.checkToken)
 
 
 module.exports = router;

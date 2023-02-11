@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
 import { FaRegEdit } from 'react-icons/fa'
@@ -60,6 +61,9 @@ export default function QuestionDetailPage() {
   }, [slug, questions])
   return (
     <div className='questionDetailPage'>
+      <Head>
+        <title>{question?.title || "Câu hỏi"}</title>
+      </Head>
         {isShowModalAdd && <Modal handleCloseModal={toggleModalAdd} size="md" title="Thêm câu trả lời" isShow={isShowModalAdd} handleSubmit={saveAnswer}>
           <div className="input__wrapper">
             <label htmlFor="answerContent">Nội dung câu trả lời</label>

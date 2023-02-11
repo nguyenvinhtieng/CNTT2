@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import React, { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component';
 import ReactPaginate from 'react-paginate';
@@ -10,7 +11,6 @@ export default function QuestionPage() {
   const [itemOffset, setItemOffset] = useState(0);
   const questions = useSelector(state => state.questions)
   const dispatch = useDispatch();
-
   let itemsPerPage = 10;
   const endOffset = itemOffset + itemsPerPage;
   const currentItems = questions?.dataTemp?.slice(itemOffset, endOffset);
@@ -24,6 +24,9 @@ export default function QuestionPage() {
 
   return (
     <div className="questionPage">
+      <Head>
+        <title>Câu hỏi mới nhất</title>
+      </Head>
         <h3>Câu hỏi mới nhất</h3>
         <div className="questionPage__filter">
 

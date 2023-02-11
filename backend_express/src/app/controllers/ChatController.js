@@ -45,8 +45,12 @@ class ChatController {
       let LIMIT = 30;
       let chats = await Chat.find({
         chat_thread_id: chat_thread_id
-      }).populate("sender").sort({createdAt: -1}).skip(parseInt(skip)).limit(LIMIT);
-
+      }).populate("sender").sort({createdAt: -1}).skip(parseInt(skip));
+      let chatThread = await ChatThread.findOne({ _id: chat_thread_id }).populate("last_message")
+      if(chatThread.new && chatThread.last_message.sender !== user._id) {
+        chatThread.new = false;
+        await chatThread.save();
+      }
       res.json({status: true, message: "Lấy chat thành công", data: chats});
     }catch(err) {
       res.status(500).json({status: false, message: err.message});
@@ -151,7 +155,7 @@ class ChatController {
         // update thread chat
         // threadChatDb.last_message = chat._id;
         // await threadChatDb.save();
-        await ChatThread.findOneAndUpdate({_id: threadChatDb._id}, {last_message: chat._id});
+        await ChatThread.findOneAndUpdate({_id: threadChatDb._id}, {last_message: chat._id, new: true});
         let chatThreadNew = await ChatThread.findOne({_id: chat_thread_id}).populate("users").populate("last_message").lean();
         let chatNew = await Chat.findOne({_id: chat._id}).populate("sender").lean()
         res.json({status: true, message: "Gửi tin nhắn thành công", chat: chatNew, thread: chatThreadNew});
