@@ -16,17 +16,11 @@ import DataProvider from "~/redux/store";
 import Wrapper from "~/components/Wrapper/Wrapper";
 import Loading from "~/components/Loading/Loading";
 
-const socket = socketIO.connect('http://localhost:3001');
+const socket = socketIO.connect('https://cntt2-be.herokuapp.com');
 
 function MyApp({ Component, pageProps }) {
   const [mouted, setMounted] = useState(false);
-  const router = useRouter();
   let Layout = DefaultLayout;
-  routes.forEach((route) => {
-    if (route.path === router.pathname) {
-      Layout = route.component;
-    }
-  });
   useEffect(() => {
     setMounted(true);
   }, []);
