@@ -174,7 +174,11 @@ return (
                         <td>
                             <UserItem user={question.author}></UserItem>
                         </td>
-                        <td>{question.title}</td>
+                        <td>
+                            <Link href={`/question/${question.slug}`}>
+                                {question.title}
+                            </Link>
+                        </td>
                         <td>
                             {question.tags.map((tag, index) =>
                                 <span key={index} className="tag">{tag}</span>
@@ -189,11 +193,6 @@ return (
                         <td className="center">{question.answers.length} bình luận</td>
                         <td>
                             <div className="table__actions">
-                                <Link href={`/question/${question.slug}`}>
-                                    <div className="table__actionsItem view" data-tip="Xem câu hỏi">
-                                        <span className="table__action--ico"><AiOutlineEye></AiOutlineEye></span>
-                                    </div>
-                                </Link>
                                 <div className="table__actionsItem delete" data-tip="Xóa câu hỏi" onClick={()=>handleShowConfirmDelete(question._id)}>
                                     <span className="table__action--ico"><BiTrashAlt></BiTrashAlt></span>
                                 </div>

@@ -4,6 +4,7 @@ import { FacebookShareButton } from 'next-share';
 import Head from 'next/head';
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
+import HTMLtoReact  from 'html-to-react';
 import { BiDownvote, BiShareAlt, BiUpvote } from "react-icons/bi";
 import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 import { RiMessage3Line } from "react-icons/ri";
@@ -17,6 +18,7 @@ import Header from '~/layouts/components/Header/Header';
 import { addPostToStore, bookmarkPost, commentPost, votePost } from "~/redux/actions/postActions";
 import displayToast from "~/utils/displayToast";
 import { getMethod } from "~/utils/fetchData";
+import Prism from "prismjs";
 export default function PostDetail() {
   const [isLoaded, setIsLoaded] = React.useState(false);
   const [post, setPost] = React.useState(null);
@@ -32,6 +34,9 @@ export default function PostDetail() {
   const vote = (type) => {
     dispatch(votePost({ type, post_id: post._id }));
   }
+  useEffect(() => {
+    Prism.highlightAll();
+  });
   useEffect(()=>{
     let postState = posts.data.find((p) => p.slug == slug);
     if(!postState) {
@@ -134,7 +139,9 @@ export default function PostDetail() {
             <span>Tóm tắt: </span>{post?.tldr || "Bài viết không có tóm tắt"}
           </p>
           <ZoomImage>
-            <div className="post-detail__content mce-content-body" dangerouslySetInnerHTML={{__html: post?.content}}></div>
+            <div className="post-detail__content mce-content-body">
+              {new HTMLtoReact.Parser().parse(post?.content)}
+            </div>
           </ZoomImage>
           <div className="post-detail__reactInfo">
             <span>{post.votes.reduce((total, item)=>{

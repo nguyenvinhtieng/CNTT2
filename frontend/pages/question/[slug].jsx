@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
 import { FaRegEdit } from 'react-icons/fa'
 import { RiAwardFill } from 'react-icons/ri'
+import Prism from "prismjs";
 import { useDispatch, useSelector } from 'react-redux'
 import AnswerBlock from '~/components/AnswerBlock/AnswerBlock'
 import Editer from '~/components/Editer/Editer'
@@ -36,6 +37,9 @@ export default function QuestionDetailPage() {
     toggleModalAdd();
     setAnswerContent('')
   }
+  useEffect(() => {
+    Prism.highlightAll();
+  });
   useEffect(()=> {
     if(loaded && !question) {
       router.push('/')

@@ -180,7 +180,11 @@ return (
                         <td>
                             <UserItem user={post.author}></UserItem>
                         </td>
-                        <td>{post.title}</td>
+                        <td>
+                            <Link href={`/post/${post.slug}`}>
+                                {post.title}
+                            </Link>
+                        </td>
                         <td>
                             {post.tags.map((tag, index) =>
                                 <span key={index} className="tag">{tag}</span>
@@ -195,11 +199,6 @@ return (
                         <td className="center">{post.voteTotal} lượt vote</td>
                         <td>
                             <div className="table__actions">
-                                <Link href={`/post/${post.slug}`}>
-                                    <div className="table__actionsItem view" data-tip="Xem bài viết">
-                                        <span className="table__action--ico"><AiOutlineEye></AiOutlineEye></span>
-                                    </div>
-                                </Link>
                                 <div className="table__actionsItem delete" data-tip="Xóa bài viết" onClick={()=>handleShowConfirmDelete(post._id)}>
                                     <span className="table__action--ico"><BiTrashAlt></BiTrashAlt></span>
                                 </div>

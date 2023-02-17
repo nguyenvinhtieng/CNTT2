@@ -7,6 +7,7 @@ export default function Editer({initialVal = "", onChangeFunc}) {
   const log = () => {
     if (editorRef.current) {
       let val = editorRef.current.getContent();
+      console.log('Content was updated:', editorRef.current)
       onChangeFunc(val)
     }
   };
@@ -22,9 +23,9 @@ export default function Editer({initialVal = "", onChangeFunc}) {
       height: 500,
       menubar: false,
       plugins: [
-        "print","preview","paste","importcss","searchreplace","autolink","autosave","save","directionality","code","visualblocks","visualchars","fullscreen","image","link","media","codesample","table","charmap","hr","pagebreak","nonbreaking","anchor","toc","insertdatetime","advlist","lists","wordcount","imagetools","textpattern","noneditable","help","charmap","quickbars","emoticons"
+        "print","preview","paste","importcss","searchreplace","autolink","autosave","save","directionality","code","visualblocks","visualchars","fullscreen","image","link","media","codesample","table","charmap","nonbreaking","toc","insertdatetime","advlist","lists","wordcount","imagetools","textpattern","noneditable","help","charmap","quickbars","emoticons"
       ],
-      toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview | insertfile image media template link anchor codesample | ltr rtl',
+      toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | charmap emoticons | fullscreen  preview | insertfile image media template link codesample',
       content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
       image_caption: true,
       quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',

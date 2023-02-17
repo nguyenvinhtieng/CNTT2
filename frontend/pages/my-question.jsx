@@ -53,7 +53,7 @@ return (
       <p>Bạn có chắc chắn muốn xóa câu hỏi này?</p>
     </Modal>
     <div className="managePage__content">
-        <div className="table__wrapper">
+        <div className="table__wrapper scroll-css">
             <table className="table">
               <thead>
                 <tr>
@@ -69,7 +69,11 @@ return (
                 {loaded && questions.length > 0 && questions.map((question, _) => 
                   <tr key={question._id}>
                     <td>{_ + 1}</td>
-                    <td>{question.title}</td>
+                    <td>
+                      <Link href={`/question/${question.slug}`}>
+                        {question.title}
+                      </Link>
+                    </td>
                     <td>{moment(question.createdAt).format("LLL")}</td>
                     <td>{question.answers.length} câu trả lời</td>
                     <td>
@@ -79,18 +83,13 @@ return (
                     </td>
                     <td>
                       <div className="table__actions">
-                        <div className="table__actionsItem view" data-tip="Xem câu hỏi">
-                          <Link href={`/question/${question.slug}`}>
-                            <span className="table__action--ico"><AiOutlineEye></AiOutlineEye></span>
-                          </Link>
-                        </div>
-                        <div className="table__actionsItem delete" data-tip="Xoá câu hỏi" onClick={()=>confirmDelete(question._id)}>
-                          <span className="table__action--ico"><BiTrashAlt></BiTrashAlt></span>
-                        </div>
                         <div className="table__actionsItem edit" data-tip="Sửa câu hỏi">
                           <Link href={`/question/edit/${question.slug}`}>
                             <span className="table__action--ico"><FiEdit></FiEdit></span>
                           </Link>
+                        </div>
+                        <div className="table__actionsItem delete" data-tip="Xoá câu hỏi" onClick={()=>confirmDelete(question._id)}>
+                          <span className="table__action--ico"><BiTrashAlt></BiTrashAlt></span>
                         </div>
                       </div>
                     </td>

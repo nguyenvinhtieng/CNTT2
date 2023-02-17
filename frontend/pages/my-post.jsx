@@ -72,7 +72,11 @@ return (
                 {!isLoading && posts.length > 0 && posts.map((post, _) => 
                   <tr key={post._id}>
                     <td>{_ + 1}</td>
-                    <td>{post.title}</td>
+                    <td>
+                      <Link href={`/post/${post.slug}`}>
+                        {post.title}
+                      </Link>
+                    </td>
                     <td>
                       <div className="thumbnail thumbnail__sm">
                         <img src={post?.thumbnail || "/default.png"} alt="" />
@@ -85,18 +89,13 @@ return (
                     </td>
                     <td>
                       <div className="table__actions">
-                        <div className="table__actionsItem view" data-tip="Xem bài viết">
-                          <Link href={`/post/${post.slug}`}>
-                            <span className="table__action--ico"><AiOutlineEye></AiOutlineEye></span>
-                          </Link>
-                        </div>
-                        <div className="table__actionsItem delete" data-tip="Xoá bài viết" onClick={()=>confirmDelete(post._id)}>
-                          <span className="table__action--ico"><BiTrashAlt></BiTrashAlt></span>
-                        </div>
                         <div className="table__actionsItem edit" data-tip="Sửa bài viết">
                           <Link href={`/post/edit/${post.slug}`}>
                             <span className="table__action--ico"><FiEdit></FiEdit></span>
                           </Link>
+                        </div>
+                        <div className="table__actionsItem delete" data-tip="Xoá bài viết" onClick={()=>confirmDelete(post._id)}>
+                          <span className="table__action--ico"><BiTrashAlt></BiTrashAlt></span>
                         </div>
                       </div>
                     </td>
