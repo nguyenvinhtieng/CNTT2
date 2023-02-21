@@ -1,15 +1,19 @@
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {  useDispatch, useSelector } from "react-redux";
 import { fetchDataUser } from "~/redux/actions/authActions";
 import { fetchPostData } from "~/redux/actions/postActions";
 import { fetchQuestionData } from "~/redux/actions/questionAction";
 import { startSocket } from "~/redux/actions/socketAction";
 import displayToast from "~/utils/displayToast";
+function checkPath() {
+    
+}
 function Wrapper({children, socket}) {
     const auth = useSelector(state => state.auth);
     const dispatch = useDispatch();
     const router = useRouter();
+    const [firstTimes , setFirstTimes] = useState(true);
     useEffect(()=> {
         dispatch(fetchDataUser());
         dispatch(fetchPostData());
@@ -17,11 +21,14 @@ function Wrapper({children, socket}) {
     }, [])
     useEffect(()=> {
         if(auth.user) {
-            if(Object.keys(auth?.user).length > 0) {
+            if(Object.keys(auth?.user).length > 0 && firstTimes) {
                 dispatch(startSocket(socket))
                 socket.emit("user-login", auth.user)
+                setFirstTimes(false)
                 socket.on("new-message", ({chat, thread}) => {
-                    if(router.pathname.startsWith("/chat")) { // check pathname start with /chat
+                    console.log("router.pathname: ", router.pathname)
+                    console.log("---", window.location.pathname)
+                    if(!router.pathname.startsWith("/chat")) { // check pathname start with /chat
                         let sender = chat.sender.fullname
                         displayToast("info", "Bạn có tin nhắn mới từ " + sender)
                     }
