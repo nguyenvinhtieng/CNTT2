@@ -1,7 +1,6 @@
 import React, { useRef } from "react";
 import TooltipMenu from "~/components/TooltipMenu/TooltipMenu";
 import { CiUser } from "react-icons/ci";
-// import { toast } from 'react-toastify';
 import { IoLogOutOutline, IoLogInOutline } from "react-icons/io5";
 import { AiOutlineMenu } from "react-icons/ai";
 import { MdOutlineAssignment } from "react-icons/md";
@@ -10,8 +9,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { RiLockPasswordLine } from "react-icons/ri";
 import Modal from "~/components/Modal/Modal";
-// import { postMethod } from "~/utils/fetchData";
-import { CREDENTIALS } from "~/redux/constants";
 
 export default function Header({ toggleSidebar }) {
   const [isShowMenu, setIsShowMenu] = React.useState(false);
@@ -36,8 +33,8 @@ export default function Header({ toggleSidebar }) {
       alert("Mật khẩu không khớp")
       return;
     }
-    let token = localStorage.getItem(CREDENTIALS.TOKEN_NAME)
-    let url = CREDENTIALS.BACKEND_URL + "/change-pass"
+    let token = localStorage.getItem(process.env.NEXT_PUBLIC_TOKEN_NAME)
+    let url = process.env.NEXT_PUBLIC_BACKEND_URL + "/change-pass"
     let res = await fetch(url, {
       method: "POST",
       headers: {

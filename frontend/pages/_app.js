@@ -17,7 +17,7 @@ import DataProvider from "~/redux/store";
 import Wrapper from "~/components/Wrapper/Wrapper";
 import Loading from "~/components/Loading/Loading";
 
-const socket = socketIO.connect('https://cntt2-be.herokuapp.com');
+const socket = socketIO.connect(process.env.NEXT_PUBLIC_BACKEND_URL);
 
 function MyApp({ Component, pageProps }) {
   const [mouted, setMounted] = useState(false);

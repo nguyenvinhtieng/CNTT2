@@ -1,13 +1,13 @@
 import API from "~/api";
 import displayToast from "~/utils/displayToast";
 import { getMethod, postMethod } from "~/utils/fetchData";
-import { CREDENTIALS, GLOBAL_TYPES } from "../constants";
+import { GLOBAL_TYPES } from "../constants";
 
 export const userLogout = () => {
     return async (dispatch, getState) => {
         const state = getState();
         const socket = state.socket;
-        localStorage.removeItem(CREDENTIALS.TOKEN_NAME);
+        localStorage.removeItem(process.env.NEXT_PUBLIC_TOKEN_NAME);
         dispatch({
             type: GLOBAL_TYPES.AUTH,
             payload: {
@@ -22,7 +22,7 @@ export const userLogout = () => {
 export const fetchDataUser = () => {
     return async (dispatch, getState) => {
         try {
-            const token = localStorage.getItem(CREDENTIALS.TOKEN_NAME);
+            const token = localStorage.getItem(process.env.NEXT_PUBLIC_TOKEN_NAME);
             if(!token) return
             let response = await getMethod(API.FETCHDATAUSER);
             const { data } = response;
@@ -32,7 +32,7 @@ export const fetchDataUser = () => {
                     payload: { isAuthenticated: true, isAdmin: false, user: data.user },
                 });
             }else {
-                localStorage.removeItem(CREDENTIALS.TOKEN_NAME);
+                localStorage.removeItem(process.env.NEXT_PUBLIC_TOKEN_NAME);
                 dispatch({
                     type: GLOBAL_TYPES.AUTH,
                     payload: {
@@ -57,7 +57,7 @@ export const userLogin = ({ username, password, router }) => {
             if (data.status) {
                 displayToast("success", "Đăng nhập thành công");
                 let token = data.token;
-                localStorage.setItem(CREDENTIALS.TOKEN_NAME, token);
+                localStorage.setItem(process.env.NEXT_PUBLIC_TOKEN_NAME, token);
                 dispatch({
                     type: GLOBAL_TYPES.AUTH,
                     payload: { isAuthenticated: true, isAdmin: false, user: data.user },
