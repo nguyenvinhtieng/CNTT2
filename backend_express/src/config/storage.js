@@ -1,9 +1,7 @@
-const credentials = require('../credentials')
-
 const { Storage } = require('megajs')
 module.exoprts = new Storage({
-  email: credentials.mega_config.email,
-  password: credentials.mega_config.password,
+  email: process.env.MEGA_CONFIG_EMAIL,
+  password: process.env.MEGA_CONFIG_PASSWORD,
   userAgent: 'ExampleClient/1.0'
 })
 
