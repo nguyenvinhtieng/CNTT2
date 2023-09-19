@@ -1,8 +1,15 @@
 const mongoose = require('mongoose');
-
+const {
+    DB_USER,
+    DB_PASSWORD,
+    DB_HOST,
+    DB_PORT,
+    DB_NAME,
+} = process.env;
+console.log(`Connection String:::: => mongodb://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?authSource=admin`)
 async function connect() {
     try {
-        await mongoose.connect(process.env.MONGO_CONNECTION_STRING, {
+        await mongoose.connect(`mongodb://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?authSource=admin`, {
             useNewUrlParser: true,
             useUnifiedTopology: true
         });
