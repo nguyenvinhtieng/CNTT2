@@ -1,34 +1,35 @@
 version: '3.8'
 
-services: 
-  mongodb:
-    image: mongo:5.0.2
+services:
+  # DB
+  mongo:
+    image: mongo:6-jammy
+    # image: mongo:5.0.2
+    container_name: mongodatabase
     restart: always
     env_file: ./.env
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=$MONGODB_USER
-      - MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD
+    # environment:
+    #   - MONGO_INITDB_ROOT_USERNAME=$MONGODB_USER
+    #   - MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD
+    #   - MONGO_INITDB_DATABASE=$MONGODB_DATABASE
     ports:
       - $MONGODB_LOCAL_PORT:$MONGODB_DOCKER_PORT
-    # healthcheck:
-    #   test: echo 'db.runCommand("ping").ok' | mongo --quiet
-    #   interval: 1m30s
-    #   timeout: 30s
-    #   retries: 5
-    #   start_period: 30s
+    networks:
+      - node-network
+    expose:
+      - $MONGODB_LOCAL_PORT
     volumes:
       - db:/data/db
 
+  # API
   techforum-api:
-    depends_on:
-      - mongodb
     build: ../backend_express
     restart: unless-stopped
     env_file: ./.env
     ports:
       - $NODE_DOCKER_PORT:$NODE_DOCKER_PORT
     environment:
-      - DB_HOST=mongodb
+      - DB_HOST=mongo
       - DB_USER=$MONGODB_USER
       - DB_PASSWORD=$MONGODB_PASSWORD
       - DB_NAME=$MONGODB_DATABASE
@@ -44,6 +45,25 @@ services:
       - DB_PASSWORD=$API_DB_PASSWORD
     stdin_open: true
     tty: true
+    networks:
+      - node-network
+    links:
+      - mongo
+
+  # FE
+  techforum-fe:
+    build: ../frontend
+    restart: unless-stopped
+    env_file: ./.env
+    ports:
+      - 5000:3000
+    # environment:
+    #   - NEXT_PUBLIC_BACKEND_URL=techforum-api
+    networks:
+      - node-network
 
 volumes:
   db:
+networks:
+  node-network:
+    driver: bridge

@@ -6,10 +6,13 @@ const {
     DB_PORT,
     DB_NAME,
 } = process.env;
-console.log(`Connection String:::: => mongodb://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?authSource=admin`)
+mongoose.set("strictQuery", false);
 async function connect() {
     try {
-        await mongoose.connect(`mongodb://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?authSource=admin`, {
+        // const connectionString = `mongodb://${DB_USER}:vinhtieng@${DB_HOST}:${DB_PORT}/${DB_NAME}`;
+        const connectionString = `mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`;
+        console.log(`Connection String:::: ${connectionString}`)
+        await mongoose.connect(connectionString, {
             useNewUrlParser: true,
             useUnifiedTopology: true
         });
